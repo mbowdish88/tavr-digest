@@ -19,9 +19,18 @@ def _render_html(
     regulatory_articles: list = None,
     stock_data: dict = None,
     trials: list = None,
+    preprint_articles: list = None,
+    journal_articles: list = None,
+    social_posts: list = None,
+    financial_news: list = None,
 ) -> str:
     regulatory_articles = regulatory_articles or []
     trials = trials or []
+    preprint_articles = preprint_articles or []
+    journal_articles = journal_articles or []
+
+    all_research = pubmed_articles + preprint_articles + journal_articles
+    research_count = len(all_research)
 
     env = Environment(
         loader=FileSystemLoader(str(config.TEMPLATES_DIR)),
@@ -31,12 +40,17 @@ def _render_html(
 
     return template.render(
         date=date.today().strftime("%B %d, %Y"),
+        research_count=research_count,
         pubmed_count=len(pubmed_articles),
+        preprint_count=len(preprint_articles),
+        journal_count=len(journal_articles),
         news_count=len(news_articles),
         regulatory_count=len(regulatory_articles),
         trials_count=len(trials),
         digest_html=digest_html,
         pubmed_articles=pubmed_articles,
+        preprint_articles=preprint_articles,
+        journal_articles=journal_articles,
         news_articles=news_articles,
         regulatory_articles=regulatory_articles,
         trials=trials,
@@ -58,20 +72,28 @@ def send_digest(
     regulatory_articles: list = None,
     stock_data: dict = None,
     trials: list = None,
+    preprint_articles: list = None,
+    journal_articles: list = None,
+    social_posts: list = None,
+    financial_news: list = None,
 ) -> None:
     if not config.EMAIL_TO:
         logger.warning("No EMAIL_TO configured. Skipping email send.")
         return
 
-    total = len(pubmed_articles) + len(news_articles) + len(regulatory_articles or [])
+    total = (
+        len(pubmed_articles) + len(news_articles) + len(regulatory_articles or [])
+        + len(preprint_articles or []) + len(journal_articles or [])
+    )
     subject = (
-        f"TAVR Digest - {date.today().strftime('%B %d, %Y')} "
+        f"The Valve Wire - {date.today().strftime('%B %d, %Y')} "
         f"({total} article{'s' if total != 1 else ''})"
     )
 
     html_body = _render_html(
         digest_html, pubmed_articles, news_articles,
         regulatory_articles, stock_data, trials,
+        preprint_articles, journal_articles, social_posts, financial_news,
     )
     text_body = _html_to_plaintext(html_body)
 

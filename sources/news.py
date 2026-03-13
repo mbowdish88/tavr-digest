@@ -98,7 +98,12 @@ def fetch_recent(
     for site_info in config.SITE_SPECIFIC_SEARCHES:
         site = site_info["site"]
         label = site_info["label"]
-        site_terms = site_info.get("terms", ["TAVR", "TAVI", "transcatheter aortic valve"])
+        site_terms = site_info.get("terms", [
+            "TAVR", "TAVI", "transcatheter aortic valve",
+            "MitraClip", "PASCAL", "transcatheter mitral",
+            "TriClip", "transcatheter tricuspid",
+            "structural heart",
+        ])
 
         for term in site_terms:
             query = f"site:{site} {term}"
