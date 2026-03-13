@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""TAVR Daily Digest Agent - monitors PubMed, news, regulatory, trials, and stocks."""
+"""The Valve Wire - daily transcatheter valve technology digest."""
 
 import logging
 import sys
@@ -9,11 +9,11 @@ import requests
 import smtplib
 
 import config
-from sources import pubmed, news, regulatory, trials, stocks
+from sources import pubmed, news, regulatory, trials, stocks, preprints, journals, social, financial
 from processing.dedup import DedupDB
 from processing.summarizer import create_digest, build_fallback_digest
 from delivery.emailer import send_digest
-from delivery.substack import export_substack
+from delivery.beehiiv import publish_to_beehiiv
 
 # Set up logging
 logging.basicConfig(
@@ -24,11 +24,11 @@ logging.basicConfig(
         logging.StreamHandler(sys.stdout),
     ],
 )
-logger = logging.getLogger("tavr-digest")
+logger = logging.getLogger("valve-wire")
 
 
 def run_daily_digest():
-    logger.info("=== TAVR Daily Digest starting ===")
+    logger.info("=== The Valve Wire starting ===")
 
     # 1. Collect from all sources (isolated error handling)
     pubmed_articles = []
@@ -36,6 +36,10 @@ def run_daily_digest():
     regulatory_articles = []
     trial_updates = []
     stock_data = {}
+    preprint_articles = []
+    journal_articles = []
+    social_posts = []
+    financial_news = []
 
     try:
         pubmed_articles = pubmed.fetch_recent()
@@ -44,6 +48,18 @@ def run_daily_digest():
         logger.error(f"PubMed fetch failed: {e}")
     except Exception as e:
         logger.error(f"PubMed unexpected error: {e}", exc_info=True)
+
+    try:
+        preprint_articles = preprints.fetch_recent()
+        logger.info(f"Preprints: fetched {len(preprint_articles)} articles")
+    except Exception as e:
+        logger.error(f"Preprints fetch failed: {e}", exc_info=True)
+
+    try:
+        journal_articles = journals.fetch_recent()
+        logger.info(f"Journals: fetched {len(journal_articles)} articles")
+    except Exception as e:
+        logger.error(f"Journals fetch failed: {e}", exc_info=True)
 
     try:
         news_articles = news.fetch_recent()
@@ -71,9 +87,24 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"Stock data fetch failed: {e}", exc_info=True)
 
-    # Check if we have any article content at all
-    total_articles = len(pubmed_articles) + len(news_articles) + len(regulatory_articles)
-    if total_articles == 0 and not trial_updates and not stock_data:
+    try:
+        social_posts = social.fetch_recent()
+        logger.info(f"Social: fetched {len(social_posts)} posts")
+    except Exception as e:
+        logger.error(f"Social fetch failed: {e}", exc_info=True)
+
+    try:
+        financial_news = financial.fetch_financial_news()
+        logger.info(f"Financial: fetched {len(financial_news)} items")
+    except Exception as e:
+        logger.error(f"Financial fetch failed: {e}", exc_info=True)
+
+    # Check if we have any content at all
+    total_articles = (
+        len(pubmed_articles) + len(news_articles) + len(regulatory_articles)
+        + len(preprint_articles) + len(journal_articles)
+    )
+    if total_articles == 0 and not trial_updates and not stock_data and not financial_news:
         logger.warning("No content retrieved from any source. Exiting.")
         return
 
@@ -82,9 +113,16 @@ def run_daily_digest():
     new_pubmed = db.filter_new(pubmed_articles, source="pubmed")
     new_news = db.filter_new(news_articles, source="news")
     new_regulatory = db.filter_new(regulatory_articles, source="regulatory")
+    new_preprints = db.filter_new(preprint_articles, source="preprint")
+    new_journals = db.filter_new(journal_articles, source="journal")
+    new_social = db.filter_new(social_posts, source="social")
+    new_financial = db.filter_new(financial_news, source="financial")
 
     # Always include stock data and trials (not deduped - they're live data)
-    has_new_articles = new_pubmed or new_news or new_regulatory
+    has_new_articles = (
+        new_pubmed or new_news or new_regulatory
+        or new_preprints or new_journals or new_social or new_financial
+    )
     has_supplemental = trial_updates or stock_data
 
     if not has_new_articles and not has_supplemental:
@@ -92,9 +130,11 @@ def run_daily_digest():
         return
 
     logger.info(
-        f"New: {len(new_pubmed)} PubMed, {len(new_news)} news, "
+        f"New: {len(new_pubmed)} PubMed, {len(new_preprints)} preprints, "
+        f"{len(new_journals)} journals, {len(new_news)} news, "
         f"{len(new_regulatory)} regulatory, {len(trial_updates)} trials, "
-        f"{len(stock_data)} stocks"
+        f"{len(stock_data)} stocks, {len(new_social)} social, "
+        f"{len(new_financial)} financial"
     )
 
     # 3. Summarize with Claude (retry once on failure)
@@ -103,6 +143,7 @@ def run_daily_digest():
         try:
             digest_content = create_digest(
                 new_pubmed, new_news, new_regulatory, stock_data, trial_updates,
+                new_preprints, new_journals, new_social, new_financial,
             )
             break
         except Exception as e:
@@ -114,17 +155,20 @@ def run_daily_digest():
         logger.error("Claude API unavailable. Using fallback digest.")
         digest_content = build_fallback_digest(
             new_pubmed, new_news, new_regulatory, stock_data, trial_updates,
+            new_preprints, new_journals, new_social, new_financial,
         )
 
-    # 4. Export Substack copy page
+    # 4. Publish to Beehiiv
     try:
-        substack_files = export_substack(
-            digest_content, new_pubmed, new_news,
-            new_regulatory, stock_data, trial_updates,
+        beehiiv_result = publish_to_beehiiv(
+            digest_content, new_pubmed, new_news, new_regulatory,
+            stock_data, trial_updates, new_preprints, new_journals,
+            new_social, new_financial,
         )
-        logger.info(f"Substack copy page: {substack_files['copy_page']}")
+        if beehiiv_result:
+            logger.info(f"Beehiiv: published post {beehiiv_result.get('id', 'unknown')}")
     except Exception as e:
-        logger.error(f"Substack export failed: {e}", exc_info=True)
+        logger.error(f"Beehiiv publish failed: {e}", exc_info=True)
 
     # 5. Send email (retry once on failure)
     email_sent = False
@@ -133,6 +177,7 @@ def run_daily_digest():
             send_digest(
                 digest_content, new_pubmed, new_news,
                 new_regulatory, stock_data, trial_updates,
+                new_preprints, new_journals, new_social, new_financial,
             )
             email_sent = True
             break
@@ -149,13 +194,16 @@ def run_daily_digest():
         return
 
     # 6. Mark articles as seen (only after successful email)
-    all_new_articles = new_pubmed + new_news + new_regulatory
+    all_new_articles = (
+        new_pubmed + new_news + new_regulatory
+        + new_preprints + new_journals + new_social + new_financial
+    )
     db.mark_seen(all_new_articles)
 
     # 7. Periodic cleanup
     db.cleanup(days=90)
 
-    logger.info(f"=== TAVR Daily Digest complete: {len(all_new_articles)} articles processed ===")
+    logger.info(f"=== The Valve Wire complete: {len(all_new_articles)} articles processed ===")
 
 
 if __name__ == "__main__":
