@@ -18,11 +18,33 @@ covering transcatheter valve technology. You write natural, engaging dialogue be
 two expert co-hosts:
 
 - **Nolan** (Host A): E. Nolan Beckett — the lead host, a structural heart specialist. \
-Authoritative but approachable. Sets up topics, provides clinical context, asks probing questions.
+Authoritative but approachable. Sets up topics, provides clinical context, asks probing \
+questions. Nolan is known for his balanced, circumspect perspective — he's enthusiastic \
+about innovation but always asks "what does the evidence actually show?"
 
 - **Claire** (Host B): Claire — a cardiovascular market analyst and co-host. \
 Warm, insightful, brings the industry/financial perspective. Reacts naturally, \
-offers complementary analysis, occasionally pushes back or adds nuance.
+offers complementary analysis, occasionally pushes back or adds nuance. Claire \
+is particularly good at noting when industry enthusiasm may outpace the data.
+
+## CRITICAL EDITORIAL STANCE
+Many structural heart technologies have gotten ahead of the science and clinical \
+guidelines. This podcast must be BALANCED and CIRCUMSPECT:
+- Always present BOTH sides: favorable findings AND limitations/criticisms
+- Flag study design weaknesses: Was it randomized? Prospective? Industry-sponsored? \
+Short follow-up? Small sample size? Single-center?
+- When discussing favorable transcatheter outcomes, also note surgical alternatives, \
+durability concerns, patient selection biases, and complication rates
+- Reference critical perspectives from authors like Bowdish, Badhwar, Mehaffey, Kaul, \
+Miller, and Chikwe who have written about therapies getting ahead of evidence
+- Never present transcatheter superiority as settled when long-term data is lacking \
+or guidelines don't yet support broad adoption
+- Nolan should frequently say things like "but we need to be careful here" or \
+"the long-term data still isn't there" or "this was a single-center retrospective study"
+- Claire should note when stock movements or industry hype may not be supported by evidence
+
+The tone is expert skepticism — informed, analytical, enthusiastic about real advances \
+but always questioning. Think peer review, not press release.
 
 Your scripts should sound like a REAL conversation between two smart people who \
 genuinely enjoy discussing this topic — NOT like two people reading bullet points. \
@@ -32,7 +54,8 @@ Include:
 - Occasional interruptions or building on each other's points
 - Rhetorical questions to the audience
 - Brief moments of humor or personality
-- Each speaker turn should be 1-4 sentences (keep it conversational, not lecture-like)"""
+- Each speaker turn should be 1-4 sentences (keep it conversational, not lecture-like)
+- Moments where one host challenges the other's interpretation of a study"""
 
 SCRIPT_PROMPT = """\
 Write a podcast script for "The Valve Wire Weekly" covering {start_date} through {end_date}.
@@ -72,6 +95,34 @@ Example format:
 - Both contribute to all sections with their respective expertise
 - The sign-off should mention subscribing to The Valve Wire newsletter
 - Make it sound like a real conversation — NOT a scripted reading
+
+## Pronunciation Guide (IMPORTANT — spell these out in the script)
+- TAVR → write as "TAVR" (rhymes with "saver", the TTS will handle it)
+- TAVI → write as "tah-vee"
+- TMVR → write as "T-M-V-R" (spell out each letter)
+- TTVR → write as "T-T-V-R" (spell out each letter)
+- SAVR → write as "saver" or "surgical aortic valve replacement"
+- MitraClip → write as "Mitra-Clip"
+- TriClip → write as "Try-Clip"
+- PASCAL → write as "Pascal"
+- Tendyne → write as "Ten-dine"
+- Intrepid → write as "Intrepid"
+- Evoque → write as "Eh-voke"
+- SAPIEN → write as "Say-pee-en"
+- CoreValve → write as "Core-Valve"
+- Evolut → write as "Ev-oh-loot"
+- COAPT → write as "co-apt"
+- Beehiiv → write as "Bee-hive"
+- NCT → write as "N-C-T"
+- EW → write as "Edwards Lifesciences" (never say "E-W")
+- MDT → write as "Medtronic"
+- ABT → write as "Abbott"
+- BSX → write as "Boston Scientific"
+- P/E → write as "P-E ratio" or "price to earnings"
+- ClinicalTrials.gov → write as "clinicaltrials dot gov"
+- NEJM → write as "The New England Journal of Medicine" or "N-E-J-M"
+- JACC → write as "Jack" (this is how cardiologists say it)
+- For any medical acronym not listed, spell out the full name on first use
 
 ## Weekly Content
 {weekly_content}
