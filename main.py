@@ -13,7 +13,11 @@ import config
 from sources import pubmed, news, regulatory, trials, stocks, preprints, journals, social, financial
 from processing.dedup import DedupDB
 from processing.summarizer import create_digest, build_fallback_digest
-from processing.weekly import save_daily_digest, create_weekly_digest, clear_week_digests
+from processing.weekly import save_daily_digest, create_weekly_digest, clear_week_digests, get_week_digests
+from podcast.scriptwriter import generate_podcast_script
+from podcast.synthesizer import synthesize_segments
+from podcast.assembler import assemble_podcast
+from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
 from delivery.beehiiv import publish_to_beehiiv
 
@@ -376,6 +380,53 @@ def run_weekly_summary():
     logger.info("=== The Valve Wire Weekly complete ===")
 
 
+def run_weekly_podcast(weekly_html: str = None):
+    """Generate and publish the weekly podcast episode."""
+    logger.info("=== The Valve Wire Podcast starting ===")
+
+    today = date.today()
+    start = today - timedelta(days=6)
+    start_str = start.strftime("%B %d")
+    end_str = today.strftime("%B %d, %Y")
+    episode_date = today.isoformat()
+
+    # If no weekly HTML provided, try to generate it
+    if not weekly_html:
+        weekly_html = create_weekly_digest()
+        if not weekly_html:
+            logger.warning("No weekly content available for podcast.")
+            return
+
+    # 1. Generate script
+    logger.info("Step 1: Generating podcast script...")
+    script = generate_podcast_script(weekly_html, start_str, end_str)
+    if not script:
+        logger.error("Failed to generate podcast script.")
+        return
+
+    # 2. Synthesize voices
+    logger.info("Step 2: Synthesizing audio segments...")
+    segments = synthesize_segments(script, episode_date)
+    successful = sum(1 for s in segments if s.get("audio_path"))
+    if successful == 0:
+        logger.error("No audio segments synthesized.")
+        return
+
+    # 3. Assemble podcast
+    logger.info("Step 3: Assembling final podcast...")
+    title = f"The Valve Wire Weekly - Week of {start_str} to {end_str}"
+    mp3_path = assemble_podcast(segments, episode_date, title)
+
+    # 4. Publish
+    logger.info("Step 4: Publishing podcast...")
+    episode = publish_podcast(mp3_path, episode_date, weekly_html)
+
+    if episode:
+        logger.info(f"=== The Valve Wire Podcast complete: {episode.get('duration', '?')} ===")
+    else:
+        logger.error("Podcast publish failed.")
+
+
 DAY_NAMES = {
     "monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
     "friday": 4, "saturday": 5, "sunday": 6,
@@ -391,6 +442,11 @@ def is_weekly_day() -> bool:
 
 if __name__ == "__main__":
     try:
+        # Podcast generation (can run standalone)
+        if "--podcast" in sys.argv:
+            run_weekly_podcast()
+            sys.exit(0)
+
         # Weekly summary on Saturday
         if is_weekly_day():
             if "--weekly" in sys.argv or "--test-weekly" in sys.argv:
