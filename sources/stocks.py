@@ -10,6 +10,33 @@ import config
 logger = logging.getLogger(__name__)
 
 QUICKCHART_BASE = "https://quickchart.io/chart"
+QUICKCHART_SHORT_URL = "https://quickchart.io/chart/create"
+
+
+def _get_short_url(chart_config: dict, width: int = 680, height: int = 400) -> str:
+    """Get a short URL from QuickChart to avoid long URL encoding issues."""
+    import requests
+    try:
+        resp = requests.post(
+            QUICKCHART_SHORT_URL,
+            json={
+                "chart": chart_config,
+                "width": width,
+                "height": height,
+                "backgroundColor": "white",
+            },
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            data = resp.json()
+            if data.get("success"):
+                return data["url"]
+    except Exception as e:
+        logger.warning(f"QuickChart short URL failed: {e}")
+
+    # Fallback to long URL
+    config_json = json.dumps(chart_config, separators=(",", ":"))
+    return f"{QUICKCHART_BASE}?c={quote(config_json)}&w={width}&h={height}&bkg=white"
 
 
 def _build_chart_url(all_histories: dict) -> str:
@@ -64,8 +91,7 @@ def _build_chart_url(all_histories: dict) -> str:
         },
     }
 
-    config_json = json.dumps(chart_config, separators=(",", ":"))
-    return f"{QUICKCHART_BASE}?c={quote(config_json)}&w=680&h=400&bkg=white"
+    return _get_short_url(chart_config, 680, 400)
 
 
 def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: list, volumes: list = None) -> str:
@@ -137,8 +163,7 @@ def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: 
         },
     }
 
-    config_json = json.dumps(chart_config, separators=(",", ":"))
-    return f"{QUICKCHART_BASE}?c={quote(config_json)}&w=680&h=300&bkg=white"
+    return _get_short_url(chart_config, 680, 300)
 
 
 def fetch_stock_data() -> dict:
