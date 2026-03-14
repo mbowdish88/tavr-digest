@@ -3,188 +3,257 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    font-family: Georgia, "Times New Roman", serif;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0;
-    color: #333;
-    line-height: 1.6;
-    background: #f7fafc;
-  }
-  .header {
-    background: #1a365d;
-    color: white;
-    padding: 24px;
-    border-radius: 8px 8px 0 0;
-  }
-  .header h1 {
-    margin: 0;
-    font-size: 24px;
-    font-weight: 700;
-  }
-  .header .date {
-    opacity: 0.85;
-    font-size: 14px;
-    margin-top: 4px;
-  }
-  .stats {
-    background: #e2e8f0;
-    padding: 10px 24px;
-    font-size: 14px;
-    color: #4a5568;
-    border-bottom: 2px solid #1a365d;
-  }
-  .content {
-    background: white;
-    padding: 24px;
-  }
-  .content h2 {
-    color: #1a365d;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 6px;
-    margin-top: 28px;
-  }
-  .content h3 {
-    color: #2d3748;
-    margin-top: 20px;
-  }
-  .content a {
-    color: #2b6cb0;
-    text-decoration: none;
-  }
-  .content a:hover {
-    text-decoration: underline;
-  }
-  .content ul {
-    padding-left: 20px;
-  }
-  .content li {
-    margin-bottom: 8px;
-  }
-  .content table {
-    border-collapse: collapse;
-    width: 100%;
-    margin: 12px 0;
-  }
-  .content th, .content td {
-    border: 1px solid #e2e8f0;
-    padding: 8px 12px;
-    text-align: left;
-    font-size: 14px;
-  }
-  .content th {
-    background: #f7fafc;
-    font-weight: 600;
-  }
-  .footer {
-    background: #f7fafc;
-    padding: 16px 24px;
-    font-size: 12px;
-    color: #718096;
-    border-top: 1px solid #e2e8f0;
-    border-radius: 0 0 8px 8px;
-  }
-  .footer p {
-    margin: 4px 0;
-  }
-</style>
+<!--[if mso]>
+<style>body,table,td{font-family:Georgia,'Times New Roman',serif!important;}</style>
+<![endif]-->
 </head>
-<body>
-  <div class="header">
-    <h1>The Valve Wire</h1>
-    <div class="date">{{ date }}</div>
-  </div>
-  <div class="stats">
-    {{ research_count }} research article{{ "s" if research_count != 1 else "" }} |
-    {{ news_count }} news item{{ "s" if news_count != 1 else "" }} |
-    {{ regulatory_count }} regulatory update{{ "s" if regulatory_count != 1 else "" }} |
-    {{ trials_count }} trial update{{ "s" if trials_count != 1 else "" }}
-  </div>
-  <div class="content">
+<body style="margin:0;padding:0;background:#f2f0eb;font-family:Georgia,'Times New Roman',serif;color:#2c2c2c;line-height:1.7;-webkit-text-size-adjust:100%;">
+
+<!-- Outer wrapper -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f0eb;">
+<tr><td align="center" style="padding:20px 10px;">
+
+<!-- Main container -->
+<table role="presentation" width="680" cellpadding="0" cellspacing="0" style="max-width:680px;width:100%;background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+
+<!-- Banner -->
+<tr>
+<td style="background:linear-gradient(135deg,#0f2440 0%,#1a3a5c 100%);padding:0;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+  <td style="padding:32px 36px 28px;">
+    <table role="presentation" cellpadding="0" cellspacing="0">
+    <tr>
+      <!-- Valve icon placeholder (text fallback for email) -->
+      <td style="vertical-align:middle;padding-right:16px;">
+        <div style="width:48px;height:48px;border:2px solid #c9a55a;border-radius:50%;text-align:center;line-height:44px;font-size:20px;color:#c9a55a;opacity:0.8;">&#9829;</div>
+      </td>
+      <td style="vertical-align:middle;">
+        <div style="font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:700;color:#ffffff;letter-spacing:0.5px;line-height:1.2;">The Valve Wire</div>
+        <div style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:11px;color:#c9a55a;letter-spacing:3px;margin-top:4px;text-transform:uppercase;">Transcatheter Valve Technology Digest</div>
+      </td>
+    </tr>
+    </table>
+    <div style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:12px;color:#8fa8c8;margin-top:12px;">
+      By E. Nolan Beckett &nbsp;&middot;&nbsp; {{ date }}
+    </div>
+  </td>
+  </tr>
+  </table>
+</td>
+</tr>
+
+<!-- Gold accent line -->
+<tr>
+<td style="background:linear-gradient(90deg,#c9a55a,#e8c975);height:3px;font-size:0;line-height:0;">&nbsp;</td>
+</tr>
+
+<!-- Stats bar -->
+<tr>
+<td style="background:#f8f7f4;padding:12px 36px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:13px;color:#6b6560;border-bottom:1px solid #e8e5df;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="font-size:13px;color:#6b6560;">
+      <span style="color:#1a3a5c;font-weight:600;">{{ research_count }}</span> research
+      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
+      <span style="color:#1a3a5c;font-weight:600;">{{ news_count }}</span> news
+      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
+      <span style="color:#1a3a5c;font-weight:600;">{{ regulatory_count }}</span> regulatory
+      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
+      <span style="color:#1a3a5c;font-weight:600;">{{ trials_count }}</span> trials
+    </td>
+  </tr>
+  </table>
+</td>
+</tr>
+
+<!-- Main content -->
+<tr>
+<td style="padding:28px 36px 16px;">
+  <!-- Digest content from Claude -->
+  <div style="font-size:16px;line-height:1.75;color:#2c2c2c;">
     {{ digest_html | safe }}
   </div>
 
-  <div class="content" style="border-top: 1px solid #e2e8f0;">
-    <h2>All Sources</h2>
+  <!-- Section styling overrides via inline -->
+  <style>
+    .content h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #0f2440;
+      font-size: 20px;
+      font-weight: 700;
+      border-bottom: 2px solid #c9a55a;
+      padding-bottom: 8px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+    .content h3 {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #1a3a5c;
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+    .content a {
+      color: #2b6cb0;
+      text-decoration: none;
+      border-bottom: 1px solid #d1dce8;
+    }
+    .content a:hover {
+      color: #1a4971;
+      border-bottom-color: #1a4971;
+    }
+    .content p {
+      margin: 0 0 14px 0;
+    }
+    .content ul, .content ol {
+      padding-left: 20px;
+      margin: 8px 0 16px;
+    }
+    .content li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .content blockquote {
+      border-left: 3px solid #c9a55a;
+      margin: 16px 0;
+      padding: 12px 20px;
+      background: #faf9f6;
+      color: #4a4540;
+      font-style: italic;
+    }
+    .content hr {
+      border: none;
+      border-top: 1px solid #e8e5df;
+      margin: 28px 0;
+    }
+    .content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      margin: 12px 0;
+    }
+    .content strong {
+      color: #1a3a5c;
+    }
+  </style>
+</td>
+</tr>
 
-    {% if pubmed_articles %}
-    <h3>PubMed ({{ pubmed_count }})</h3>
-    <ul>
-    {% for a in pubmed_articles %}
-      <li>
-        <a href="{{ a.url }}">{{ a.title }}</a><br>
-        <small style="color: #718096;">{{ a.journal }}{% if a.pub_date %}, {{ a.pub_date }}{% endif %}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+<!-- Divider -->
+<tr>
+<td style="padding:0 36px;">
+  <div style="border-top:2px solid #c9a55a;margin:0;"></div>
+</td>
+</tr>
 
-    {% if journal_articles %}
-    <h3>Journal Articles ({{ journal_count }})</h3>
-    <ul>
-    {% for a in journal_articles %}
-      <li>
-        <a href="{{ a.url }}">{{ a.title }}</a><br>
-        <small style="color: #718096;">{{ a.journal }}{% if a.pub_date %}, {{ a.pub_date }}{% endif %}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+<!-- Source links -->
+<tr>
+<td class="content" style="padding:20px 36px 8px;font-size:14px;line-height:1.6;">
+  <h2 style="font-family:Georgia,'Times New Roman',serif;color:#0f2440;font-size:18px;font-weight:700;border-bottom:1px solid #e8e5df;padding-bottom:6px;margin-top:0;">All Sources</h2>
 
-    {% if preprint_articles %}
-    <h3>Preprints ({{ preprint_count }})</h3>
-    <ul>
-    {% for a in preprint_articles %}
-      <li>
-        <a href="{{ a.url }}">{{ a.title }}</a><br>
-        <small style="color: #718096;">{{ a.journal }}{% if a.pub_date %}, {{ a.pub_date }}{% endif %}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+  {% if pubmed_articles %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">PubMed ({{ pubmed_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in pubmed_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
 
-    {% if news_articles %}
-    <h3>News ({{ news_count }})</h3>
-    <ul>
-    {% for a in news_articles %}
-      <li>
-        <a href="{{ a.url }}">{{ a.title }}</a><br>
-        <small style="color: #718096;">{{ a.source_name }}{% if a.pub_date %}, {{ a.pub_date }}{% endif %}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+  {% if journal_articles %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Journal Articles ({{ journal_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in journal_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
 
-    {% if regulatory_articles %}
-    <h3>Regulatory ({{ regulatory_count }})</h3>
-    <ul>
-    {% for a in regulatory_articles %}
-      <li>
-        <a href="{{ a.url }}">{{ a.title }}</a><br>
-        <small style="color: #718096;">{{ a.source_name }}{% if a.pub_date %}, {{ a.pub_date }}{% endif %}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
+  {% if preprint_articles %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Preprints ({{ preprint_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in preprint_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
 
-    {% if trials %}
-    <h3>Clinical Trials ({{ trials_count }})</h3>
-    <ul>
-    {% for t in trials %}
-      <li>
-        <a href="{{ t.url }}">{{ t.nct_id }}</a>: {{ t.title }}<br>
-        <small style="color: #718096;">{{ t.status }} | {{ t.phase }} | {{ t.sponsor }} | Updated: {{ t.last_update }}</small>
-      </li>
-    {% endfor %}
-    </ul>
-    {% endif %}
-  </div>
+  {% if news_articles %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">News ({{ news_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in news_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.source_name }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
 
-  <div class="footer">
-    <p>Generated by The Valve Wire using Claude AI</p>
-    <p>Sources: PubMed/NCBI, bioRxiv, medRxiv, major cardiology journals, Google News, FDA, CMS, ClinicalTrials.gov, SEC EDGAR, Yahoo Finance</p>
-  </div>
+  {% if regulatory_articles %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Regulatory ({{ regulatory_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in regulatory_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.source_name }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if trials %}
+  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Clinical Trials ({{ trials_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for t in trials %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ t.url }}" style="color:#2b6cb0;text-decoration:none;">{{ t.nct_id }}</a>: {{ t.title }}<br>
+      <span style="color:#8a8580;font-size:12px;">{{ t.status }} &middot; {{ t.phase }} &middot; {{ t.sponsor }} &middot; Updated: {{ t.last_update }}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+</td>
+</tr>
+
+<!-- Footer -->
+<tr>
+<td style="background:#f8f7f4;padding:24px 36px;border-top:1px solid #e8e5df;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+  <td style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:12px;color:#8a8580;line-height:1.8;">
+    <div style="font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#1a3a5c;font-weight:600;margin-bottom:8px;">The Valve Wire</div>
+    <div>By E. Nolan Beckett &nbsp;&middot;&nbsp; <a href="mailto:nolan.beckett@pm.me" style="color:#2b6cb0;text-decoration:none;">nolan.beckett@pm.me</a></div>
+    <div style="margin-top:8px;padding-top:8px;border-top:1px solid #e8e5df;">
+      AI-synthesized from PubMed, bioRxiv, medRxiv, JACC, NEJM, Circulation, JAMA,<br>
+      Lancet, JTCVS, Google News, FDA, CMS, ClinicalTrials.gov, SEC EDGAR, Yahoo Finance
+    </div>
+    <div style="margin-top:6px;color:#a8a29e;font-size:11px;">
+      &copy; {{ date[:4] if date|length > 4 else "2026" }} The Valve Wire. All rights reserved.
+    </div>
+  </td>
+  </tr>
+  </table>
+</td>
+</tr>
+
+</table>
+<!-- /Main container -->
+
+</td></tr>
+</table>
+<!-- /Outer wrapper -->
+
 </body>
 </html>

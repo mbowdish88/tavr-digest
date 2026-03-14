@@ -49,6 +49,16 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"PubMed unexpected error: {e}", exc_info=True)
 
+    # Dedicated clinical trial publications from PubMed
+    pubmed_trial_articles = []
+    try:
+        pubmed_trial_articles = pubmed.fetch_recent(
+            query=config.PUBMED_CLINICAL_TRIAL_QUERY, max_results=20
+        )
+        logger.info(f"PubMed Clinical Trials: fetched {len(pubmed_trial_articles)} articles")
+    except Exception as e:
+        logger.error(f"PubMed Clinical Trials fetch failed: {e}", exc_info=True)
+
     try:
         preprint_articles = preprints.fetch_recent()
         logger.info(f"Preprints: fetched {len(preprint_articles)} articles")
@@ -81,6 +91,14 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"Trials fetch failed: {e}", exc_info=True)
 
+    # Landmark trial status monitoring
+    landmark_updates = []
+    try:
+        landmark_updates = trials.fetch_landmark_trials()
+        logger.info(f"Landmark Trials: fetched {len(landmark_updates)} updates")
+    except Exception as e:
+        logger.error(f"Landmark trials fetch failed: {e}", exc_info=True)
+
     try:
         stock_data = stocks.fetch_stock_data()
         logger.info(f"Stocks: fetched data for {len(stock_data)} tickers")
@@ -98,6 +116,20 @@ def run_daily_digest():
         logger.info(f"Financial: fetched {len(financial_news)} items")
     except Exception as e:
         logger.error(f"Financial fetch failed: {e}", exc_info=True)
+
+    # Merge clinical trial PubMed articles into main PubMed list (deduped by URL)
+    seen_urls = {a.get("url") for a in pubmed_articles}
+    for a in pubmed_trial_articles:
+        if a.get("url") not in seen_urls:
+            a["source"] = "pubmed_clinical_trial"
+            pubmed_articles.append(a)
+            seen_urls.add(a.get("url"))
+
+    # Merge landmark trials into trial updates (deduped by NCT ID)
+    seen_ncts = {t.get("nct_id") for t in trial_updates}
+    for t in landmark_updates:
+        if t.get("nct_id") not in seen_ncts:
+            trial_updates.append(t)
 
     # Check if we have any content at all
     total_articles = (
@@ -132,7 +164,8 @@ def run_daily_digest():
     logger.info(
         f"New: {len(new_pubmed)} PubMed, {len(new_preprints)} preprints, "
         f"{len(new_journals)} journals, {len(new_news)} news, "
-        f"{len(new_regulatory)} regulatory, {len(trial_updates)} trials, "
+        f"{len(new_regulatory)} regulatory, {len(trial_updates)} trials "
+        f"({len(landmark_updates)} landmark), "
         f"{len(stock_data)} stocks, {len(new_social)} social, "
         f"{len(new_financial)} financial"
     )

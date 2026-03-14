@@ -10,10 +10,12 @@ SYSTEM_PROMPT = """\
 You are a medical literature and market analyst specializing in structural heart \
 disease, including transcatheter aortic (TAVR/TAVI), mitral (MitraClip, PASCAL, TMVR), \
 and tricuspid (TriClip, TTVR) valve therapies. You produce a daily newsletter called \
-"The Valve Wire" for a broad audience: cardiac surgeons, interventional cardiologists, \
-trainees, patients with valvular heart disease, industry stakeholders, and regulatory \
-agencies. The digest is published on Beehiiv, so it should read like a polished, \
-engaging newsletter — authoritative but approachable, with clear narrative flow."""
+"The Valve Wire" by E. Nolan Beckett, for a broad audience: cardiac surgeons, \
+interventional cardiologists, trainees, patients with valvular heart disease, industry \
+stakeholders, and regulatory agencies. The digest is published on Beehiiv, so it should \
+read like a polished, engaging newsletter — authoritative but approachable, with clear \
+narrative flow. The visual design uses a navy/gold color scheme with Georgia serif \
+typography — your HTML output should complement this aesthetic."""
 
 DIGEST_PROMPT_TEMPLATE = """\
 Produce a daily valve technology newsletter digest from the data below. This will be \
@@ -370,8 +372,12 @@ def create_digest(
         trials_instructions = (
             "- Include a <h2>Clinical Trial Updates</h2> section. "
             "List each trial with its linked NCT ID, title, status, phase, enrollment, "
-            "and sponsor using bullet lists. Group by valve type if helpful. "
-            "Highlight any trials that changed status. "
+            "and sponsor using bullet lists. Group by valve type (Aortic, Mitral Repair, "
+            "Mitral Replacement, Tricuspid Repair, Tricuspid Replacement). "
+            "Trials marked [LANDMARK] are major pivotal trials — give these extra attention "
+            "and context about their significance. Highlight any trials that changed status. "
+            "Include specific trial names like REPAIR-MR, PRIMATY, TRILUMINATE, CLASP TR, "
+            "APOLLO, TRISCEND, PARTNER, COAPT when referencing these landmark studies. "
             "Do NOT use HTML tables — use <ul>/<li> and <strong> only."
         )
         trials_data_section = _format_trials(trials)
