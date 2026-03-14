@@ -17,6 +17,8 @@ from processing.weekly import save_daily_digest, create_weekly_digest, clear_wee
 from podcast.scriptwriter import generate_podcast_script
 from podcast.synthesizer import synthesize_segments
 from podcast.assembler import assemble_podcast
+from podcast.show_notes import generate_show_notes
+from podcast.transcriber import transcribe_episode
 from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
 from delivery.beehiiv import publish_to_beehiiv
@@ -389,6 +391,7 @@ def run_weekly_podcast(weekly_html: str = None):
     start_str = start.strftime("%B %d")
     end_str = today.strftime("%B %d, %Y")
     episode_date = today.isoformat()
+    title = f"The Valve Wire Weekly - Week of {start_str} to {end_str}"
 
     # If no weekly HTML provided, try to generate it
     if not weekly_html:
@@ -412,14 +415,33 @@ def run_weekly_podcast(weekly_html: str = None):
         logger.error("No audio segments synthesized.")
         return
 
-    # 3. Assemble podcast
+    # 3. Assemble podcast (now returns timestamps too)
     logger.info("Step 3: Assembling final podcast...")
-    title = f"The Valve Wire Weekly - Week of {start_str} to {end_str}"
-    mp3_path = assemble_podcast(segments, episode_date, title)
+    mp3_path, timestamps = assemble_podcast(segments, episode_date, title)
 
-    # 4. Publish
-    logger.info("Step 4: Publishing podcast...")
-    episode = publish_podcast(mp3_path, episode_date, weekly_html)
+    # 4. Generate show notes
+    logger.info("Step 4: Generating show notes...")
+    from podcast.publisher import _get_duration_str
+    duration_str = _get_duration_str(mp3_path)
+    show_notes_md, show_notes_html = generate_show_notes(
+        script, timestamps, episode_date, weekly_html, duration_str,
+    )
+
+    # 5. Transcribe
+    logger.info("Step 5: Transcribing episode...")
+    try:
+        transcript = transcribe_episode(mp3_path)
+        logger.info(f"Transcript: {len(transcript.get('text', ''))} chars")
+    except Exception as e:
+        logger.warning(f"Transcription failed (non-fatal): {e}")
+        transcript = None
+
+    # 6. Publish
+    logger.info("Step 6: Publishing podcast...")
+    episode = publish_podcast(
+        mp3_path, episode_date, weekly_html,
+        show_notes_html=show_notes_html,
+    )
 
     if episode:
         logger.info(f"=== The Valve Wire Podcast complete: {episode.get('duration', '?')} ===")

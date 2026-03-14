@@ -1,0 +1,78 @@
+name: Weekly Valve Wire Podcast
+
+on:
+  workflow_run:
+    workflows: ["Weekly Valve Wire Summary"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  generate-podcast:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    timeout-minutes: 45
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore weekly digest cache
+        uses: actions/cache@v4
+        with:
+          path: data/weekly
+          key: weekly-digests-${{ github.run_number }}
+          restore-keys: |
+            weekly-digests-
+
+      - name: Restore podcast cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/podcast_episodes.json
+            data/podcast/segments
+          key: podcast-${{ github.run_number }}
+          restore-keys: |
+            podcast-
+
+      - name: Generate podcast
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CLAUDE_MODEL: claude-sonnet-4-20250514
+          LOG_LEVEL: INFO
+        run: python main.py --podcast
+
+      - name: Upload episode to GitHub Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EPISODE_FILE=$(ls data/podcast/*.mp3 2>/dev/null | head -1)
+          if [ -n "$EPISODE_FILE" ]; then
+            DATE=$(date +%Y-%m-%d)
+            gh release create "podcast-${DATE}" "$EPISODE_FILE" \
+              --title "The Valve Wire Weekly - ${DATE}" \
+              --notes "Auto-generated weekly podcast episode"
+            echo "Uploaded: $EPISODE_FILE"
+          else
+            echo "No MP3 file found to upload"
+          fi
+
+      - name: Update RSS feed and landing page
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/podcast/ data/podcast_episodes.json || true
+          git commit -m "Update podcast RSS feed and landing page [skip ci]" || true
+          git push || true

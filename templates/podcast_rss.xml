@@ -2,15 +2,16 @@
 <rss version="2.0"
      xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:podcast="https://podcastindex.org/namespace/1.0"
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>The Valve Wire Weekly</title>
     <link>https://thevalvewire.beehiiv.com</link>
-    <description>A weekly podcast covering the latest in transcatheter valve technology — TAVR, mitral repair and replacement, tricuspid therapies, clinical trials, and industry analysis. Hosted by E. Nolan Beckett.</description>
+    <description>A weekly podcast covering the latest in transcatheter valve technology — TAVR, mitral repair and replacement, tricuspid therapies, clinical trials, and industry analysis. Balanced, evidence-based analysis with expert skepticism. Hosted by E. Nolan Beckett.</description>
     <language>en-us</language>
     <lastBuildDate>{{ build_date }}</lastBuildDate>
     <itunes:author>E. Nolan Beckett</itunes:author>
-    <itunes:summary>Weekly analysis of transcatheter valve technology developments for cardiac surgeons, interventional cardiologists, trainees, patients, and industry stakeholders.</itunes:summary>
+    <itunes:summary>Weekly analysis of transcatheter valve technology developments for cardiac surgeons, interventional cardiologists, trainees, patients, and industry stakeholders. We present balanced, circumspect analysis — always questioning whether therapies have gotten ahead of the evidence.</itunes:summary>
     <itunes:owner>
       <itunes:name>E. Nolan Beckett</itunes:name>
       <itunes:email>nolan.beckett@pm.me</itunes:email>
@@ -20,10 +21,19 @@
       <itunes:category text="Medicine" />
     </itunes:category>
     <itunes:type>episodic</itunes:type>
+    <itunes:image href="https://raw.githubusercontent.com/mbowdish88/tavr-digest/main/static/podcast-cover.png"/>
+    <image>
+      <url>https://raw.githubusercontent.com/mbowdish88/tavr-digest/main/static/podcast-cover.png</url>
+      <title>The Valve Wire Weekly</title>
+      <link>https://thevalvewire.beehiiv.com</link>
+    </image>
     {% for episode in episodes %}
     <item>
       <title>{{ episode.title }}</title>
       <description>{{ episode.description }}</description>
+      {% if episode.show_notes_html %}
+      <content:encoded><![CDATA[{{ episode.show_notes_html }}]]></content:encoded>
+      {% endif %}
       <enclosure url="{{ episode.mp3_url }}" length="{{ episode.file_size }}" type="audio/mpeg"/>
       <pubDate>{{ episode.pub_date_rfc2822 }}</pubDate>
       <itunes:duration>{{ episode.duration }}</itunes:duration>

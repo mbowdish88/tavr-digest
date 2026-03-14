@@ -115,6 +115,17 @@ def generate_rss_feed(episodes: list[dict]):
     rss_path.write_text(rss_xml, encoding="utf-8")
 
     logger.info(f"RSS feed updated: {rss_path} ({len(episodes)} episodes)")
+
+    # Also generate the landing page
+    try:
+        landing_template = env.get_template("podcast_landing.html")
+        landing_html = landing_template.render(episodes=episodes)
+        landing_path = rss_dir / "index.html"
+        landing_path.write_text(landing_html, encoding="utf-8")
+        logger.info(f"Landing page updated: {landing_path}")
+    except Exception as e:
+        logger.warning(f"Landing page generation failed: {e}")
+
     return rss_path
 
 
@@ -122,6 +133,7 @@ def publish_podcast(
     mp3_path: Path,
     episode_date: str,
     weekly_html: str = "",
+    show_notes_html: str = "",
 ) -> dict:
     """Full publish pipeline: upload, update episode list, regenerate RSS.
 
@@ -158,6 +170,7 @@ def publish_podcast(
         "pub_date_rfc2822": formatdate(localtime=True),
         "guid": str(uuid.uuid4()),
         "episode_date": episode_date,
+        "show_notes_html": show_notes_html,
     }
 
     episodes.insert(0, episode)  # Newest first

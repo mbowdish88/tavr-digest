@@ -8,56 +8,44 @@ from pathlib import Path
 
 from pydub import AudioSegment
 from mutagen.mp3 import MP3
-from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC, TCON
+from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC, TCON, APIC
 
 import config
 
 logger = logging.getLogger(__name__)
 
 # Timing constants (milliseconds)
-PAUSE_SAME_SPEAKER = 250       # Brief pause between consecutive same-speaker segments
-PAUSE_SPEAKER_SWITCH = 600     # Pause when switching speakers
-PAUSE_SECTION_CHANGE = 100     # Short pause before transition stinger plays
-CROSSFADE_DURATION = 80        # Crossfade between segments
-INTRO_FADE_OUT = 2500          # Intro music fade-out duration
-OUTRO_FADE_IN = 2000           # Outro music fade-in duration
-TRANSITION_CROSSFADE = 200     # Crossfade around transition stingers
+COLD_OPEN_DURATION = 15000         # 15-second teaser clip
+COLD_OPEN_PAUSE = 800              # Pause after cold open before intro
+PAUSE_SAME_SPEAKER = 250           # Brief pause between same-speaker segments
+PAUSE_SPEAKER_SWITCH = 600         # Pause when switching speakers
+PAUSE_SECTION_CHANGE = 100         # Short pause before transition stinger
+INTRO_FADE_OUT = 2500              # Intro music fade-out duration
+OUTRO_FADE_IN = 2000               # Outro music fade-in duration
+BG_MUSIC_DB = -25                  # Background music volume reduction
 
 
 def _load_audio_asset(name: str) -> AudioSegment:
-    """Load a static audio asset (intro, transition, outro)."""
+    """Load a static audio asset, return silence if not found."""
     filepath = config.PODCAST_AUDIO_DIR / name
     if not filepath.exists():
-        logger.warning(f"Audio asset not found: {filepath}, generating silence")
-        # Generate appropriate silence as placeholder
-        if "intro" in name:
-            return AudioSegment.silent(duration=3000)
-        elif "transition" in name:
-            return AudioSegment.silent(duration=1500)
-        elif "outro" in name:
-            return AudioSegment.silent(duration=3000)
-        return AudioSegment.silent(duration=1000)
-
+        logger.debug(f"Audio asset not found: {name}")
+        return None
     return AudioSegment.from_file(str(filepath))
 
 
 def _generate_placeholder_tones():
-    """Generate simple tone-based placeholders for intro/transition/outro.
-
-    These are functional placeholders. Replace with real music later.
-    """
+    """Generate simple tone-based placeholders for intro/transition/outro."""
     import math
     import struct
     import wave
     import io
 
     def _make_tone(freq, duration_ms, sample_rate=44100):
-        """Generate a sine wave tone."""
         n_samples = int(sample_rate * duration_ms / 1000)
         samples = []
         for i in range(n_samples):
             t = i / sample_rate
-            # Fade in/out envelope
             env = 1.0
             fade_samples = int(sample_rate * 0.1)
             if i < fade_samples:
@@ -76,26 +64,67 @@ def _generate_placeholder_tones():
         buf.seek(0)
         return AudioSegment.from_wav(buf)
 
-    # Intro: two-note chime (C5 + E5)
     intro = _make_tone(523, 1500) + AudioSegment.silent(200) + _make_tone(659, 1500)
-    intro = intro.fade_in(500).fade_out(500) - 10  # Reduce volume
+    intro = intro.fade_in(500).fade_out(500) - 10
 
-    # Transition: quick ascending tone
     transition = _make_tone(440, 400) + _make_tone(554, 400) + _make_tone(659, 400)
     transition = transition.fade_in(100).fade_out(200) - 12
 
-    # Outro: descending tones
     outro = _make_tone(659, 1000) + _make_tone(554, 1000) + _make_tone(440, 1500)
     outro = outro.fade_in(300).fade_out(800) - 10
 
     return intro, transition, outro
 
 
+def _build_cold_open(segments: list[dict], lead_in_path: Path = None) -> AudioSegment:
+    """Build a cold open teaser from a compelling segment.
+
+    Extracts a 15-second clip from a content segment and prepends
+    a "Coming up on The Valve Wire Weekly..." lead-in.
+    """
+    # Find a compelling segment from content sections (not intro/closing)
+    content_sections = {"top_stories", "aortic", "mitral", "tricuspid", "trials", "market"}
+    candidates = [
+        s for s in segments
+        if s.get("section") in content_sections and s.get("audio_path")
+    ]
+
+    if not candidates:
+        return AudioSegment.silent(duration=100)
+
+    # Pick the longest segment (tends to be most substantive)
+    best = max(candidates, key=lambda s: len(s.get("text", "")))
+
+    try:
+        clip_audio = AudioSegment.from_mp3(str(best["audio_path"]))
+    except Exception:
+        return AudioSegment.silent(duration=100)
+
+    # Trim to 15 seconds max
+    if len(clip_audio) > COLD_OPEN_DURATION:
+        clip_audio = clip_audio[:COLD_OPEN_DURATION]
+    clip_audio = clip_audio.fade_in(200).fade_out(500)
+
+    # Load or generate lead-in
+    lead_in = None
+    if lead_in_path and lead_in_path.exists():
+        lead_in = AudioSegment.from_file(str(lead_in_path))
+
+    cold_open = AudioSegment.silent(duration=300)
+    if lead_in:
+        cold_open += lead_in + AudioSegment.silent(duration=400)
+    cold_open += clip_audio
+    cold_open += AudioSegment.silent(duration=COLD_OPEN_PAUSE)
+
+    logger.info(f"Cold open: {len(cold_open) / 1000:.1f}s teaser from '{best.get('section')}'")
+    return cold_open
+
+
 def assemble_podcast(
     segments: list[dict],
     episode_date: str,
     title: str = None,
-) -> Path:
+) -> tuple[Path, list[dict]]:
     """Assemble individual audio segments into a complete podcast episode.
 
     Args:
@@ -104,30 +133,39 @@ def assemble_podcast(
         title: Episode title for ID3 tags.
 
     Returns:
-        Path to the final MP3 file.
+        Tuple of (path to final MP3, list of section timestamp dicts).
     """
     logger.info(f"Assembling podcast from {len(segments)} segments")
 
-    # Load or generate audio assets
+    # Load audio assets (use placeholders if missing)
     intro_music = _load_audio_asset("intro.mp3")
     transition_sound = _load_audio_asset("transition.mp3")
     outro_music = _load_audio_asset("outro.mp3")
+    bg_music = _load_audio_asset("background.mp3")
+    lead_in = config.PODCAST_AUDIO_DIR / "cold_open_leadin.mp3"
 
-    # If assets are placeholders (silent), generate tones
-    if intro_music.dBFS == float('-inf'):
+    if not intro_music:
         logger.info("No audio assets found, generating placeholder tones")
         intro_music, transition_sound, outro_music = _generate_placeholder_tones()
+    if not transition_sound:
+        transition_sound = AudioSegment.silent(duration=800)
 
-    # Start with intro music
-    podcast = intro_music.fade_out(INTRO_FADE_OUT)
+    # === Phase 1: Cold Open ===
+    cold_open = _build_cold_open(segments, lead_in if lead_in.exists() else None)
+    podcast = cold_open
+
+    # === Phase 2: Intro Music ===
+    podcast += intro_music.fade_out(INTRO_FADE_OUT)
     podcast += AudioSegment.silent(duration=500)
 
+    voice_start_ms = len(podcast)  # Track where voice content begins (for bg music)
+    timestamps = []
     prev_speaker = None
     prev_section = None
 
+    # === Phase 3: Voice Segments ===
     for i, seg in enumerate(segments):
         if seg.get("audio_path") is None:
-            logger.warning(f"Skipping segment {i} (no audio)")
             continue
 
         try:
@@ -139,46 +177,68 @@ def assemble_podcast(
         current_section = seg.get("section", "")
         current_speaker = seg["speaker"]
 
+        # Track section timestamps
+        if current_section and current_section != prev_section:
+            timestamps.append({
+                "section": current_section,
+                "offset_ms": len(podcast),
+            })
+
         # Section transition — insert stinger
         if prev_section and current_section != prev_section and current_section not in ("", prev_section):
             podcast += AudioSegment.silent(duration=PAUSE_SECTION_CHANGE)
-            podcast += transition_sound
+            if transition_sound:
+                podcast += transition_sound
             podcast += AudioSegment.silent(duration=PAUSE_SECTION_CHANGE)
-
-        # Speaker transition pause
         elif prev_speaker and current_speaker != prev_speaker:
             podcast += AudioSegment.silent(duration=PAUSE_SPEAKER_SWITCH)
-
-        # Same speaker continuation
         elif prev_speaker:
             podcast += AudioSegment.silent(duration=PAUSE_SAME_SPEAKER)
 
-        # Append the audio segment
         podcast += audio
-
         prev_speaker = current_speaker
         prev_section = current_section
 
-    # Add outro
-    podcast += AudioSegment.silent(duration=800)
-    podcast += outro_music.fade_in(OUTRO_FADE_IN)
+    voice_end_ms = len(podcast)  # Track where voice content ends
 
-    # Normalize volume
+    # === Phase 4: Outro ===
+    podcast += AudioSegment.silent(duration=800)
+    if outro_music:
+        podcast += outro_music.fade_in(OUTRO_FADE_IN)
+    else:
+        _, _, outro_placeholder = _generate_placeholder_tones()
+        podcast += outro_placeholder.fade_in(OUTRO_FADE_IN)
+
+    # === Phase 5: Background Music Bed ===
+    if bg_music and voice_start_ms < voice_end_ms:
+        voice_duration = voice_end_ms - voice_start_ms
+        # Loop background music to cover the voice section
+        loops_needed = (voice_duration // len(bg_music)) + 1
+        bg_looped = bg_music * loops_needed
+        bg_looped = bg_looped[:voice_duration]
+        bg_looped = bg_looped + BG_MUSIC_DB  # Reduce to -25dB
+        bg_looped = bg_looped.fade_in(2000).fade_out(3000)
+
+        # Overlay under the voice sections only
+        podcast = podcast.overlay(bg_looped, position=voice_start_ms)
+        logger.info(f"Background music: overlaid {voice_duration / 1000:.0f}s at {BG_MUSIC_DB}dB")
+
+    # === Phase 6: Normalize ===
     target_dBFS = -16.0
     change = target_dBFS - podcast.dBFS
     podcast = podcast.apply_gain(change)
 
-    # Export
+    # === Phase 7: Export ===
     output_filename = f"{episode_date}_valve_wire_weekly.mp3"
     output_path = config.PODCAST_DIR / output_filename
     podcast.export(
         str(output_path),
         format="mp3",
         bitrate="128k",
-        parameters=["-ac", "1"],  # Mono (voice-optimized)
+        parameters=["-ac", "1"],
     )
 
-    # Add ID3 tags
+    # === Phase 8: ID3 Tags + Cover Art ===
     try:
         audio_file = MP3(str(output_path), ID3=ID3)
         if audio_file.tags is None:
@@ -188,6 +248,17 @@ def assemble_podcast(
         audio_file.tags.add(TALB(encoding=3, text=["The Valve Wire Weekly"]))
         audio_file.tags.add(TDRC(encoding=3, text=[episode_date[:4]]))
         audio_file.tags.add(TCON(encoding=3, text=["Science & Medicine"]))
+
+        # Embed cover art if available
+        cover_path = config.BASE_DIR / "static" / "podcast-cover.png"
+        if cover_path.exists():
+            with open(cover_path, 'rb') as f:
+                audio_file.tags.add(APIC(
+                    encoding=3, mime='image/png', type=3,
+                    desc='Cover', data=f.read(),
+                ))
+            logger.info("Embedded cover art in MP3")
+
         audio_file.save()
     except Exception as e:
         logger.warning(f"Failed to add ID3 tags: {e}")
@@ -199,4 +270,4 @@ def assemble_podcast(
         f"({duration_secs / 60:.1f} min, {file_size_mb:.1f} MB)"
     )
 
-    return output_path
+    return output_path, timestamps
