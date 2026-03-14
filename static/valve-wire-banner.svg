@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 140" width="700" height="140">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f2440"/>
+      <stop offset="100%" style="stop-color:#1a3a5c"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#c9a55a"/>
+      <stop offset="100%" style="stop-color:#e8c975"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="700" height="140" rx="0" fill="url(#bg)"/>
+
+  <!-- Subtle wire pattern -->
+  <line x1="0" y1="130" x2="700" y2="130" stroke="url(#accent)" stroke-width="2" opacity="0.6"/>
+  <line x1="0" y1="132" x2="700" y2="132" stroke="url(#accent)" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Heart valve icon (simplified aortic valve - 3 leaflets) -->
+  <g transform="translate(48, 70)">
+    <circle r="24" fill="none" stroke="#c9a55a" stroke-width="1.5" opacity="0.7"/>
+    <circle r="18" fill="none" stroke="#c9a55a" stroke-width="1" opacity="0.4"/>
+    <!-- Three leaflets -->
+    <path d="M0,-16 Q8,-4 0,2 Q-8,-4 0,-16Z" fill="#c9a55a" opacity="0.6"/>
+    <path d="M14,8 Q4,4 -1,-2 Q8,2 14,8Z" fill="#c9a55a" opacity="0.5" transform="rotate(120)"/>
+    <path d="M14,8 Q4,4 -1,-2 Q8,2 14,8Z" fill="#c9a55a" opacity="0.5" transform="rotate(240)"/>
+    <!-- Center dot -->
+    <circle r="2.5" fill="#c9a55a" opacity="0.8"/>
+  </g>
+
+  <!-- Title -->
+  <text x="90" y="62" font-family="Georgia, 'Times New Roman', serif" font-size="36" font-weight="700" fill="#ffffff" letter-spacing="1">
+    The Valve Wire
+  </text>
+
+  <!-- Subtitle -->
+  <text x="90" y="86" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#c9a55a" letter-spacing="3" font-weight="400">
+    TRANSCATHETER VALVE TECHNOLOGY DIGEST
+  </text>
+
+  <!-- Author line -->
+  <text x="90" y="110" font-family="-apple-system, 'Segoe UI', Roboto, sans-serif" font-size="11.5" fill="#8fa8c8" letter-spacing="0.5">
+    By E. Nolan Beckett
+  </text>
+
+  <!-- Right side decorative ECG-style line -->
+  <polyline points="520,70 540,70 545,50 550,90 555,60 560,80 565,70 700,70"
+    fill="none" stroke="#c9a55a" stroke-width="1.2" opacity="0.25"/>
+</svg>

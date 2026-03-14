@@ -59,6 +59,15 @@ SEARCH_TERMS_MITRAL = [
     "transcatheter mitral valve repair",
     "transcatheter edge-to-edge repair mitral",
     "mitral regurgitation transcatheter",
+    "REPAIR-MR trial",
+    "PRIMATY trial",
+    "Tendyne mitral",
+    "Intrepid TMVR",
+    "APOLLO mitral trial",
+    "Evoque mitral",
+    "SAPIEN M3",
+    "Cardiovalve",
+    "HighLife mitral",
 ]
 
 SEARCH_TERMS_TRICUSPID = [
@@ -68,6 +77,13 @@ SEARCH_TERMS_TRICUSPID = [
     "transcatheter tricuspid valve repair",
     "transcatheter edge-to-edge repair tricuspid",
     "tricuspid regurgitation transcatheter",
+    "TRILUMINATE trial",
+    "CLASP TR trial",
+    "Evoque tricuspid",
+    "TRISCEND trial",
+    "GATE tricuspid",
+    "LuX-Valve",
+    "NaviGate tricuspid",
 ]
 
 SEARCH_TERMS_GENERAL = [
@@ -85,6 +101,14 @@ SEARCH_TERMS = (
 
 PUBMED_QUERY = " OR ".join(f'"{term}"' for term in SEARCH_TERMS)
 
+# Separate query for clinical trials only — catches trial publications specifically
+PUBMED_CLINICAL_TRIAL_QUERY = (
+    f'({PUBMED_QUERY}) AND ("Clinical Trial"[Publication Type] '
+    f'OR "Randomized Controlled Trial"[Publication Type] '
+    f'OR "Clinical Trial, Phase III"[Publication Type] '
+    f'OR "Clinical Trial, Phase IV"[Publication Type])'
+)
+
 # --- Surgical vs. Transcatheter Comparison Terms ---
 COMPARISON_TERMS = [
     "TAVR versus surgical",
@@ -96,6 +120,10 @@ COMPARISON_TERMS = [
     "PARTNER trial",
     "COAPT trial",
     "Evolut Low Risk",
+    "REPAIR-MR trial",
+    "PRIMATY trial",
+    "TRILUMINATE trial",
+    "CLASP TR trial",
 ]
 
 # --- Site-Specific News Sources ---
@@ -155,9 +183,34 @@ CLINICALTRIALS_API_URL = "https://clinicaltrials.gov/api/v2/studies"
 CLINICALTRIALS_QUERY = (
     "transcatheter aortic valve replacement OR TAVR OR TAVI "
     "OR MitraClip OR PASCAL OR TMVR OR transcatheter mitral valve "
+    "OR transcatheter mitral valve repair OR transcatheter mitral valve replacement "
     "OR TriClip OR TTVR OR transcatheter tricuspid valve "
-    "OR structural heart disease"
+    "OR transcatheter tricuspid valve repair OR transcatheter tricuspid valve replacement "
+    "OR structural heart disease OR edge-to-edge repair "
+    "OR Tendyne OR Intrepid OR Evoque OR SAPIEN M3 OR Cardiovalve "
+    "OR LuX-Valve OR NaviGate"
 )
+
+# Landmark trials to monitor by NCT ID — always fetch these regardless of recency
+LANDMARK_TRIALS = {
+    # Mitral repair
+    "NCT04198870": "REPAIR-MR (MitraClip vs surgery for primary MR)",
+    "NCT05051033": "PRIMATY (MitraClip vs medical therapy for secondary MR)",
+    "NCT03706833": "COAPT (MitraClip for secondary MR - long-term follow-up)",
+    # Mitral replacement
+    "NCT04101357": "APOLLO (Tendyne TMVR)",
+    "NCT03242642": "Intrepid TMVR Pivotal",
+    "NCT05490992": "SAPIEN M3 TMVR Early Feasibility",
+    # Tricuspid repair
+    "NCT03904147": "TRILUMINATE Pivotal (TriClip for TR)",
+    "NCT04097145": "CLASP II TR (PASCAL for TR)",
+    # Tricuspid replacement
+    "NCT04482062": "TRISCEND II (Evoque tricuspid replacement)",
+    "NCT05071768": "GATE Pivotal (NaviGate tricuspid replacement)",
+    # Aortic (key ongoing)
+    "NCT04728698": "PARTNER 3 Low Risk (5-year follow-up)",
+    "NCT02701283": "Evolut Low Risk (long-term follow-up)",
+}
 
 # --- Journal RSS Feeds ---
 JOURNAL_RSS_FEEDS = [

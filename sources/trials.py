@@ -91,3 +91,68 @@ def fetch_trial_updates(days: int = None) -> list[dict]:
 
     logger.info(f"ClinicalTrials.gov: retrieved {len(trials)} recently updated trials")
     return trials
+
+
+def fetch_landmark_trials() -> list[dict]:
+    """Fetch status updates for landmark trials we always want to track."""
+    if not hasattr(config, "LANDMARK_TRIALS") or not config.LANDMARK_TRIALS:
+        return []
+
+    trials = []
+    seen_ncts = set()
+
+    for nct_id, label in config.LANDMARK_TRIALS.items():
+        try:
+            resp = requests.get(
+                f"{config.CLINICALTRIALS_API_URL}/{nct_id}",
+                timeout=15,
+            )
+            if resp.status_code != 200:
+                logger.warning(f"Could not fetch landmark trial {nct_id}: HTTP {resp.status_code}")
+                continue
+
+            study = resp.json()
+            proto = study.get("protocolSection", {})
+            ident = proto.get("identificationModule", {})
+            status_mod = proto.get("statusModule", {})
+            design = proto.get("designModule", {})
+            sponsor = proto.get("sponsorCollaboratorsModule", {})
+            arms = proto.get("armsInterventionsModule", {})
+
+            overall_status = status_mod.get("overallStatus", "Unknown")
+            phase_list = (design or {}).get("phases", [])
+            phase = ", ".join(phase_list) if phase_list else "N/A"
+
+            enrollment_info = (design or {}).get("enrollmentInfo", {})
+            enrollment = enrollment_info.get("count", "N/A") if enrollment_info else "N/A"
+
+            lead_sponsor = (sponsor or {}).get("leadSponsor", {}).get("name", "Unknown")
+
+            last_update = status_mod.get("lastUpdatePostDateStruct", {}).get("date", "")
+            start_date = status_mod.get("startDateStruct", {}).get("date", "")
+            completion_date = (status_mod.get("completionDateStruct") or {}).get("date", "")
+
+            interventions = (arms or {}).get("interventions", [])
+            intervention_names = [i.get("name", "") for i in interventions if i.get("name")]
+
+            trials.append({
+                "nct_id": nct_id,
+                "title": f"[LANDMARK] {label}",
+                "official_title": ident.get("officialTitle", ""),
+                "status": overall_status,
+                "phase": phase,
+                "enrollment": enrollment,
+                "sponsor": lead_sponsor,
+                "last_update": last_update,
+                "start_date": start_date,
+                "completion_date": completion_date,
+                "interventions": ", ".join(intervention_names[:3]),
+                "url": f"https://clinicaltrials.gov/study/{nct_id}",
+                "landmark": True,
+            })
+
+        except Exception as e:
+            logger.warning(f"Failed to fetch landmark trial {nct_id}: {e}")
+
+    logger.info(f"Landmark trials: retrieved {len(trials)} of {len(config.LANDMARK_TRIALS)}")
+    return trials
