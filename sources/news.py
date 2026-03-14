@@ -23,7 +23,7 @@ def _article_id(url: str) -> str:
 
 def _resolve_url(google_url: str) -> str:
     try:
-        resp = requests.head(google_url, allow_redirects=True, timeout=10)
+        resp = requests.head(google_url, allow_redirects=True, timeout=5)
         return resp.url
     except requests.RequestException:
         return google_url
@@ -52,18 +52,20 @@ def _parse_entry(entry, seen_ids: set, cutoff: datetime) -> dict | None:
     if not title or not link:
         return None
 
-    resolved_url = _resolve_url(link)
-    aid = _article_id(resolved_url)
-
-    if aid in seen_ids:
-        return None
-    seen_ids.add(aid)
-
+    # Filter by date before resolving URL (saves HTTP requests)
     if pub_dt and pub_dt < cutoff:
         return None
 
+    # Use link hash for dedup before resolving (avoids resolving duplicates)
+    link_hash = _article_id(link)
+    if link_hash in seen_ids:
+        return None
+    seen_ids.add(link_hash)
+
+    resolved_url = _resolve_url(link)
+
     return {
-        "id": aid,
+        "id": _article_id(resolved_url),
         "title": title,
         "snippet": snippet,
         "source_name": source_name,
@@ -86,30 +88,32 @@ def fetch_recent(
     seen_ids: set = set()
     articles: list[dict] = []
 
-    # --- General TAVR search terms ---
-    for term in search_terms:
-        url = GOOGLE_NEWS_RSS.format(query=quote_plus(term))
-        logger.debug(f"Fetching news RSS for: {term}")
+    # Use a combined query for general terms to reduce RSS fetches
+    # Group into batches of 3-4 terms joined with OR
+    batch_size = 4
+    for i in range(0, len(search_terms), batch_size):
+        batch = search_terms[i:i + batch_size]
+        query = " OR ".join(f'"{t}"' for t in batch)
+        url = GOOGLE_NEWS_RSS.format(query=quote_plus(query))
+        logger.debug(f"Fetching news RSS batch: {', '.join(batch)}")
         _fetch_feed(url, articles, seen_ids, cutoff, max_results)
         if len(articles) >= max_results:
             break
 
-    # --- Site-specific searches (TCTMD, CV Business, CMS) ---
+    # Site-specific searches — use just top 3 terms per site to limit requests
     for site_info in config.SITE_SPECIFIC_SEARCHES:
         site = site_info["site"]
         label = site_info["label"]
         site_terms = site_info.get("terms", [
-            "TAVR", "TAVI", "transcatheter aortic valve",
-            "MitraClip", "PASCAL", "transcatheter mitral",
-            "TriClip", "transcatheter tricuspid",
-            "structural heart",
+            "TAVR", "transcatheter valve", "structural heart",
         ])
 
-        for term in site_terms:
-            query = f"site:{site} {term}"
-            url = GOOGLE_NEWS_RSS.format(query=quote_plus(query))
-            logger.debug(f"Fetching site-specific news: {label} - {term}")
-            _fetch_feed(url, articles, seen_ids, cutoff, max_results * 2)
+        # Combine all site terms into one query
+        combined = " OR ".join(f'"{t}"' for t in site_terms[:4])
+        query = f"site:{site} ({combined})"
+        url = GOOGLE_NEWS_RSS.format(query=quote_plus(query))
+        logger.debug(f"Fetching site-specific news: {label}")
+        _fetch_feed(url, articles, seen_ids, cutoff, max_results * 2)
 
     logger.info(f"News: retrieved {len(articles)} articles (general + site-specific)")
     return articles
