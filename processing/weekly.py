@@ -22,7 +22,21 @@ stakeholders, and regulatory agencies.
 IMPORTANT: This newsletter must be completely self-contained. The reader has NOT seen \
 any daily digests this week. Every finding, trial update, and market movement must be \
 fully explained with context. Include hyperlinks to every research article, trial, and \
-news source mentioned. This is the reader's only source for the week — make it thorough."""
+news source mentioned. This is the reader's only source for the week — make it thorough.
+
+CRITICAL EDITORIAL STANCE: Many structural heart technologies have gotten ahead of \
+the science and clinical guidelines. You must be BALANCED and CIRCUMSPECT:
+- Always present competing arguments for and against favorable findings
+- Flag study limitations: non-randomized designs, industry sponsorship, short follow-up, \
+small samples, single-center data
+- When reporting favorable transcatheter outcomes, note durability concerns, patient \
+selection biases, complication rates, and surgical alternatives
+- Never present transcatheter superiority as settled when long-term data or guidelines \
+don't support it
+- Reference critical perspectives where relevant (Bowdish, Badhwar, Mehaffey, Kaul, \
+Miller, Chikwe have published on therapies outpacing evidence)
+- Tone: expert skepticism — enthusiastic about real advances but always questioning. \
+Think peer review, not press release."""
 
 WEEKLY_PROMPT = """\
 Produce a comprehensive standalone weekly newsletter from all the data below. This covers \

@@ -269,7 +269,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1-hd")
 
 # --- Podcast ---
-PODCAST_HOST_A_VOICE = "onyx"    # Lead host - deep, authoritative
+PODCAST_HOST_A_VOICE = "fable"   # Lead host - gentle English accent
 PODCAST_HOST_B_VOICE = "nova"    # Co-host - warm, clear
 PODCAST_HOST_A_NAME = "Nolan"
 PODCAST_HOST_B_NAME = "Claire"
