@@ -58,7 +58,7 @@ def _build_chart_url(all_histories: dict) -> str:
             },
             "scales": {
                 "xAxes": [{"ticks": {"maxTicksLimit": 8, "fontSize": 10}}],
-                "yAxes": [{"ticks": {"fontSize": 10, "prefix": "$"}}],
+                "yAxes": [{"ticks": {"fontSize": 10, "beginAtZero": false}}],
             },
             "legend": {"position": "bottom", "labels": {"fontSize": 11}},
         },
@@ -94,7 +94,7 @@ def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: 
         {
             "id": "price",
             "position": "left",
-            "ticks": {"fontSize": 10, "prefix": "$"},
+            "ticks": {"fontSize": 10, "beginAtZero": false},
         },
     ]
 
