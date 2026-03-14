@@ -38,8 +38,9 @@ def _is_relevant(text: str) -> bool:
 
 
 def _try_nitter_feed(handle: str, cutoff: datetime) -> list[dict]:
-    """Try fetching a Twitter account's feed via Nitter RSS instances."""
-    for instance in NITTER_INSTANCES:
+    """Try fetching a Twitter account's feed via Nitter RSS instances.
+    Tries only the first 2 responsive instances to avoid long timeouts."""
+    for instance in NITTER_INSTANCES[:2]:
         url = f"https://{instance}/{handle}/rss"
         try:
             feed = feedparser.parse(url)
