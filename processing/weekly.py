@@ -1,8 +1,7 @@
-"""Weekly digest — synthesizes the week's daily digests into a single summary."""
+"""Weekly digest — standalone weekly newsletter with full research, trials, and market data."""
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import date, timedelta
 from pathlib import Path
@@ -15,16 +14,22 @@ logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """\
 You are a medical literature and market analyst specializing in structural heart \
-disease. You produce "The Valve Wire Weekly" by E. Nolan Beckett — a weekly summary \
-newsletter that distills the week's daily digests into a single, comprehensive overview. \
-Your audience includes cardiac surgeons, interventional cardiologists, trainees, patients, \
-industry stakeholders, and regulatory agencies. Write in a polished, engaging newsletter \
-style — authoritative but approachable. Focus on the most important developments and \
-emerging trends across the full week."""
+disease. You produce "The Valve Wire Weekly" by E. Nolan Beckett — a comprehensive \
+standalone weekly newsletter covering transcatheter valve technology. Your audience \
+includes cardiac surgeons, interventional cardiologists, trainees, patients, industry \
+stakeholders, and regulatory agencies.
+
+IMPORTANT: This newsletter must be completely self-contained. The reader has NOT seen \
+any daily digests this week. Every finding, trial update, and market movement must be \
+fully explained with context. Include hyperlinks to every research article, trial, and \
+news source mentioned. This is the reader's only source for the week — make it thorough."""
 
 WEEKLY_PROMPT = """\
-Produce a weekly summary newsletter from the daily Valve Wire digests below. This covers \
+Produce a comprehensive standalone weekly newsletter from all the data below. This covers \
 {start_date} through {end_date}. It will be published as "The Valve Wire Weekly" on Beehiiv.
+
+The reader has NOT seen any daily digests — this must be completely self-contained with \
+full context, explanations, and hyperlinks for everything mentioned.
 
 ## Format Rules (Beehiiv/email compatibility)
 - Use ONLY these HTML tags: <h2>, <h3>, <p>, <ul>, <li>, <ol>, <a>, <strong>, \
@@ -32,36 +37,80 @@ Produce a weekly summary newsletter from the daily Valve Wire digests below. Thi
 - Do NOT use <table>, <div>, <span>, <style>, or any CSS.
 - Every section of text should be wrapped in <p> tags.
 - Use <hr> between major sections.
+- EVERY research article, trial, and news item MUST include a clickable hyperlink.
 
-## Content Instructions
-- Begin with an <h2>Week in Review</h2> — a 4-6 sentence executive summary of the \
-week's most significant developments across all valve types. Written in plain language \
-accessible to patients.
+## Content Sections (use <h2> headers, omit sections with no content)
 
-- Then organize into these sections using <h2> headers (omit sections with no content):
-  - Week in Review (always include)
-  - Top Stories — The 3-5 most impactful developments of the week, with context
-  - Aortic Valve (TAVR/TAVI) — Week's highlights
-  - Mitral Valve — Week's highlights (repair and replacement)
-  - Tricuspid Valve — Week's highlights (repair and replacement)
-  - Clinical Trials Update — Status changes, new results, enrollment milestones. \
-    Highlight landmark trials: REPAIR-MR, PRIMATY, TRILUMINATE, CLASP TR, APOLLO, \
-    TRISCEND, PARTNER, COAPT, Evolut
-  - Surgical vs. Transcatheter — Any comparative studies or debates
-  - Market & Industry — Stock performance trends, M&A, earnings, regulatory
-  - Week Ahead — What to watch next week
+### 1. <h2>Week in Review</h2>
+- 5-7 sentence executive summary of the week's most significant developments
+- Written in plain language accessible to patients
+- Mention the single most important story first
 
-- Synthesize across the full week — don't just list each day's content separately. \
-Connect the dots, identify trends, and tell the story of the week.
-- Flag practice-changing findings with <strong>[NOTABLE]</strong>.
-- Include hyperlinks where available.
-- Tone: expert, analytical, but readable. Like a front-office weekly briefing.
-- End with a brief closing thought.
+### 2. <h2>Top Stories This Week</h2>
+- The 3-5 most impactful developments with full context and analysis
+- Each story gets its own <h3> with a descriptive headline
+- Include hyperlinks to the source article/study for each story
+- Flag practice-changing findings with <strong>[NOTABLE]</strong>
 
-## Daily Digests This Week
+### 3. <h2>Aortic Valve (TAVR/TAVI)</h2>
+- All TAVR-related research, news, and developments from the week
+- Link to every study mentioned: <a href="URL">Study Title</a>
+- Include study design, sample size, key findings
+
+### 4. <h2>Mitral Valve (Repair & Replacement)</h2>
+- Cover both repair (MitraClip, PASCAL, REPAIR-MR, PRIMATY) and replacement (Tendyne, Intrepid, SAPIEN M3)
+- Link to every study and news item
+
+### 5. <h2>Tricuspid Valve (Repair & Replacement)</h2>
+- Cover both repair (TriClip, TRILUMINATE, CLASP TR) and replacement (Evoque, TRISCEND, GATE)
+- Link to every study and news item
+
+### 6. <h2>Clinical Trials Update</h2>
+- Group by valve type with <h3> subheadings
+- For each trial: name, NCT ID (linked to ClinicalTrials.gov), status, phase, enrollment, sponsor
+- Highlight landmark trials: REPAIR-MR, PRIMATY, TRILUMINATE, CLASP TR, APOLLO, \
+TRISCEND, PARTNER, COAPT, Evolut
+- Note any status changes or milestones this week
+
+### 7. <h2>Surgical vs. Transcatheter Comparisons</h2>
+- Any comparative studies or debate points from the week
+
+### 8. <h2>Valve Industry Stocks — Weekly Performance</h2>
+- For each company: weekly price change ($ and %), current price, and brief analysis
+- Reference the embedded stock charts
+- Include analyst targets and upcoming earnings dates
+- Contextualize moves with industry news
+- Mention that {private_companies} are private (no public data)
+
+### 9. <h2>Regulatory & Policy</h2>
+- FDA actions, CMS reimbursement, policy changes
+
+### 10. <h2>Weekend News</h2>
+- Saturday/Sunday developments — any breaking news, conference updates, or announcements
+
+### 11. <h2>Week Ahead</h2>
+- What to watch next week: upcoming conferences, earnings, trial readouts, FDA dates
+
+### 12. <h2>All Research & Sources This Week</h2>
+- Complete bulleted list of EVERY research article, news item, and trial update referenced
+- Each item must be a clickable hyperlink: <a href="URL">Title</a> — Source, Date
+- Group by: Research Articles, News, Clinical Trials
+
+## Data Sources
+
+### Daily Digests (Monday–Friday)
 {digests_section}
 
-Produce the weekly summary newsletter HTML now."""
+### Weekend News
+{weekend_section}
+
+### Stock Performance Data
+{stock_section}
+
+### Clinical Trial Updates
+{trials_section}
+
+Produce the comprehensive weekly newsletter HTML now."""
 
 
 def save_daily_digest(digest_html: str, digest_date: date = None):
@@ -93,8 +142,68 @@ def get_week_digests(end_date: date = None) -> list[dict]:
     return digests
 
 
+def _fetch_weekend_news() -> str:
+    """Fetch Saturday/Sunday news for the weekly digest."""
+    from sources import news as news_module
+
+    try:
+        articles = news_module.fetch_recent()
+        if not articles:
+            return "No weekend news found."
+
+        parts = []
+        for a in articles:
+            parts.append(
+                f"Title: {a['title']}\n"
+                f"Source: {a.get('source_name', 'Unknown')}\n"
+                f"Date: {a['pub_date']}\n"
+                f"URL: {a['url']}\n"
+                f"Snippet: {a.get('snippet', '')}\n"
+            )
+        return "\n---\n".join(parts)
+    except Exception as e:
+        logger.warning(f"Weekend news fetch failed: {e}")
+        return "Weekend news unavailable."
+
+
+def _fetch_stock_data() -> str:
+    """Fetch current stock data with weekly performance for the weekly digest."""
+    from sources import stocks as stocks_module
+    from processing.summarizer import _format_stock_data
+
+    try:
+        stock_data = stocks_module.fetch_stock_data()
+        if not stock_data:
+            return "Stock data unavailable."
+        return _format_stock_data(stock_data)
+    except Exception as e:
+        logger.warning(f"Stock data fetch failed: {e}")
+        return "Stock data unavailable."
+
+
+def _fetch_trial_updates() -> str:
+    """Fetch current trial data for the weekly digest."""
+    from sources import trials as trials_module
+    from processing.summarizer import _format_trials
+
+    try:
+        trial_updates = trials_module.fetch_trial_updates(days=7)
+        landmark = trials_module.fetch_landmark_trials()
+        seen = {t["nct_id"] for t in trial_updates}
+        for t in landmark:
+            if t["nct_id"] not in seen:
+                trial_updates.append(t)
+
+        if not trial_updates:
+            return "No trial updates this week."
+        return _format_trials(trial_updates)
+    except Exception as e:
+        logger.warning(f"Trial updates fetch failed: {e}")
+        return "Trial data unavailable."
+
+
 def create_weekly_digest(end_date: date = None) -> str:
-    """Generate a weekly summary from the week's daily digests."""
+    """Generate a comprehensive standalone weekly summary."""
     end_date = end_date or date.today()
     start_date = end_date - timedelta(days=6)
 
@@ -103,7 +212,7 @@ def create_weekly_digest(end_date: date = None) -> str:
         logger.warning("No daily digests found for weekly summary.")
         return None
 
-    # Format digests for the prompt
+    # Format daily digests
     digest_parts = []
     for d in digests:
         digest_parts.append(
@@ -113,10 +222,26 @@ def create_weekly_digest(end_date: date = None) -> str:
         )
     digests_section = "\n".join(digest_parts)
 
+    # Fetch fresh data for the weekly
+    logger.info("Fetching weekend news...")
+    weekend_section = _fetch_weekend_news()
+
+    logger.info("Fetching stock data for weekly performance...")
+    stock_section = _fetch_stock_data()
+
+    logger.info("Fetching trial updates for weekly summary...")
+    trials_section = _fetch_trial_updates()
+
+    private_companies = ", ".join(config.PRIVATE_COMPANIES)
+
     prompt = WEEKLY_PROMPT.format(
         start_date=start_date.strftime("%B %d"),
         end_date=end_date.strftime("%B %d, %Y"),
         digests_section=digests_section,
+        weekend_section=weekend_section,
+        stock_section=stock_section,
+        trials_section=trials_section,
+        private_companies=private_companies,
     )
 
     client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
