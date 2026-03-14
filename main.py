@@ -4,7 +4,7 @@
 import logging
 import sys
 import time
-from datetime import date
+from datetime import date, timedelta
 
 import requests
 import smtplib
@@ -13,6 +13,7 @@ import config
 from sources import pubmed, news, regulatory, trials, stocks, preprints, journals, social, financial
 from processing.dedup import DedupDB
 from processing.summarizer import create_digest, build_fallback_digest
+from processing.weekly import save_daily_digest, create_weekly_digest, clear_week_digests
 from delivery.emailer import send_digest
 from delivery.beehiiv import publish_to_beehiiv
 
@@ -192,7 +193,10 @@ def run_daily_digest():
             new_preprints, new_journals, new_social, new_financial,
         )
 
-    # 4. Publish to Beehiiv
+    # 4. Save daily digest for weekly compilation
+    save_daily_digest(digest_content)
+
+    # 5. Publish to Beehiiv
     try:
         beehiiv_result = publish_to_beehiiv(
             digest_content, new_pubmed, new_news, new_regulatory,
@@ -204,7 +208,7 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"Beehiiv publish failed: {e}", exc_info=True)
 
-    # 5. Send email (retry once on failure)
+    # 6. Send email (retry once on failure)
     email_sent = False
     for attempt in range(2):
         try:
@@ -227,14 +231,14 @@ def run_daily_digest():
         logger.critical("Email delivery failed. Articles NOT marked as seen (will retry next run).")
         return
 
-    # 6. Mark articles as seen (only after successful email)
+    # 7. Mark articles as seen (only after successful email)
     all_new_articles = (
         new_pubmed + new_news + new_regulatory
         + new_preprints + new_journals + new_social + new_financial
     )
     db.mark_seen(all_new_articles)
 
-    # 7. Periodic cleanup
+    # 8. Periodic cleanup
     db.cleanup(days=90)
 
     logger.info(f"=== The Valve Wire complete: {len(all_new_articles)} articles processed ===")
@@ -306,14 +310,107 @@ def is_publish_day() -> bool:
     return True
 
 
+def run_weekly_summary():
+    """Generate and send the weekly summary digest."""
+    logger.info("=== The Valve Wire Weekly starting ===")
+
+    weekly_html = create_weekly_digest()
+    if not weekly_html:
+        logger.warning("No daily digests found. Skipping weekly summary.")
+        return
+
+    today = date.today()
+    subject = (
+        f"The Valve Wire Weekly - Week of {(today - timedelta(days=6)).strftime('%B %d')} "
+        f"to {today.strftime('%B %d, %Y')}"
+    )
+
+    # Use the email template with weekly content
+    from delivery.emailer import _render_html, _html_to_plaintext
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    # Render using the standard template
+    from jinja2 import Environment, FileSystemLoader
+    env = Environment(
+        loader=FileSystemLoader(str(config.TEMPLATES_DIR)),
+        autoescape=False,
+    )
+    template = env.get_template("digest.html")
+    html_body = template.render(
+        date=f"Week of {(today - timedelta(days=6)).strftime('%B %d')} - {today.strftime('%B %d, %Y')}",
+        research_count="Weekly",
+        news_count="Summary",
+        regulatory_count=0,
+        trials_count=0,
+        digest_html=weekly_html,
+        pubmed_articles=[],
+        preprint_articles=[],
+        journal_articles=[],
+        news_articles=[],
+        regulatory_articles=[],
+        trials=[],
+    )
+
+    text_body = _html_to_plaintext(html_body)
+
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = subject
+    msg["From"] = config.EMAIL_FROM
+    msg["To"] = ", ".join(config.EMAIL_TO)
+    msg.attach(MIMEText(text_body, "plain"))
+    msg.attach(MIMEText(html_body, "html"))
+
+    try:
+        with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT) as server:
+            server.starttls()
+            server.login(config.SMTP_USER, config.SMTP_PASSWORD)
+            server.sendmail(config.EMAIL_FROM, config.EMAIL_TO, msg.as_string())
+        logger.info(f"Weekly summary sent to {', '.join(config.EMAIL_TO)}")
+    except Exception as e:
+        logger.error(f"Weekly email failed: {e}", exc_info=True)
+        return
+
+    # Clear daily digests after successful send
+    clear_week_digests()
+    logger.info("=== The Valve Wire Weekly complete ===")
+
+
+DAY_NAMES = {
+    "monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+    "friday": 4, "saturday": 5, "sunday": 6,
+}
+
+
+def is_weekly_day() -> bool:
+    """Check if today is the weekly publish day (Saturday)."""
+    today = date.today()
+    publish_weekday = DAY_NAMES.get(config.WEEKLY_PUBLISH_DAY, 5)
+    return today.weekday() == publish_weekday
+
+
 if __name__ == "__main__":
     try:
+        # Weekly summary on Saturday
+        if is_weekly_day():
+            if "--weekly" in sys.argv or "--test-weekly" in sys.argv:
+                run_weekly_summary()
+            else:
+                logger.info(
+                    f"Today is {date.today().strftime('%A, %B %d')} — "
+                    f"run with --weekly to generate weekly summary."
+                )
+            if "--test-weekly" not in sys.argv:
+                sys.exit(0)
+
+        # Daily digest on weekdays (skip weekends/holidays)
         if not is_publish_day():
             logger.info(
                 f"Today is {date.today().strftime('%A, %B %d')} — "
-                f"skipping digest (weekend or holiday)."
+                f"skipping daily digest (weekend or holiday)."
             )
             sys.exit(0)
+
         run_daily_digest()
     except KeyboardInterrupt:
         logger.info("Interrupted by user.")

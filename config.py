@@ -264,6 +264,11 @@ FINANCIAL_NEWS_TERMS = [
     "Boston Scientific structural heart",
 ]
 
+# --- Weekly Summary ---
+WEEKLY_DIR = DATA_DIR / "weekly"
+WEEKLY_DIR.mkdir(exist_ok=True)
+WEEKLY_PUBLISH_DAY = "saturday"
+
 # --- Database ---
 DEDUP_DB_PATH = DATA_DIR / "seen_articles.db"
 LOG_FILE_PATH = DATA_DIR / "valve_wire.log"
