@@ -4,6 +4,7 @@
 import logging
 import sys
 import time
+from datetime import date
 
 import requests
 import smtplib
@@ -239,8 +240,80 @@ def run_daily_digest():
     logger.info(f"=== The Valve Wire complete: {len(all_new_articles)} articles processed ===")
 
 
+US_HOLIDAYS = {
+    # Fixed-date holidays (month, day)
+    (1, 1),   # New Year's Day
+    (6, 19),  # Juneteenth
+    (7, 4),   # Independence Day
+    (11, 11), # Veterans Day
+    (12, 25), # Christmas Day
+}
+
+# Floating holidays are computed per year
+def _floating_holidays(year: int) -> set:
+    """Compute floating US federal holidays for a given year."""
+    from datetime import timedelta
+    holidays = set()
+
+    # MLK Day: 3rd Monday of January
+    jan1 = date(year, 1, 1)
+    first_monday = jan1 + timedelta(days=(7 - jan1.weekday()) % 7)
+    holidays.add(first_monday + timedelta(weeks=2))
+
+    # Presidents' Day: 3rd Monday of February
+    feb1 = date(year, 2, 1)
+    first_monday = feb1 + timedelta(days=(7 - feb1.weekday()) % 7)
+    holidays.add(first_monday + timedelta(weeks=2))
+
+    # Memorial Day: last Monday of May
+    may31 = date(year, 5, 31)
+    holidays.add(may31 - timedelta(days=(may31.weekday()) % 7))
+
+    # Labor Day: 1st Monday of September
+    sep1 = date(year, 9, 1)
+    first_monday = sep1 + timedelta(days=(7 - sep1.weekday()) % 7)
+    holidays.add(first_monday)
+
+    # Columbus Day: 2nd Monday of October
+    oct1 = date(year, 10, 1)
+    first_monday = oct1 + timedelta(days=(7 - oct1.weekday()) % 7)
+    holidays.add(first_monday + timedelta(weeks=1))
+
+    # Thanksgiving: 4th Thursday of November
+    nov1 = date(year, 11, 1)
+    first_thursday = nov1 + timedelta(days=(3 - nov1.weekday()) % 7)
+    holidays.add(first_thursday + timedelta(weeks=3))
+
+    return holidays
+
+
+def is_publish_day() -> bool:
+    """Return False on weekends and major US holidays."""
+    today = date.today()
+
+    # Skip weekends
+    if today.weekday() >= 5:
+        return False
+
+    # Skip fixed holidays
+    if (today.month, today.day) in US_HOLIDAYS:
+        return False
+
+    # Skip floating holidays
+    if today in _floating_holidays(today.year):
+        return False
+
+    return True
+
+
 if __name__ == "__main__":
     try:
+        if not is_publish_day():
+            logger.info(
+                f"Today is {date.today().strftime('%A, %B %d')} — "
+                f"skipping digest (weekend or holiday)."
+            )
+            sys.exit(0)
         run_daily_digest()
     except KeyboardInterrupt:
         logger.info("Interrupted by user.")
