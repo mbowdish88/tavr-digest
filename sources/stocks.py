@@ -68,28 +68,60 @@ def _build_chart_url(all_histories: dict) -> str:
     return f"{QUICKCHART_BASE}?c={quote(config_json)}&w=680&h=400&bkg=white"
 
 
-def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: list) -> str:
-    """Build a QuickChart.io URL for an individual stock's 6-month chart."""
+def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: list, volumes: list = None) -> str:
+    """Build a QuickChart.io URL for an individual stock's 6-month chart with volume bars."""
     # Determine color based on trend
     if len(closes) >= 2:
         color = "rgb(34, 139, 34)" if closes[-1] >= closes[0] else "rgb(220, 20, 60)"
     else:
         color = "rgb(54, 162, 235)"
 
+    datasets = [
+        {
+            "label": "Price",
+            "data": closes,
+            "borderColor": color,
+            "backgroundColor": "rgba(54, 162, 235, 0.1)",
+            "borderWidth": 2,
+            "pointRadius": 0,
+            "fill": True,
+            "tension": 0.3,
+            "yAxisID": "price",
+        },
+    ]
+
+    y_axes = [
+        {
+            "id": "price",
+            "position": "left",
+            "ticks": {"fontSize": 10, "prefix": "$"},
+        },
+    ]
+
+    if volumes:
+        # Convert volumes to millions for readability
+        vol_millions = [round(v / 1e6, 1) for v in volumes]
+        datasets.append({
+            "label": "Volume (M)",
+            "data": vol_millions,
+            "type": "bar",
+            "backgroundColor": "rgba(180, 180, 180, 0.3)",
+            "borderColor": "rgba(180, 180, 180, 0.5)",
+            "borderWidth": 1,
+            "yAxisID": "volume",
+        })
+        y_axes.append({
+            "id": "volume",
+            "position": "right",
+            "ticks": {"fontSize": 9, "suffix": "M"},
+            "gridLines": {"display": False},
+        })
+
     chart_config = {
         "type": "line",
         "data": {
             "labels": dates,
-            "datasets": [{
-                "label": f"{ticker}",
-                "data": closes,
-                "borderColor": color,
-                "backgroundColor": "rgba(54, 162, 235, 0.1)",
-                "borderWidth": 2,
-                "pointRadius": 0,
-                "fill": True,
-                "tension": 0.3,
-            }],
+            "datasets": datasets,
         },
         "options": {
             "title": {
@@ -99,9 +131,9 @@ def _build_individual_chart_url(ticker: str, company: str, dates: list, closes: 
             },
             "scales": {
                 "xAxes": [{"ticks": {"maxTicksLimit": 6, "fontSize": 10}}],
-                "yAxes": [{"ticks": {"fontSize": 10, "prefix": "$"}}],
+                "yAxes": y_axes,
             },
-            "legend": {"display": False},
+            "legend": {"position": "bottom", "labels": {"fontSize": 10}},
         },
     }
 
@@ -167,6 +199,7 @@ def fetch_stock_data() -> dict:
 
             dates = [d.strftime("%b %d") for d in sampled.index]
             closes = [round(c, 2) for c in sampled["Close"]]
+            volumes = [int(v) for v in sampled["Volume"]]
 
             all_histories[ticker] = {
                 "company": company,
@@ -234,7 +267,7 @@ def fetch_stock_data() -> dict:
                 pass
 
             # Individual chart URL
-            individual_chart_url = _build_individual_chart_url(ticker, company, dates, closes)
+            individual_chart_url = _build_individual_chart_url(ticker, company, dates, closes, volumes)
 
             results[ticker] = {
                 "company": company,
