@@ -183,14 +183,46 @@ def _format_stock_data(stock_data: dict) -> str:
         return ""
 
     parts = ["## Valve Industry Stock Data"]
+    parts.append(
+        "NOTE: Chart images are available and will be embedded in the HTML output. "
+        "Reference them using <img> tags where indicated below."
+    )
+
+    combined_chart = stock_data.get("_combined_chart_url", "")
+    if combined_chart:
+        parts.append(f"COMBINED 6-MONTH CHART URL: {combined_chart}")
+        parts.append("(Embed this chart at the top of the Valve Industry Stocks section)")
+
     for ticker, data in stock_data.items():
+        if ticker.startswith("_"):
+            continue
         parts.append(
             f"Ticker: {ticker} ({data['company']})\n"
             f"Close: ${data['close_price']} (date: {data['close_date']})\n"
             f"Daily Change: {data['change']:+.2f} ({data['change_pct']:+.2f}%)\n"
             f"5-Day Range: ${data['low_5d']} - ${data['high_5d']}\n"
+            f"6-Month Range: ${data['low_6m']} - ${data['high_6m']}\n"
+            f"6-Month Change: {data['change_6m']:+.2f} ({data['change_6m_pct']:+.2f}%)\n"
             f"Volume: {data['volume']:,}"
         )
+
+        # Market fundamentals
+        fundamentals = []
+        if data.get("market_cap"):
+            cap_b = data["market_cap"] / 1e9
+            fundamentals.append(f"Market Cap: ${cap_b:.1f}B")
+        if data.get("pe_ratio"):
+            fundamentals.append(f"P/E (trailing): {data['pe_ratio']}")
+        if data.get("forward_pe"):
+            fundamentals.append(f"P/E (forward): {data['forward_pe']}")
+        if data.get("beta"):
+            fundamentals.append(f"Beta: {data['beta']}")
+        if data.get("fifty_two_high"):
+            fundamentals.append(f"52-Week Range: ${data['fifty_two_low']} - ${data['fifty_two_high']}")
+        if fundamentals:
+            parts.append("Fundamentals: " + " | ".join(fundamentals))
+
+        # Analyst targets
         if data.get("target_price"):
             parts.append(
                 f"Analyst Target: ${data['target_price']} "
@@ -198,6 +230,27 @@ def _format_stock_data(stock_data: dict) -> str:
                 f"{data['num_analysts']} analysts)\n"
                 f"Recommendation: {data['recommendation']}"
             )
+
+        # Earnings
+        if data.get("next_earnings_date"):
+            earnings_info = f"Next Earnings: {data['next_earnings_date']}"
+            if data.get("earnings_estimate"):
+                earnings_info += f" (EPS est: ${data['earnings_estimate']})"
+            if data.get("revenue_estimate"):
+                rev_b = data["revenue_estimate"] / 1e9
+                earnings_info += f" (Rev est: ${rev_b:.2f}B)"
+            parts.append(earnings_info)
+
+        # Events / news
+        if data.get("events"):
+            parts.append("Recent Events:")
+            for ev in data["events"]:
+                parts.append(f"  - [{ev['date']}] {ev['title']} ({ev['source']})")
+
+        # Individual chart
+        if data.get("chart_url"):
+            parts.append(f"INDIVIDUAL CHART URL: {data['chart_url']}")
+
         parts.append("---")
 
     private_list = ", ".join(config.PRIVATE_COMPANIES)
@@ -287,13 +340,27 @@ def create_digest(
     stock_instructions = ""
     stock_data_section = ""
     if stock_data:
+        combined_chart = stock_data.get("_combined_chart_url", "")
+        chart_instruction = ""
+        if combined_chart:
+            chart_instruction = (
+                f'Start the section with the combined chart: <img src="{combined_chart}" '
+                f'alt="6-Month Valve Industry Stock Performance" style="max-width:100%;height:auto;">\n'
+                "Then for each company, embed its individual chart using the INDIVIDUAL CHART URL "
+                'provided: <img src="URL" alt="TICKER 6-Month Chart" style="max-width:100%;height:auto;">\n'
+            )
         stock_instructions = (
-            "- Include a <h2>Valve Industry Stocks</h2> section. "
-            "For each ticker, use a bold company name as a subheading, then a bullet list "
-            "with closing price, daily change ($ and %), 5-day range, and analyst target. "
-            "Do NOT use HTML tables — use <strong> and <ul>/<li> only. "
-            "Add a brief 1-2 sentence commentary on any significant moves. "
-            f"Note that {', '.join(config.PRIVATE_COMPANIES)} are private companies."
+            "- Include a <h2>Valve Industry Stocks</h2> section with detailed analysis.\n"
+            f"{chart_instruction}"
+            "- For each ticker, use <h3>Company Name (TICKER)</h3> then provide:\n"
+            "  - Current price, daily change, and 6-month performance\n"
+            "  - Market cap, P/E ratios, beta, and 52-week range\n"
+            "  - Analyst consensus target and recommendation\n"
+            "  - Next earnings date with EPS/revenue estimates\n"
+            "  - Commentary on recent events affecting the stock\n"
+            "- After individual stocks, include a brief market outlook paragraph connecting "
+            "company performance to broader structural heart industry trends.\n"
+            f"- Note that {', '.join(config.PRIVATE_COMPANIES)} are private companies."
         )
         stock_data_section = _format_stock_data(stock_data)
 
