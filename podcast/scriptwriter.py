@@ -17,15 +17,17 @@ You are a podcast scriptwriter for "The Valve Wire Weekly" — a medical podcast
 covering transcatheter valve technology. You write natural, engaging dialogue between \
 two expert co-hosts:
 
-- **Nolan** (Host A): E. Nolan Beckett — the lead host, a structural heart specialist. \
-Authoritative but approachable. Sets up topics, provides clinical context, asks probing \
-questions. Nolan is known for his balanced, circumspect perspective — he's enthusiastic \
-about innovation but always asks "what does the evidence actually show?"
+- **Nolan** (Host A): E. Nolan Beckett, MD — the lead host, a structural heart specialist \
+and cardiothoracic surgeon. Authoritative but approachable. Sets up topics, provides \
+clinical context, asks probing questions. Nolan is known for his balanced, circumspect \
+perspective — he's enthusiastic about innovation but always asks "what does the evidence \
+actually show?"
 
-- **Claire** (Host B): Claire — a cardiovascular market analyst and co-host. \
-Warm, insightful, brings the industry/financial perspective. Reacts naturally, \
-offers complementary analysis, occasionally pushes back or adds nuance. Claire \
-is particularly good at noting when industry enthusiasm may outpace the data.
+- **Claire** (Host B): Claire Marchand, MBA — co-host, a cardiovascular market analyst \
+and health economics consultant. Warm, insightful, brings the industry/financial/regulatory \
+perspective. Reacts naturally, offers complementary analysis, occasionally pushes back or \
+adds nuance. Claire is particularly good at noting when industry enthusiasm may outpace \
+the data, and at contextualizing reimbursement and market access implications.
 
 ## CRITICAL EDITORIAL STANCE
 Many structural heart technologies have gotten ahead of the science and clinical \
@@ -58,7 +60,8 @@ Include:
 - Moments where one host challenges the other's interpretation of a study"""
 
 SCRIPT_PROMPT = """\
-Write a podcast script for "The Valve Wire Weekly" covering {start_date} through {end_date}.
+Write a podcast script for "The Valve Wire Weekly" {episode_label}covering {start_date} \
+through {end_date}.
 
 The script should be 3,500-4,500 words total, targeting 15-20 minutes of audio.
 
@@ -66,8 +69,8 @@ The script should be 3,500-4,500 words total, targeting 15-20 minutes of audio.
 Return a JSON array of script segments. Each segment is an object with:
 - "speaker": "A" (Nolan) or "B" (Claire)
 - "text": The spoken dialogue (1-4 sentences, MUST be under 3500 characters)
-- "section": One of "intro", "top_stories", "aortic", "mitral", "tricuspid", \
-"trials", "surgical_comparison", "market", "weekend", "closing"
+- "section": One of "intro", "disclaimer", "top_stories", "aortic", "mitral", \
+"tricuspid", "trials", "surgical_comparison", "market", "weekend", "closing"
 
 Example format:
 ```json
@@ -78,15 +81,19 @@ Example format:
 ```
 
 ## Script Structure
-1. **Intro** (~1 min): Warm welcome, preview the week's biggest stories
-2. **Top Stories** (~3 min): The 2-3 most impactful developments with analysis
-3. **Aortic Valve** (~2-3 min): TAVR developments if any
-4. **Mitral Valve** (~2-3 min): Repair and replacement developments
-5. **Tricuspid Valve** (~2-3 min): Repair and replacement developments
-6. **Clinical Trials** (~2-3 min): Key trial updates, landmark trial status
-7. **Market & Industry** (~2-3 min): Stock performance, M&A, earnings — Claire leads this section
-8. **Weekend News** (~1 min): Any weekend developments
-9. **Closing** (~1 min): Key takeaways, what to watch next week, sign off
+1. **Intro** (~1 min): Warm welcome{episode_intro_note}, preview the week's biggest stories
+2. **Disclaimer** (~15 sec): Nolan delivers a brief, natural-sounding medical disclaimer: \
+"Before we dive in, a quick reminder — this podcast is for educational and informational \
+purposes only. Nothing we discuss should be taken as medical advice. Always consult your \
+physician or care team for clinical decisions." Keep it conversational, not legalistic.
+3. **Top Stories** (~3 min): The 2-3 most impactful developments with analysis
+4. **Aortic Valve** (~2-3 min): TAVR developments if any
+5. **Mitral Valve** (~2-3 min): Repair and replacement developments
+6. **Tricuspid Valve** (~2-3 min): Repair and replacement developments
+7. **Clinical Trials** (~2-3 min): Key trial updates, landmark trial status
+8. **Market & Industry** (~2-3 min): Stock performance, M&A, earnings — Claire leads this section
+9. **Weekend News** (~1 min): Any weekend developments
+10. **Closing** (~1 min): Key takeaways, what to watch next week, sign off
 
 ## Guidelines
 - Reference specific studies, trials, and sources by name
@@ -130,23 +137,37 @@ Example format:
 Return ONLY the JSON array. No other text."""
 
 
-def generate_podcast_script(weekly_html: str, start_date: str = "", end_date: str = "") -> list[dict]:
+def generate_podcast_script(
+    weekly_html: str,
+    start_date: str = "",
+    end_date: str = "",
+    episode_number: int = None,
+) -> list[dict]:
     """Generate a conversational podcast script from the weekly digest.
 
     Args:
         weekly_html: The weekly digest HTML content.
         start_date: Start of the week (e.g., "March 9").
         end_date: End of the week (e.g., "March 14, 2026").
+        episode_number: Episode number for the intro (e.g., 12).
 
     Returns:
         List of script segment dicts with speaker, text, and section.
     """
     client = Anthropic(api_key=config.ANTHROPIC_API_KEY)
 
+    episode_label = f"— Episode {episode_number} — " if episode_number else ""
+    episode_intro_note = (
+        f". Nolan should mention this is episode {episode_number}"
+        if episode_number else ""
+    )
+
     prompt = SCRIPT_PROMPT.format(
         start_date=start_date or "this past week",
         end_date=end_date or "today",
         weekly_content=weekly_html,
+        episode_label=episode_label,
+        episode_intro_note=episode_intro_note,
     )
 
     logger.info(f"Generating podcast script with {config.CLAUDE_MODEL}")

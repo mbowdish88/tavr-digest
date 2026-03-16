@@ -7,3 +7,4 @@ yfinance>=0.2.36
 openai>=1.0.0
 pydub>=0.25.1
 mutagen>=1.47.0
+cairosvg>=2.7.0

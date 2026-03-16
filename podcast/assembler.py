@@ -145,7 +145,15 @@ def assemble_podcast(
     lead_in = config.PODCAST_AUDIO_DIR / "cold_open_leadin.mp3"
 
     if not intro_music:
-        logger.info("No audio assets found, generating placeholder tones")
+        logger.info("No audio assets found, generating professional assets on first run")
+        from podcast.generate_assets import generate_all_assets
+        generate_all_assets()
+        # Reload after generation
+        intro_music = _load_audio_asset("intro.mp3")
+        transition_sound = _load_audio_asset("transition.mp3")
+        outro_music = _load_audio_asset("outro.mp3")
+    if not intro_music:
+        logger.warning("Asset generation failed, using placeholder tones")
         intro_music, transition_sound, outro_music = _generate_placeholder_tones()
     if not transition_sound:
         transition_sound = AudioSegment.silent(duration=800)
@@ -244,15 +252,31 @@ def assemble_podcast(
         if audio_file.tags is None:
             audio_file.add_tags()
         audio_file.tags.add(TIT2(encoding=3, text=[title or f"The Valve Wire Weekly - {episode_date}"]))
-        audio_file.tags.add(TPE1(encoding=3, text=["E. Nolan Beckett"]))
+        audio_file.tags.add(TPE1(encoding=3, text=["E. Nolan Beckett, MD & Claire Marchand, MBA"]))
         audio_file.tags.add(TALB(encoding=3, text=["The Valve Wire Weekly"]))
         audio_file.tags.add(TDRC(encoding=3, text=[episode_date[:4]]))
         audio_file.tags.add(TCON(encoding=3, text=["Science & Medicine"]))
 
-        # Embed cover art if available
-        cover_path = config.BASE_DIR / "static" / "podcast-cover.png"
-        if cover_path.exists():
-            with open(cover_path, 'rb') as f:
+        # Embed cover art if available (convert SVG to PNG if needed)
+        cover_png = config.BASE_DIR / "static" / "podcast-cover.png"
+        cover_svg = config.BASE_DIR / "static" / "podcast-cover.svg"
+        if not cover_png.exists() and cover_svg.exists():
+            try:
+                import cairosvg
+                cairosvg.svg2png(
+                    url=str(cover_svg),
+                    write_to=str(cover_png),
+                    output_width=3000,
+                    output_height=3000,
+                )
+                logger.info("Converted podcast-cover.svg to PNG (3000x3000)")
+            except ImportError:
+                logger.warning("cairosvg not installed — cannot convert SVG cover to PNG")
+            except Exception as e:
+                logger.warning(f"SVG to PNG conversion failed: {e}")
+
+        if cover_png.exists():
+            with open(cover_png, 'rb') as f:
                 audio_file.tags.add(APIC(
                     encoding=3, mime='image/png', type=3,
                     desc='Cover', data=f.read(),

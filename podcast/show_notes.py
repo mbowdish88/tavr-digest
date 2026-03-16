@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 
 SECTION_NAMES = {
     "intro": "Introduction",
+    "disclaimer": "Disclaimer",
     "top_stories": "Top Stories",
     "aortic": "Aortic Valve (TAVR/TAVI)",
     "mitral": "Mitral Valve (Repair & Replacement)",
@@ -70,7 +71,7 @@ def generate_show_notes(
 
     if duration_str:
         lines.append(f"**Duration:** {duration_str}")
-        lines.append(f"**Hosts:** Nolan Beckett & Claire")
+        lines.append(f"**Hosts:** E. Nolan Beckett, MD & Claire Marchand, MBA")
         lines.append("")
 
     # Timestamps
@@ -120,7 +121,7 @@ def generate_show_notes(
     html_lines = []
     html_lines.append(f"<h3>The Valve Wire Weekly - {episode_date}</h3>")
     if duration_str:
-        html_lines.append(f"<p><strong>Duration:</strong> {duration_str} | <strong>Hosts:</strong> Nolan Beckett &amp; Claire</p>")
+        html_lines.append(f"<p><strong>Duration:</strong> {duration_str} | <strong>Hosts:</strong> E. Nolan Beckett, MD &amp; Claire Marchand, MBA</p>")
 
     html_lines.append("<h4>Timestamps</h4><ul>")
     for ts in timestamps:

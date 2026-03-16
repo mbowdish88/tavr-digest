@@ -400,20 +400,46 @@ def run_weekly_podcast(weekly_html: str = None):
             logger.warning("No weekly content available for podcast.")
             return
 
+    # Determine episode number from existing episodes
+    from podcast.publisher import _load_episodes
+    existing_episodes = _load_episodes()
+    episode_number = len(existing_episodes) + 1
+
     # 1. Generate script
-    logger.info("Step 1: Generating podcast script...")
-    script = generate_podcast_script(weekly_html, start_str, end_str)
+    logger.info(f"Step 1: Generating podcast script (Episode {episode_number})...")
+    script = generate_podcast_script(weekly_html, start_str, end_str, episode_number)
     if not script:
         logger.error("Failed to generate podcast script.")
         return
 
-    # 2. Synthesize voices
+    # 2. Synthesize voices (with retry for failed segments)
     logger.info("Step 2: Synthesizing audio segments...")
     segments = synthesize_segments(script, episode_date)
+    failed = [s for s in segments if not s.get("audio_path")]
+    if failed:
+        logger.warning(f"{len(failed)}/{len(segments)} segments failed TTS. Retrying...")
+        time.sleep(5)
+        retry_script = [{"speaker": s["speaker"], "text": s["text"], "section": s.get("section", "")} for s in failed]
+        retry_segments = synthesize_segments(retry_script, episode_date)
+        # Merge retries back in
+        retry_map = {}
+        for rs in retry_segments:
+            if rs.get("audio_path"):
+                key = (rs["speaker"], rs["text"][:50])
+                retry_map[key] = rs
+        for i, seg in enumerate(segments):
+            if not seg.get("audio_path"):
+                key = (seg["speaker"], seg["text"][:50])
+                if key in retry_map:
+                    segments[i] = retry_map[key]
+
     successful = sum(1 for s in segments if s.get("audio_path"))
+    total = len(segments)
     if successful == 0:
-        logger.error("No audio segments synthesized.")
+        logger.error("No audio segments synthesized after retry. Aborting podcast.")
         return
+    if successful < total:
+        logger.warning(f"Proceeding with {successful}/{total} segments ({total - successful} gaps)")
 
     # 3. Assemble podcast (now returns timestamps too)
     logger.info("Step 3: Assembling final podcast...")
@@ -444,9 +470,33 @@ def run_weekly_podcast(weekly_html: str = None):
     )
 
     if episode:
-        logger.info(f"=== The Valve Wire Podcast complete: {episode.get('duration', '?')} ===")
+        logger.info(
+            f"=== The Valve Wire Podcast complete: Episode {episode_number}, "
+            f"{episode.get('duration', '?')}, "
+            f"{successful}/{total} segments rendered ==="
+        )
     else:
         logger.error("Podcast publish failed.")
+        # Send failure notification if email is configured
+        if config.EMAIL_FROM and config.EMAIL_TO:
+            try:
+                import smtplib
+                from email.mime.text import MIMEText
+                msg = MIMEText(
+                    f"Podcast Episode {episode_number} publish failed.\n"
+                    f"TTS: {successful}/{total} segments.\n"
+                    f"Check logs at {config.LOG_FILE_PATH}"
+                )
+                msg["Subject"] = f"[Valve Wire] Podcast Episode {episode_number} FAILED"
+                msg["From"] = config.EMAIL_FROM
+                msg["To"] = config.EMAIL_TO[0]
+                with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT) as server:
+                    server.starttls()
+                    server.login(config.SMTP_USER, config.SMTP_PASSWORD)
+                    server.sendmail(config.EMAIL_FROM, [config.EMAIL_TO[0]], msg.as_string())
+                logger.info("Failure notification sent.")
+            except Exception as e:
+                logger.warning(f"Could not send failure notification: {e}")
 
 
 DAY_NAMES = {
