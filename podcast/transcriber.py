@@ -109,9 +109,9 @@ def _transcribe_chunked(mp3_path: Path) -> dict:
         all_text.append(response.text)
         for seg in (response.segments or []):
             all_segments.append({
-                "start": seg.get("start", 0) + offset_secs,
-                "end": seg.get("end", 0) + offset_secs,
-                "text": seg.get("text", ""),
+                "start": getattr(seg, "start", 0) + offset_secs,
+                "end": getattr(seg, "end", 0) + offset_secs,
+                "text": getattr(seg, "text", ""),
             })
 
         offset_secs += len(chunk) / 1000

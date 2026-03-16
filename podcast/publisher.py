@@ -72,7 +72,7 @@ def upload_to_github_releases(mp3_path: Path, episode_date: str, title: str) -> 
                 str(mp3_path),
                 "--title", title,
                 "--notes", f"Auto-generated weekly podcast episode for {episode_date}",
-                "--repo", f"mbowdish88/tavr-digest",
+                "--repo", config.GITHUB_REPO,
             ],
             capture_output=True,
             text=True,
@@ -85,7 +85,7 @@ def upload_to_github_releases(mp3_path: Path, episode_date: str, title: str) -> 
 
         # Construct the download URL
         download_url = (
-            f"https://github.com/mbowdish88/tavr-digest/releases/download/{tag}/{filename}"
+            f"https://github.com/{config.GITHUB_REPO}/releases/download/{tag}/{filename}"
         )
         logger.info(f"Uploaded to GitHub Releases: {download_url}")
         return download_url

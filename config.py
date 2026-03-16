@@ -272,7 +272,9 @@ OPENAI_TTS_MODEL = os.getenv("OPENAI_TTS_MODEL", "tts-1-hd")
 PODCAST_HOST_A_VOICE = "fable"   # Lead host - gentle English accent
 PODCAST_HOST_B_VOICE = "nova"    # Co-host - warm, clear
 PODCAST_HOST_A_NAME = "Nolan"
+PODCAST_HOST_A_FULL = "E. Nolan Beckett, MD"
 PODCAST_HOST_B_NAME = "Claire"
+PODCAST_HOST_B_FULL = "Claire Marchand, MBA"
 PODCAST_DIR = DATA_DIR / "podcast"
 PODCAST_DIR.mkdir(exist_ok=True)
 PODCAST_SEGMENTS_DIR = PODCAST_DIR / "segments"
@@ -280,6 +282,9 @@ PODCAST_SEGMENTS_DIR.mkdir(exist_ok=True)
 PODCAST_AUDIO_DIR = BASE_DIR / "static" / "audio"
 PODCAST_RSS_URL = os.getenv("PODCAST_RSS_URL", "")
 PODCAST_EPISODES_DB = DATA_DIR / "podcast_episodes.json"
+
+# --- GitHub ---
+GITHUB_REPO = os.getenv("GITHUB_REPO", "mbowdish88/tavr-digest")
 
 # --- Weekly Summary ---
 WEEKLY_DIR = DATA_DIR / "weekly"
