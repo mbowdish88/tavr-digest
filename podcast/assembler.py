@@ -7,6 +7,7 @@ from datetime import date
 from pathlib import Path
 
 from pydub import AudioSegment
+from pydub.effects import compress_dynamic_range
 from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC, TCON, APIC
 
@@ -19,14 +20,15 @@ COLD_OPEN_DURATION = 15000         # 15-second teaser clip
 COLD_OPEN_PAUSE = 800              # Pause after cold open before intro
 PAUSE_SAME_SPEAKER = 250           # Brief pause between same-speaker segments
 PAUSE_SPEAKER_SWITCH = 600         # Pause when switching speakers
-PAUSE_SECTION_CHANGE = 100         # Short pause before transition stinger
-INTRO_FADE_OUT = 2500              # Intro music fade-out duration
-OUTRO_FADE_IN = 2000               # Outro music fade-in duration
-BG_MUSIC_DB = -25                  # Background music volume reduction
+INTRO_FADE_OUT = 3500              # Intro music fade-out duration
+OUTRO_FADE_IN = 3000               # Outro music fade-in duration
+TRANSITION_CROSSFADE = 150         # Crossfade into transition stingers
+BG_MUSIC_DB = -28                  # Background music volume reduction
+BG_MUSIC_CUTOFF_HZ = 3500         # Low-pass cutoff for background music
 
 
 def _load_audio_asset(name: str) -> AudioSegment:
-    """Load a static audio asset, return silence if not found."""
+    """Load a static audio asset, return None if not found."""
     filepath = config.PODCAST_AUDIO_DIR / name
     if not filepath.exists():
         logger.debug(f"Audio asset not found: {name}")
@@ -145,13 +147,14 @@ def assemble_podcast(
     lead_in = config.PODCAST_AUDIO_DIR / "cold_open_leadin.mp3"
 
     if not intro_music:
-        logger.info("No audio assets found, generating professional assets on first run")
+        logger.info("No audio assets found, generating assets on first run")
         from podcast.generate_assets import generate_all_assets
         generate_all_assets()
         # Reload after generation
         intro_music = _load_audio_asset("intro.mp3")
         transition_sound = _load_audio_asset("transition.mp3")
         outro_music = _load_audio_asset("outro.mp3")
+        bg_music = _load_audio_asset("background.mp3")
     if not intro_music:
         logger.warning("Asset generation failed, using placeholder tones")
         intro_music, transition_sound, outro_music = _generate_placeholder_tones()
@@ -192,12 +195,11 @@ def assemble_podcast(
                 "offset_ms": len(podcast),
             })
 
-        # Section transition — insert stinger
+        # Section transition — crossfade into stinger
         if prev_section and current_section != prev_section and current_section not in ("", prev_section):
-            podcast += AudioSegment.silent(duration=PAUSE_SECTION_CHANGE)
             if transition_sound:
-                podcast += transition_sound
-            podcast += AudioSegment.silent(duration=PAUSE_SECTION_CHANGE)
+                podcast = podcast.append(transition_sound, crossfade=TRANSITION_CROSSFADE)
+            podcast += AudioSegment.silent(duration=200)
         elif prev_speaker and current_speaker != prev_speaker:
             podcast += AudioSegment.silent(duration=PAUSE_SPEAKER_SWITCH)
         elif prev_speaker:
@@ -224,14 +226,25 @@ def assemble_podcast(
         loops_needed = (voice_duration // len(bg_music)) + 1
         bg_looped = bg_music * loops_needed
         bg_looped = bg_looped[:voice_duration]
-        bg_looped = bg_looped + BG_MUSIC_DB  # Reduce to -25dB
-        bg_looped = bg_looped.fade_in(2000).fade_out(3000)
+        # Low-pass filter so background doesn't compete with voice frequencies
+        bg_looped = bg_looped.low_pass_filter(BG_MUSIC_CUTOFF_HZ)
+        bg_looped = bg_looped + BG_MUSIC_DB
+        bg_looped = bg_looped.fade_in(3000).fade_out(5000)
 
         # Overlay under the voice sections only
         podcast = podcast.overlay(bg_looped, position=voice_start_ms)
-        logger.info(f"Background music: overlaid {voice_duration / 1000:.0f}s at {BG_MUSIC_DB}dB")
+        logger.info(f"Background music: overlaid {voice_duration / 1000:.0f}s at {BG_MUSIC_DB}dB, LP {BG_MUSIC_CUTOFF_HZ}Hz")
 
-    # === Phase 6: Normalize ===
+    # === Phase 6: Final Compression + Loudness Normalization ===
+    # Gentle bus compression to glue the mix together
+    podcast = compress_dynamic_range(
+        podcast,
+        threshold=-18.0,
+        ratio=2.0,
+        attack=10.0,
+        release=100.0,
+    )
+    # Normalize to broadcast target loudness
     target_dBFS = -16.0
     change = target_dBFS - podcast.dBFS
     podcast = podcast.apply_gain(change)
@@ -242,7 +255,7 @@ def assemble_podcast(
     podcast.export(
         str(output_path),
         format="mp3",
-        bitrate="128k",
+        bitrate="192k",
         parameters=["-ac", "1"],
     )
 
