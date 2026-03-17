@@ -7,6 +7,7 @@ import time
 from pathlib import Path
 
 from openai import OpenAI
+from pydub import AudioSegment
 
 import config
 
@@ -57,6 +58,13 @@ def synthesize_segments(script: list[dict], episode_date: str) -> list[dict]:
                 speed=1.0,
             )
             response.stream_to_file(str(filepath))
+
+            # Post-process for broadcast quality
+            from podcast.audio_processing import process_voice_segment
+            raw_audio = AudioSegment.from_mp3(str(filepath))
+            processed = process_voice_segment(raw_audio)
+            processed.export(str(filepath), format="mp3", bitrate="192k")
+
             results.append({**segment, "audio_path": filepath})
 
         except Exception as e:

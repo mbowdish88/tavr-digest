@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(python3:*)",
+      "Bash(./venv/bin/python -m podcast.generate_assets 2>&1)"
+    ]
+  }
+}
