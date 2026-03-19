@@ -22,6 +22,7 @@ from podcast.transcriber import transcribe_episode
 from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
 from delivery.beehiiv import publish_to_beehiiv
+from delivery.site import publish_daily_to_site, publish_weekly_to_site
 
 # Set up logging
 logging.basicConfig(
@@ -214,7 +215,17 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"Beehiiv publish failed: {e}", exc_info=True)
 
-    # 6. Send email (retry once on failure)
+    # 6. Publish to site (GitHub Pages archive)
+    try:
+        publish_daily_to_site(
+            digest_content, new_pubmed, new_news, new_regulatory,
+            stock_data, trial_updates, new_preprints, new_journals,
+            new_social, new_financial,
+        )
+    except Exception as e:
+        logger.error(f"Site publish failed: {e}", exc_info=True)
+
+    # 7. Send email (retry once on failure)
     email_sent = False
     for attempt in range(2):
         try:
@@ -237,14 +248,14 @@ def run_daily_digest():
         logger.critical("Email delivery failed. Articles NOT marked as seen (will retry next run).")
         return
 
-    # 7. Mark articles as seen (only after successful email)
+    # 8. Mark articles as seen (only after successful email)
     all_new_articles = (
         new_pubmed + new_news + new_regulatory
         + new_preprints + new_journals + new_social + new_financial
     )
     db.mark_seen(all_new_articles)
 
-    # 8. Periodic cleanup
+    # 9. Periodic cleanup
     db.cleanup(days=90)
 
     logger.info(f"=== The Valve Wire complete: {len(all_new_articles)} articles processed ===")
@@ -366,6 +377,12 @@ def run_weekly_summary():
     msg["To"] = ", ".join(config.EMAIL_TO)
     msg.attach(MIMEText(text_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
+
+    # Publish to site (GitHub Pages archive)
+    try:
+        publish_weekly_to_site(weekly_html)
+    except Exception as e:
+        logger.error(f"Weekly site publish failed: {e}", exc_info=True)
 
     try:
         with smtplib.SMTP(config.SMTP_HOST, config.SMTP_PORT) as server:

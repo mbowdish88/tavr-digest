@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire - Archive</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f2f0eb;
+    color: #2c2c2c;
+    line-height: 1.7;
+}
+.hero {
+    background: linear-gradient(135deg, #0a1a30 0%, #0f2440 50%, #1a3a5c 100%);
+    color: white;
+    padding: 60px 20px 50px;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+.hero .subtitle {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    color: #c9a55a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.hero .tagline {
+    font-size: 1rem;
+    color: #8fa8c8;
+    max-width: 600px;
+    margin: 0 auto;
+}
+.gold-line {
+    height: 3px;
+    background: linear-gradient(90deg, #c9a55a, #e8c975, #c9a55a);
+}
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.section {
+    padding: 36px 0;
+}
+.section h2 {
+    font-size: 1.3rem;
+    color: #0f2440;
+    border-bottom: 2px solid #c9a55a;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+.nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 20px 0;
+}
+.nav-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0f2440;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.15s;
+}
+.nav-link:hover { background: #1a3a5c; }
+.nav-link.gold {
+    background: #c9a55a;
+    color: #0f2440;
+}
+.nav-link.gold:hover { background: #e8c975; }
+.digest-list {
+    list-style: none;
+    padding: 0;
+}
+.digest-list li {
+    border-bottom: 1px solid #e8e5df;
+    padding: 12px 0;
+}
+.digest-list li:last-child { border-bottom: none; }
+.digest-list a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.digest-list a:hover {
+    color: #1a4971;
+    text-decoration: underline;
+}
+.empty {
+    color: #8a8580;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+.footer {
+    background: #0f2440;
+    color: #8fa8c8;
+    padding: 24px 20px;
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.8rem;
+}
+.footer a { color: #c9a55a; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+    .hero h1 { font-size: 1.8rem; }
+    .hero { padding: 40px 16px 36px; }
+    .nav-links { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>The Valve Wire</h1>
+    <div class="subtitle">TRANSCATHETER VALVE TECHNOLOGY</div>
+    <p class="tagline">Balanced, evidence-based analysis of TAVR, mitral, and tricuspid therapies. Research, trials, regulation, and market analysis.</p>
+</div>
+<div class="gold-line"></div>
+
+<div class="container">
+
+    <div class="nav-links">
+        <a href="podcast/" class="nav-link">Podcast</a>
+        <a href="podcast/feed.xml" class="nav-link">RSS Feed</a>
+        <a href="https://thevalvewire.beehiiv.com" class="nav-link gold">Newsletter</a>
+    </div>
+
+    <div class="section">
+        <h2>Weekly Digests</h2>
+        {% if weekly_dates %}
+        <ul class="digest-list">
+        {% for d in weekly_dates %}
+            <li><a href="weekly/{{ d }}/">Week ending {{ d }}</a></li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">No weekly digests yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>Daily Digests</h2>
+        {% if daily_dates %}
+        <ul class="digest-list">
+        {% for d in daily_dates %}
+            <li><a href="digest/{{ d }}/">{{ d }}</a></li>
+        {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty">No daily digests yet.</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 The Valve Wire &middot; <a href="mailto:nolan.beckett@pm.me">nolan.beckett@pm.me</a></p>
+    <p style="margin-top: 6px;">AI-synthesized content. Expert analysis, not medical advice.</p>
+</div>
+
+</body>
+</html>
