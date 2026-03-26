@@ -140,10 +140,10 @@ def assemble_podcast(
     logger.info(f"Assembling podcast from {len(segments)} segments")
 
     # Load audio assets (use placeholders if missing)
-    intro_music = _load_audio_asset("intro.mp3")
-    transition_sound = _load_audio_asset("transition.mp3")
-    outro_music = _load_audio_asset("outro.mp3")
-    bg_music = _load_audio_asset("background.mp3")
+    intro_music = _load_audio_asset("intro.wav") or _load_audio_asset("intro.mp3")
+    transition_sound = _load_audio_asset("transition.wav") or _load_audio_asset("transition.mp3")
+    outro_music = _load_audio_asset("outro.wav") or _load_audio_asset("outro.mp3")
+    bg_music = _load_audio_asset("background.wav") or _load_audio_asset("background.mp3")
     lead_in = config.PODCAST_AUDIO_DIR / "cold_open_leadin.mp3"
 
     if not intro_music:
@@ -151,10 +151,10 @@ def assemble_podcast(
         from podcast.generate_assets import generate_all_assets
         generate_all_assets()
         # Reload after generation
-        intro_music = _load_audio_asset("intro.mp3")
-        transition_sound = _load_audio_asset("transition.mp3")
-        outro_music = _load_audio_asset("outro.mp3")
-        bg_music = _load_audio_asset("background.mp3")
+        intro_music = _load_audio_asset("intro.wav") or _load_audio_asset("intro.mp3")
+        transition_sound = _load_audio_asset("transition.wav") or _load_audio_asset("transition.mp3")
+        outro_music = _load_audio_asset("outro.wav") or _load_audio_asset("outro.mp3")
+        bg_music = _load_audio_asset("background.wav") or _load_audio_asset("background.mp3")
     if not intro_music:
         logger.warning("Asset generation failed, using placeholder tones")
         intro_music, transition_sound, outro_music = _generate_placeholder_tones()
