@@ -32,6 +32,10 @@ EMAIL_TO = [addr.strip() for addr in os.getenv("EMAIL_TO", "").split(",") if add
 BEEHIIV_API_KEY = os.getenv("BEEHIIV_API_KEY", "")
 BEEHIIV_PUB_ID = os.getenv("BEEHIIV_PUB_ID", "")
 
+# --- Telegram ---
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
+
 # --- Agent Settings ---
 PUBMED_MAX_RESULTS = int(os.getenv("PUBMED_MAX_RESULTS", "50"))
 NEWS_MAX_RESULTS = int(os.getenv("NEWS_MAX_RESULTS", "30"))
