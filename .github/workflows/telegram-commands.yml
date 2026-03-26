@@ -1,0 +1,40 @@
+name: Telegram Bot Polling
+
+on:
+  schedule:
+    # Every 15 minutes during 6 AM - 10 PM Central (11:00-03:00 UTC)
+    - cron: '*/15 3-4,11-23 * * *'
+  workflow_dispatch:
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    permissions:
+      actions: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Restore update offset
+        uses: actions/cache@v4
+        with:
+          path: .telegram_offset
+          key: telegram-offset-${{ github.run_number }}
+          restore-keys: telegram-offset-
+
+      - name: Poll and respond
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: mbowdish88/tavr-digest
+        run: python telegram_bot.py
