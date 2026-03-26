@@ -23,8 +23,12 @@ PAUSE_SPEAKER_SWITCH = 600         # Pause when switching speakers
 INTRO_FADE_OUT = 3500              # Intro music fade-out duration
 OUTRO_FADE_IN = 3000               # Outro music fade-in duration
 TRANSITION_CROSSFADE = 150         # Crossfade into transition stingers
-BG_MUSIC_DB = -28                  # Background music volume reduction
+BG_MUSIC_DB = -26                  # Background music volume reduction
 BG_MUSIC_CUTOFF_HZ = 3500         # Low-pass cutoff for background music
+BG_INTRO_DURATION = 30000          # Background music under first 30s of voice
+BG_OUTRO_DURATION = 30000          # Background music under last 30s of voice
+BG_TRANSITION_DURATION = 8000      # Background music bed around section transitions
+BG_TRANSITION_PAD = 2000           # Padding before/after transition point
 
 
 def _load_audio_asset(name: str) -> AudioSegment:
@@ -171,6 +175,7 @@ def assemble_podcast(
 
     voice_start_ms = len(podcast)  # Track where voice content begins (for bg music)
     timestamps = []
+    transition_points = []  # Track section change positions for bg music beds
     prev_speaker = None
     prev_section = None
 
@@ -197,6 +202,7 @@ def assemble_podcast(
 
         # Section transition — crossfade into stinger
         if prev_section and current_section != prev_section and current_section not in ("", prev_section):
+            transition_points.append(len(podcast))
             if transition_sound:
                 podcast = podcast.append(transition_sound, crossfade=TRANSITION_CROSSFADE)
             podcast += AudioSegment.silent(duration=200)
@@ -219,21 +225,61 @@ def assemble_podcast(
         _, _, outro_placeholder = _generate_placeholder_tones()
         podcast += outro_placeholder.fade_in(OUTRO_FADE_IN)
 
-    # === Phase 5: Background Music Bed ===
+    # === Phase 5: Background Music Bed (targeted) ===
+    # Play background music only during: opening, section transitions, and closing
     if bg_music and voice_start_ms < voice_end_ms:
-        voice_duration = voice_end_ms - voice_start_ms
-        # Loop background music to cover the voice section
-        loops_needed = (voice_duration // len(bg_music)) + 1
-        bg_looped = bg_music * loops_needed
-        bg_looped = bg_looped[:voice_duration]
-        # Low-pass filter so background doesn't compete with voice frequencies
-        bg_looped = bg_looped.low_pass_filter(BG_MUSIC_CUTOFF_HZ)
-        bg_looped = bg_looped + BG_MUSIC_DB
-        bg_looped = bg_looped.fade_in(3000).fade_out(5000)
+        bg_filtered = bg_music.low_pass_filter(BG_MUSIC_CUTOFF_HZ) + BG_MUSIC_DB
+        total_ms = len(podcast)
 
-        # Overlay under the voice sections only
-        podcast = podcast.overlay(bg_looped, position=voice_start_ms)
-        logger.info(f"Background music: overlaid {voice_duration / 1000:.0f}s at {BG_MUSIC_DB}dB, LP {BG_MUSIC_CUTOFF_HZ}Hz")
+        def _make_bg_segment(duration_ms):
+            """Create a looped, faded background music segment."""
+            loops = (duration_ms // len(bg_filtered)) + 1
+            seg = (bg_filtered * loops)[:duration_ms]
+            fade = min(2000, duration_ms // 3)
+            return seg.fade_in(fade).fade_out(fade)
+
+        bg_regions = []
+
+        # 1. Opening bed: first 30s after intro
+        intro_end = voice_start_ms
+        open_dur = min(BG_INTRO_DURATION, voice_end_ms - intro_end)
+        if open_dur > 0:
+            bg_regions.append((intro_end, open_dur))
+
+        # 2. Section transition beds: 8s centered on each transition
+        for tp in transition_points:
+            start = max(voice_start_ms, tp - BG_TRANSITION_PAD)
+            end = min(voice_end_ms, tp + BG_TRANSITION_DURATION - BG_TRANSITION_PAD)
+            if end > start:
+                bg_regions.append((start, end - start))
+
+        # 3. Closing bed: last 30s before outro
+        close_start = max(voice_start_ms, voice_end_ms - BG_OUTRO_DURATION)
+        close_dur = voice_end_ms - close_start
+        if close_dur > 0:
+            bg_regions.append((close_start, close_dur))
+
+        # Merge overlapping regions
+        bg_regions.sort()
+        merged = []
+        for start, dur in bg_regions:
+            end = start + dur
+            if merged and start <= merged[-1][0] + merged[-1][1]:
+                prev_start, prev_dur = merged[-1]
+                merged[-1] = (prev_start, max(prev_start + prev_dur, end) - prev_start)
+            else:
+                merged.append((start, dur))
+
+        # Overlay each region
+        for pos, dur in merged:
+            bg_seg = _make_bg_segment(dur)
+            podcast = podcast.overlay(bg_seg, position=pos)
+
+        total_bg = sum(d for _, d in merged)
+        logger.info(
+            f"Background music: {len(merged)} regions, "
+            f"{total_bg / 1000:.0f}s total at {BG_MUSIC_DB}dB"
+        )
 
     # === Phase 6: Final Compression + Loudness Normalization ===
     # Gentle bus compression to glue the mix together

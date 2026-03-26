@@ -6,7 +6,7 @@
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>The Valve Wire Weekly</title>
-    <link>https://thevalvewire.beehiiv.com</link>
+    <link>https://thevalvewire.com</link>
     <description>A weekly podcast covering the latest in transcatheter valve technology — TAVR, mitral repair and replacement, tricuspid therapies, clinical trials, and industry analysis. Balanced, evidence-based analysis with expert skepticism. Hosted by E. Nolan Beckett.</description>
     <language>en-us</language>
     <lastBuildDate>{{ build_date }}</lastBuildDate>
@@ -25,7 +25,7 @@
     <image>
       <url>https://raw.githubusercontent.com/mbowdish88/tavr-digest/main/static/podcast-cover.png</url>
       <title>The Valve Wire Weekly</title>
-      <link>https://thevalvewire.beehiiv.com</link>
+      <link>https://thevalvewire.com</link>
     </image>
     {% for episode in episodes %}
     <item>
