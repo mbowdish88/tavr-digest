@@ -356,7 +356,7 @@ def _download_all_chart_images(stock_data: dict):
     """Download chart images as PNG bytes and store in stock_data."""
     import requests
 
-    for key, value in stock_data.items():
+    for key, value in list(stock_data.items()):
         url = None
         image_key = None
         if key == "_combined_chart_url":
