@@ -21,7 +21,7 @@ from podcast.show_notes import generate_show_notes
 from podcast.transcriber import transcribe_episode
 from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
-from delivery.beehiiv import publish_to_beehiiv
+# from delivery.beehiiv import publish_to_beehiiv  # Removed — not in use
 from delivery.site import publish_daily_to_site, publish_weekly_to_site
 
 # Set up logging
@@ -203,19 +203,7 @@ def run_daily_digest():
     # 4. Save daily digest for weekly compilation
     save_daily_digest(digest_content)
 
-    # 5. Publish to Beehiiv
-    try:
-        beehiiv_result = publish_to_beehiiv(
-            digest_content, new_pubmed, new_news, new_regulatory,
-            stock_data, trial_updates, new_preprints, new_journals,
-            new_social, new_financial,
-        )
-        if beehiiv_result:
-            logger.info(f"Beehiiv: published post {beehiiv_result.get('id', 'unknown')}")
-    except Exception as e:
-        logger.error(f"Beehiiv publish failed: {e}", exc_info=True)
-
-    # 6. Publish to site (GitHub Pages archive)
+    # 5. Publish to site (GitHub Pages archive)
     try:
         publish_daily_to_site(
             digest_content, new_pubmed, new_news, new_regulatory,
