@@ -196,15 +196,126 @@ def cmd_fix():
         send_message(f"❌ Error: {e}")
 
 
+def cmd_logs(args: str = ""):
+    """Show errors from the most recent run of a workflow."""
+    target = args.strip().lower() if args else "daily"
+    if target not in WORKFLOWS:
+        send_message(f"Unknown workflow: {target}\nTry: /logs daily, /logs weekly, /logs podcast")
+        return
+
+    headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
+    filename = WORKFLOWS[target]
+
+    # Get latest run
+    url = f"https://api.github.com/repos/{REPO}/actions/workflows/{filename}/runs?per_page=1"
+    try:
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            send_message(f"API error: {resp.status_code}")
+            return
+        runs = resp.json().get("workflow_runs", [])
+        if not runs:
+            send_message(f"No runs found for {target}")
+            return
+        run = runs[0]
+        run_id = run["id"]
+        conclusion = run["conclusion"] or run["status"]
+    except Exception as e:
+        send_message(f"Error: {e}")
+        return
+
+    # Download logs
+    log_url = f"https://api.github.com/repos/{REPO}/actions/runs/{run_id}/logs"
+    try:
+        import io
+        import zipfile
+        resp = requests.get(log_url, headers=headers, timeout=30, allow_redirects=True)
+        if resp.status_code != 200:
+            send_message(f"Could not fetch logs: HTTP {resp.status_code}")
+            return
+
+        errors = []
+        warnings = []
+        with zipfile.ZipFile(io.BytesIO(resp.content)) as zf:
+            for name in zf.namelist():
+                content = zf.read(name).decode("utf-8", errors="replace")
+                for line in content.split("\n"):
+                    if "[ERROR]" in line:
+                        # Extract just the message part
+                        parts = line.split("[ERROR]", 1)
+                        errors.append(parts[1].strip()[:150] if len(parts) > 1 else line[:150])
+                    elif "[WARNING]" in line:
+                        parts = line.split("[WARNING]", 1)
+                        warnings.append(parts[1].strip()[:150] if len(parts) > 1 else line[:150])
+
+        lines = [f"Logs: {target} ({conclusion})\n"]
+        if errors:
+            lines.append(f"Errors ({len(errors)}):")
+            for e in errors[:8]:
+                lines.append(f"  x {e}")
+        if warnings:
+            lines.append(f"\nWarnings ({len(warnings)}):")
+            for w in warnings[:5]:
+                lines.append(f"  ! {w}")
+        if not errors and not warnings:
+            lines.append("No errors or warnings found.")
+
+        send_message("\n".join(lines))
+    except Exception as e:
+        send_message(f"Error reading logs: {e}")
+
+
+def cmd_cost():
+    """Show GitHub Actions minutes usage this month."""
+    headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
+
+    # Get billing info
+    try:
+        # Get recent runs to estimate usage
+        lines = ["Actions Usage (last 7 days)\n"]
+        total_minutes = 0
+
+        for name, filename in WORKFLOWS.items():
+            url = f"https://api.github.com/repos/{REPO}/actions/workflows/{filename}/runs?per_page=10"
+            resp = requests.get(url, headers=headers, timeout=10)
+            if resp.status_code == 200:
+                runs = resp.json().get("workflow_runs", [])
+                workflow_mins = 0
+                count = 0
+                for run in runs:
+                    if run.get("run_started_at") and run.get("updated_at"):
+                        from datetime import datetime
+                        start = datetime.fromisoformat(run["run_started_at"].replace("Z", "+00:00"))
+                        end = datetime.fromisoformat(run["updated_at"].replace("Z", "+00:00"))
+                        mins = (end - start).total_seconds() / 60
+                        workflow_mins += mins
+                        count += 1
+                total_minutes += workflow_mins
+                lines.append(f"{name}: {count} runs, ~{workflow_mins:.0f} min")
+
+        # Add monitor + telegram polling estimate
+        lines.append(f"monitor: triggers after each run")
+        lines.append(f"telegram: ~32 polls/day")
+        lines.append(f"\nEstimated total: ~{total_minutes:.0f} min")
+        lines.append(f"Free tier: 2,000 min/month")
+
+        send_message("\n".join(lines))
+    except Exception as e:
+        send_message(f"Error: {e}")
+
+
 def cmd_help():
     """Show available commands."""
     send_message(
-        "*Valve Wire Monitor Commands*\n\n"
-        "/status — Show pipeline status\n"
-        "/rerun — Rerun failed workflow\n"
-        "/rerun daily|weekly|podcast — Rerun specific workflow\n"
-        "/fix — Show open auto-fix PRs\n"
-        "/help — Show this message"
+        "Valve Wire Monitor Commands\n\n"
+        "/status - Pipeline status\n"
+        "/logs - Errors from last daily run\n"
+        "/logs daily|weekly|podcast - Errors from specific workflow\n"
+        "/cost - GitHub Actions usage\n"
+        "/rerun - Rerun failed workflow\n"
+        "/rerun daily|weekly|podcast - Rerun specific\n"
+        "/fix - Open auto-fix PRs\n"
+        "/help - Show this message"
     )
 
 
@@ -220,6 +331,8 @@ def process_message(text: str):
 
     handlers = {
         "/status": lambda: cmd_status(),
+        "/logs": lambda: cmd_logs(args),
+        "/cost": lambda: cmd_cost(),
         "/rerun": lambda: cmd_rerun(args),
         "/fix": lambda: cmd_fix(),
         "/help": lambda: cmd_help(),
