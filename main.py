@@ -319,7 +319,7 @@ def run_weekly_summary():
     """Generate and send the weekly summary digest."""
     logger.info("=== The Valve Wire Weekly starting ===")
 
-    weekly_html = create_weekly_digest()
+    weekly_html, stock_data = create_weekly_digest()
     if not weekly_html:
         logger.warning("No daily digests found. Skipping weekly summary.")
         return
@@ -368,7 +368,7 @@ def run_weekly_summary():
 
     # Publish to site (GitHub Pages archive)
     try:
-        publish_weekly_to_site(weekly_html)
+        publish_weekly_to_site(weekly_html, stock_data)
     except Exception as e:
         logger.error(f"Weekly site publish failed: {e}", exc_info=True)
 
@@ -400,7 +400,7 @@ def run_weekly_podcast(weekly_html: str = None):
 
     # If no weekly HTML provided, try to generate it
     if not weekly_html:
-        weekly_html = create_weekly_digest()
+        weekly_html, _ = create_weekly_digest()
         if not weekly_html:
             logger.warning("No weekly content available for podcast.")
             return

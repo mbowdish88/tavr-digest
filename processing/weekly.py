@@ -180,19 +180,22 @@ def _fetch_weekend_news() -> str:
         return "Weekend news unavailable."
 
 
-def _fetch_stock_data() -> str:
-    """Fetch current stock data with weekly performance for the weekly digest."""
+def _fetch_stock_data() -> tuple[str, dict]:
+    """Fetch current stock data with weekly performance for the weekly digest.
+
+    Returns (formatted_text, raw_stock_data) tuple.
+    """
     from sources import stocks as stocks_module
     from processing.summarizer import _format_stock_data
 
     try:
         stock_data = stocks_module.fetch_stock_data()
         if not stock_data:
-            return "Stock data unavailable."
-        return _format_stock_data(stock_data)
+            return "Stock data unavailable.", {}
+        return _format_stock_data(stock_data), stock_data
     except Exception as e:
         logger.warning(f"Stock data fetch failed: {e}")
-        return "Stock data unavailable."
+        return "Stock data unavailable.", {}
 
 
 def _fetch_trial_updates() -> str:
@@ -216,15 +219,18 @@ def _fetch_trial_updates() -> str:
         return "Trial data unavailable."
 
 
-def create_weekly_digest(end_date: date = None) -> str:
-    """Generate a comprehensive standalone weekly summary."""
+def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
+    """Generate a comprehensive standalone weekly summary.
+
+    Returns (weekly_html, stock_data) tuple.
+    """
     end_date = end_date or date.today()
     start_date = end_date - timedelta(days=6)
 
     digests = get_week_digests(end_date)
     if not digests:
         logger.warning("No daily digests found for weekly summary.")
-        return None
+        return None, {}
 
     # Format daily digests
     digest_parts = []
@@ -241,7 +247,30 @@ def create_weekly_digest(end_date: date = None) -> str:
     weekend_section = _fetch_weekend_news()
 
     logger.info("Fetching stock data for weekly performance...")
-    stock_section = _fetch_stock_data()
+    stock_section, stock_data = _fetch_stock_data()
+
+    # Add chart embed instructions if we have chart URLs
+    chart_instructions = ""
+    if stock_data:
+        combined_chart = stock_data.get("_combined_chart_url", "")
+        if combined_chart:
+            chart_instructions += (
+                f'\nIMPORTANT: Embed this combined 6-month chart at the TOP of the '
+                f'Valve Industry Stocks section:\n'
+                f'<img src="{combined_chart}" '
+                f'alt="6-Month Valve Industry Stock Performance" '
+                f'style="max-width:100%;height:auto;">\n'
+            )
+        for ticker, data in stock_data.items():
+            if isinstance(data, dict) and data.get("chart_url"):
+                chart_instructions += (
+                    f'For {ticker}, embed: <img src="{data["chart_url"]}" '
+                    f'alt="{ticker} 6-Month Chart" style="max-width:100%;height:auto;">\n'
+                )
+
+    stock_section_with_charts = stock_section
+    if chart_instructions:
+        stock_section_with_charts += "\n\n## Chart Embed Instructions\n" + chart_instructions
 
     logger.info("Fetching trial updates for weekly summary...")
     trials_section = _fetch_trial_updates()
@@ -253,7 +282,7 @@ def create_weekly_digest(end_date: date = None) -> str:
         end_date=end_date.strftime("%B %d, %Y"),
         digests_section=digests_section,
         weekend_section=weekend_section,
-        stock_section=stock_section,
+        stock_section=stock_section_with_charts,
         trials_section=trials_section,
         private_companies=private_companies,
     )
@@ -278,7 +307,7 @@ def create_weekly_digest(end_date: date = None) -> str:
         f"tokens: {message.usage.input_tokens} in / {message.usage.output_tokens} out"
     )
 
-    return summary
+    return summary, stock_data
 
 
 def clear_week_digests(end_date: date = None):

@@ -342,8 +342,42 @@ def fetch_stock_data() -> dict:
         results["_combined_chart_url"] = combined_chart_url
         logger.info("Generated combined 6-month stock chart URL")
 
+    # Download chart images as PNG bytes for persistent storage
+    _download_all_chart_images(results)
+
     # Note private companies
     for company in config.PRIVATE_COMPANIES:
         logger.info(f"{company}: private company (no stock data)")
 
     return results
+
+
+def _download_all_chart_images(stock_data: dict):
+    """Download chart images as PNG bytes and store in stock_data."""
+    import requests
+
+    for key, value in stock_data.items():
+        url = None
+        image_key = None
+        if key == "_combined_chart_url":
+            url = value
+            image_key = "_combined_chart_image"
+        elif isinstance(value, dict) and value.get("chart_url"):
+            url = value["chart_url"]
+            image_key = "chart_image"
+
+        if not url:
+            continue
+
+        try:
+            resp = requests.get(url, timeout=20)
+            if resp.status_code == 200 and resp.content:
+                if image_key == "_combined_chart_image":
+                    stock_data[image_key] = resp.content
+                else:
+                    value[image_key] = resp.content
+                logger.debug(f"Downloaded chart image for {key}")
+            else:
+                logger.warning(f"Chart download failed for {key}: HTTP {resp.status_code}")
+        except Exception as e:
+            logger.warning(f"Chart download failed for {key}: {e}")

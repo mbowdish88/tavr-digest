@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -16,6 +17,46 @@ logger = logging.getLogger(__name__)
 DOCS_DIR = config.BASE_DIR / "docs"
 DIGEST_DIR = DOCS_DIR / "digest"
 WEEKLY_DIR = DOCS_DIR / "weekly"
+
+
+def _save_chart_images(stock_data: dict, out_dir: Path) -> dict:
+    """Save downloaded chart PNGs to out_dir/charts/ and return URL->path map."""
+    if not stock_data:
+        return {}
+
+    url_map = {}
+    charts_dir = out_dir / "charts"
+    charts_dir.mkdir(parents=True, exist_ok=True)
+
+    # Combined chart
+    combined_image = stock_data.get("_combined_chart_image")
+    combined_url = stock_data.get("_combined_chart_url")
+    if combined_image and combined_url:
+        path = charts_dir / "combined_6m.png"
+        path.write_bytes(combined_image)
+        url_map[combined_url] = "charts/combined_6m.png"
+
+    # Individual ticker charts
+    for key, value in stock_data.items():
+        if not isinstance(value, dict):
+            continue
+        image = value.get("chart_image")
+        chart_url = value.get("chart_url")
+        if image and chart_url:
+            path = charts_dir / f"{key}_6m.png"
+            path.write_bytes(image)
+            url_map[chart_url] = f"charts/{key}_6m.png"
+
+    if url_map:
+        logger.info(f"Saved {len(url_map)} chart images to {charts_dir}")
+    return url_map
+
+
+def _rewrite_chart_urls(html: str, url_map: dict) -> str:
+    """Replace QuickChart URLs with local paths in HTML."""
+    for url, local_path in url_map.items():
+        html = html.replace(url, local_path)
+    return html
 
 
 def _get_env() -> Environment:
@@ -65,6 +106,11 @@ def publish_daily_to_site(
         trials=trial_updates,
     )
 
+    # Save chart images and rewrite URLs for persistence
+    url_map = _save_chart_images(stock_data, out_dir)
+    if url_map:
+        html = _rewrite_chart_urls(html, url_map)
+
     out_path = out_dir / "index.html"
     out_path.write_text(html, encoding="utf-8")
     logger.info(f"Site: daily digest published to {out_path}")
@@ -75,7 +121,7 @@ def publish_daily_to_site(
     return out_path
 
 
-def publish_weekly_to_site(weekly_html: str) -> Path | None:
+def publish_weekly_to_site(weekly_html: str, stock_data: dict = None) -> Path | None:
     """Render weekly digest to docs/weekly/YYYY-MM-DD/index.html."""
     today = date.today()
     date_str = today.isoformat()
@@ -100,6 +146,12 @@ def publish_weekly_to_site(weekly_html: str) -> Path | None:
         regulatory_articles=[],
         trials=[],
     )
+
+    # Save chart images and rewrite URLs for persistence
+    if stock_data:
+        url_map = _save_chart_images(stock_data, out_dir)
+        if url_map:
+            html = _rewrite_chart_urls(html, url_map)
 
     out_path = out_dir / "index.html"
     out_path.write_text(html, encoding="utf-8")
