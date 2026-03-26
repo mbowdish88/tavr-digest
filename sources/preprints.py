@@ -66,7 +66,7 @@ def _fetch_server(server: str, start_date: str, end_date: str) -> list[dict]:
                 "source": "preprint",
             })
 
-        total = data.get("messages", [{}])[0].get("total", 0)
+        total = int(data.get("messages", [{}])[0].get("total", 0))
         cursor += len(collection)
         if cursor >= total:
             break
