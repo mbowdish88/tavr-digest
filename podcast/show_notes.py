@@ -111,7 +111,7 @@ def generate_show_notes(
     # Subscribe CTA
     lines.append("## Subscribe")
     lines.append("")
-    lines.append("- Newsletter: [The Valve Wire on Beehiiv](https://thevalvewire.beehiiv.com)")
+    lines.append("- Newsletter: [The Valve Wire](https://thevalvewire.com)")
     lines.append("- Contact: [nolan.beckett@pm.me](mailto:nolan.beckett@pm.me)")
     lines.append("")
 
@@ -143,7 +143,7 @@ def generate_show_notes(
                     html_lines.append(f'<li><a href="{html.escape(link["url"])}">{html.escape(link["text"])}</a></li>')
             html_lines.append("</ul>")
 
-    html_lines.append('<p>Subscribe: <a href="https://thevalvewire.beehiiv.com">The Valve Wire Newsletter</a></p>')
+    html_lines.append('<p>Subscribe: <a href="https://thevalvewire.com">The Valve Wire Newsletter</a></p>')
 
     show_notes_html = "\n".join(html_lines)
 
