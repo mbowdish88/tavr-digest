@@ -84,12 +84,13 @@ def save_offset(offset: int):
 def cmd_status():
     """Get status of all workflows."""
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
-    lines = ["*Pipeline Status*\n"]
+    lines = ["Pipeline Status\n"]
 
     for name, filename in WORKFLOWS.items():
         url = f"https://api.github.com/repos/{REPO}/actions/workflows/{filename}/runs?per_page=1"
         try:
             resp = requests.get(url, headers=headers, timeout=10)
+            logger.info(f"GitHub API {name}: HTTP {resp.status_code}")
             if resp.status_code == 200:
                 runs = resp.json().get("workflow_runs", [])
                 if runs:
@@ -97,34 +98,33 @@ def cmd_status():
                     status = run["conclusion"] or run["status"]
                     icon = "✅" if status == "success" else "❌" if status == "failure" else "⏳"
                     created = run["created_at"][:16].replace("T", " ")
-                    duration = ""
-                    if run.get("run_started_at") and run["conclusion"]:
-                        # Approximate duration from the run
-                        duration = f" ({run.get('conclusion', '')})"
-                    lines.append(f"{icon} *{name}*: {status} — {created}")
+                    lines.append(f"{icon} {name}: {status} - {created}")
                 else:
-                    lines.append(f"❓ *{name}*: no runs found")
+                    lines.append(f"? {name}: no runs found")
             else:
-                lines.append(f"❓ *{name}*: API error {resp.status_code}")
+                lines.append(f"? {name}: API error {resp.status_code}")
         except Exception as e:
-            lines.append(f"❓ *{name}*: {e}")
+            logger.error(f"Status check failed for {name}: {e}")
+            lines.append(f"? {name}: {e}")
 
     # Open auto-fix PRs
     try:
         pr_resp = requests.get(
-            f"https://api.github.com/repos/{REPO}/pulls?state=open&head=fix/",
+            f"https://api.github.com/repos/{REPO}/pulls?state=open",
             headers=headers, timeout=10,
         )
         if pr_resp.status_code == 200:
             prs = [p for p in pr_resp.json() if p["head"]["ref"].startswith("fix/")]
             if prs:
-                lines.append(f"\n🔧 *Open fix PRs:* {len(prs)}")
+                lines.append(f"\nOpen fix PRs: {len(prs)}")
                 for pr in prs[:3]:
-                    lines.append(f"  • [{pr['title']}]({pr['html_url']})")
+                    lines.append(f"  - {pr['title']}: {pr['html_url']}")
     except Exception:
         pass
 
-    send_message("\n".join(lines))
+    msg = "\n".join(lines)
+    logger.info(f"Status message: {msg}")
+    send_message(msg)
 
 
 def cmd_rerun(args: str = ""):
