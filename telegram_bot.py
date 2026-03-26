@@ -29,11 +29,25 @@ WORKFLOWS = {
 def send_message(text: str):
     """Send a message to the user."""
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    requests.post(url, json={
-        "chat_id": CHAT_ID,
-        "text": text,
-        "parse_mode": "Markdown",
-    }, timeout=10)
+    try:
+        resp = requests.post(url, json={
+            "chat_id": CHAT_ID,
+            "text": text,
+            "parse_mode": "Markdown",
+        }, timeout=10)
+        if resp.status_code != 200:
+            logger.error(f"Telegram send failed: {resp.status_code} {resp.text}")
+            # Retry without Markdown in case of formatting issues
+            resp2 = requests.post(url, json={
+                "chat_id": CHAT_ID,
+                "text": text,
+            }, timeout=10)
+            if resp2.status_code != 200:
+                logger.error(f"Telegram retry also failed: {resp2.status_code}")
+        else:
+            logger.info("Telegram message sent")
+    except Exception as e:
+        logger.error(f"Telegram send error: {e}")
 
 
 def get_updates(offset: int = 0) -> list:
