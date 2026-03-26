@@ -1,10 +1,7 @@
-name: Telegram Bot Polling
+name: Telegram Bot Polling (disabled - moved to Railway)
 
 on:
-  schedule:
-    # Every 15 minutes during 6 AM - 10 PM Central (11:00-03:00 UTC)
-    - cron: '*/15 3-4,11-23 * * *'
-  workflow_dispatch:
+  workflow_dispatch:  # Manual only, Railway handles polling now
 
 jobs:
   poll:
