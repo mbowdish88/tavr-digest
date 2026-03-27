@@ -23,6 +23,7 @@ from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
 # from delivery.beehiiv import publish_to_beehiiv  # Removed — not in use
 from delivery.site import publish_daily_to_site, publish_weekly_to_site
+from delivery.website import build_website_data, push_to_website
 
 # Set up logging
 logging.basicConfig(
@@ -212,6 +213,17 @@ def run_daily_digest():
         )
     except Exception as e:
         logger.error(f"Site publish failed: {e}", exc_info=True)
+
+    # 6. Push structured data to website repo (Vercel)
+    try:
+        website_data = build_website_data(
+            new_pubmed, new_news, new_regulatory, stock_data, trial_updates,
+            new_preprints, new_journals, new_social, new_financial,
+            digest_html=digest_content,
+        )
+        push_to_website(website_data)
+    except Exception as e:
+        logger.error(f"Website push failed: {e}", exc_info=True)
 
     # 7. Send email (retry once on failure)
     email_sent = False
