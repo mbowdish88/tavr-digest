@@ -53,6 +53,7 @@ jobs:
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
           CLAUDE_MODEL: claude-sonnet-4-20250514
+          WEBSITE_GITHUB_TOKEN: ${{ secrets.WEBSITE_GITHUB_TOKEN }}
           LOG_LEVEL: INFO
         run: python main.py
 
