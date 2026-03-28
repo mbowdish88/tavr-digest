@@ -425,10 +425,18 @@ def create_digest(
         f"to Claude ({config.CLAUDE_MODEL}) for summarization"
     )
 
+    # Inject guidelines knowledge into the system prompt
+    from knowledge import get_full_knowledge_context
+    knowledge = get_full_knowledge_context()
+    system_with_knowledge = SYSTEM_PROMPT
+    if knowledge:
+        system_with_knowledge += "\n\n" + knowledge
+        logger.info(f"Injected {len(knowledge)} chars of guidelines context")
+
     message = client.messages.create(
         model=config.CLAUDE_MODEL,
         max_tokens=16384,
-        system=SYSTEM_PROMPT,
+        system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],
     )
 
