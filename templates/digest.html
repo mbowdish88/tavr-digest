@@ -7,10 +7,10 @@
 <style>body,table,td{font-family:Georgia,'Times New Roman',serif!important;}</style>
 <![endif]-->
 </head>
-<body style="margin:0;padding:0;background:#f2f0eb;font-family:Georgia,'Times New Roman',serif;color:#2c2c2c;line-height:1.7;-webkit-text-size-adjust:100%;">
+<body style="margin:0;padding:0;background:#F0F0F0;font-family:Georgia,'Times New Roman',serif;color:#2c2c2c;line-height:1.7;-webkit-text-size-adjust:100%;">
 
 <!-- Outer wrapper -->
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f0eb;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F0F0F0;">
 <tr><td align="center" style="padding:20px 10px;">
 
 <!-- Main container -->
@@ -18,31 +18,31 @@
 
 <!-- Banner -->
 <tr>
-<td bgcolor="#0f2440" style="background-color:#0f2440;padding:32px 36px 28px;">
-  <h1 style="margin:0;padding:0;font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:700;color:#ffffff;letter-spacing:0.5px;line-height:1.2;">The Valve Wire</h1>
-  <p style="margin:6px 0 0;padding:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#c9a55a;letter-spacing:3px;text-transform:uppercase;">TRANSCATHETER VALVE TECHNOLOGY DIGEST</p>
-  <p style="margin:10px 0 0;padding:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#8fa8c8;">By E. Nolan Beckett &#183; {{ date }}</p>
+<td bgcolor="#6B2D3A" style="background-color:#6B2D3A;padding:28px 36px 24px;">
+  <h1 style="margin:0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:28px;font-weight:500;color:#F0E4D4;letter-spacing:0.5px;line-height:1.2;">The Valve Wire</h1>
+  <p style="margin:4px 0 0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:11px;color:#C4787A;letter-spacing:3px;text-transform:uppercase;">STRUCTURAL HEART DISEASE</p>
+  <p style="margin:8px 0 0;padding:0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:12px;color:#D4B8A0;">By E. Nolan Beckett &#183; {{ date }}</p>
 </td>
 </tr>
 
-<!-- Gold accent line -->
+<!-- Rose accent line -->
 <tr>
-<td style="background-color:#c9a55a;background:linear-gradient(90deg,#c9a55a,#e8c975);height:3px;font-size:0;line-height:0;" bgcolor="#c9a55a">&nbsp;</td>
+<td style="background:#C4787A;background:linear-gradient(90deg,#C4787A,#D4B8A0,#C4787A);height:3px;font-size:0;line-height:0;" bgcolor="#C4787A">&nbsp;</td>
 </tr>
 
 <!-- Stats bar -->
 <tr>
-<td style="background:#f8f7f4;padding:12px 36px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:13px;color:#6b6560;border-bottom:1px solid #e8e5df;">
+<td style="background:#E8E8E8;padding:12px 36px;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:13px;color:#6B2D3A;border-bottom:1px solid #D8D8D8;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
   <tr>
-    <td style="font-size:13px;color:#6b6560;">
-      <span style="color:#1a3a5c;font-weight:600;">{{ research_count }}</span> research
-      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
-      <span style="color:#1a3a5c;font-weight:600;">{{ news_count }}</span> news
-      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
-      <span style="color:#1a3a5c;font-weight:600;">{{ regulatory_count }}</span> regulatory
-      &nbsp;<span style="color:#d4cfc8;">&bull;</span>&nbsp;
-      <span style="color:#1a3a5c;font-weight:600;">{{ trials_count }}</span> trials
+    <td style="font-size:13px;color:#6B2D3A;">
+      <span style="font-weight:600;">{{ research_count }}</span> research
+      &nbsp;<span style="color:#D4B8A0;">&bull;</span>&nbsp;
+      <span style="font-weight:600;">{{ news_count }}</span> news
+      &nbsp;<span style="color:#D4B8A0;">&bull;</span>&nbsp;
+      <span style="font-weight:600;">{{ regulatory_count }}</span> regulatory
+      &nbsp;<span style="color:#D4B8A0;">&bull;</span>&nbsp;
+      <span style="font-weight:600;">{{ trials_count }}</span> trials
     </td>
   </tr>
   </table>
@@ -52,39 +52,37 @@
 <!-- Main content -->
 <tr>
 <td style="padding:28px 36px 16px;">
-  <!-- Digest content from Claude -->
-  <div style="font-size:16px;line-height:1.75;color:#2c2c2c;">
+  <div class="content" style="font-size:16px;line-height:1.75;color:#2c2c2c;">
     {{ digest_html | safe }}
   </div>
 
-  <!-- Section styling overrides via inline -->
   <style>
     .content h2 {
-      font-family: Georgia, 'Times New Roman', serif;
-      color: #0f2440;
+      font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      color: #4A1E2A;
       font-size: 20px;
-      font-weight: 700;
-      border-bottom: 2px solid #c9a55a;
+      font-weight: 500;
+      border-bottom: 2px solid #C4787A;
       padding-bottom: 8px;
       margin-top: 36px;
       margin-bottom: 16px;
     }
     .content h3 {
-      font-family: Georgia, 'Times New Roman', serif;
-      color: #1a3a5c;
+      font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      color: #6B2D3A;
       font-size: 17px;
-      font-weight: 600;
+      font-weight: 500;
       margin-top: 24px;
       margin-bottom: 8px;
     }
     .content a {
-      color: #2b6cb0;
+      color: #C4787A;
       text-decoration: none;
-      border-bottom: 1px solid #d1dce8;
+      border-bottom: 1px solid #D4B8A0;
     }
     .content a:hover {
-      color: #1a4971;
-      border-bottom-color: #1a4971;
+      color: #6B2D3A;
+      border-bottom-color: #6B2D3A;
     }
     .content p {
       margin: 0 0 14px 0;
@@ -98,16 +96,16 @@
       line-height: 1.6;
     }
     .content blockquote {
-      border-left: 3px solid #c9a55a;
+      border-left: 3px solid #C4787A;
       margin: 16px 0;
       padding: 12px 20px;
-      background: #faf9f6;
-      color: #4a4540;
+      background: #F0F0F0;
+      color: #4A1E2A;
       font-style: italic;
     }
     .content hr {
       border: none;
-      border-top: 1px solid #e8e5df;
+      border-top: 1px solid #D8D8D8;
       margin: 28px 0;
     }
     .content img {
@@ -117,7 +115,7 @@
       margin: 12px 0;
     }
     .content strong {
-      color: #1a3a5c;
+      color: #4A1E2A;
     }
   </style>
 </td>
@@ -126,33 +124,21 @@
 <!-- Divider -->
 <tr>
 <td style="padding:0 36px;">
-  <div style="border-top:2px solid #c9a55a;margin:0;"></div>
+  <div style="border-top:2px solid #C4787A;margin:0;"></div>
 </td>
 </tr>
 
 <!-- Source links -->
 <tr>
 <td class="content" style="padding:20px 36px 8px;font-size:14px;line-height:1.6;">
-  <h2 style="font-family:Georgia,'Times New Roman',serif;color:#0f2440;font-size:18px;font-weight:700;border-bottom:1px solid #e8e5df;padding-bottom:6px;margin-top:0;">All Sources</h2>
+  <h2 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#4A1E2A;font-size:18px;font-weight:500;border-bottom:1px solid #D8D8D8;padding-bottom:6px;margin-top:0;">All Sources</h2>
 
   {% if pubmed_articles %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">PubMed ({{ pubmed_count }})</h3>
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">PubMed ({{ pubmed_count }})</h3>
   <ul style="padding-left:18px;margin:0 0 12px;">
   {% for a in pubmed_articles %}
     <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
-      <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
-    </li>
-  {% endfor %}
-  </ul>
-  {% endif %}
-
-  {% if journal_articles %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Journal Articles ({{ journal_count }})</h3>
-  <ul style="padding-left:18px;margin:0 0 12px;">
-  {% for a in journal_articles %}
-    <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <a href="{{ a.url }}" style="color:#C4787A;text-decoration:none;">{{ a.title }}</a><br>
       <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
     </li>
   {% endfor %}
@@ -160,11 +146,23 @@
   {% endif %}
 
   {% if preprint_articles %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Preprints ({{ preprint_count }})</h3>
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">Preprints ({{ preprint_count }})</h3>
   <ul style="padding-left:18px;margin:0 0 12px;">
   {% for a in preprint_articles %}
     <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <a href="{{ a.url }}" style="color:#C4787A;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if journal_articles %}
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">Journals ({{ journal_count }})</h3>
+  <ul style="padding-left:18px;margin:0 0 12px;">
+  {% for a in journal_articles %}
+    <li style="margin-bottom:6px;font-size:14px;">
+      <a href="{{ a.url }}" style="color:#C4787A;text-decoration:none;">{{ a.title }}</a><br>
       <span style="color:#8a8580;font-size:12px;">{{ a.journal }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
     </li>
   {% endfor %}
@@ -172,11 +170,11 @@
   {% endif %}
 
   {% if news_articles %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">News ({{ news_count }})</h3>
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">News ({{ news_count }})</h3>
   <ul style="padding-left:18px;margin:0 0 12px;">
   {% for a in news_articles %}
     <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
+      <a href="{{ a.url }}" style="color:#C4787A;text-decoration:none;">{{ a.title }}</a><br>
       <span style="color:#8a8580;font-size:12px;">{{ a.source_name }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
     </li>
   {% endfor %}
@@ -184,24 +182,24 @@
   {% endif %}
 
   {% if regulatory_articles %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Regulatory ({{ regulatory_count }})</h3>
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">Regulatory ({{ regulatory_count }})</h3>
   <ul style="padding-left:18px;margin:0 0 12px;">
   {% for a in regulatory_articles %}
     <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ a.url }}" style="color:#2b6cb0;text-decoration:none;">{{ a.title }}</a><br>
-      <span style="color:#8a8580;font-size:12px;">{{ a.source_name }}{% if a.pub_date %} &middot; {{ a.pub_date }}{% endif %}</span>
+      <a href="{{ a.url }}" style="color:#C4787A;text-decoration:none;">{{ a.title }}</a><br>
+      <span style="color:#8a8580;font-size:12px;">{% if a.pub_date %}{{ a.pub_date }}{% endif %}</span>
     </li>
   {% endfor %}
   </ul>
   {% endif %}
 
   {% if trials %}
-  <h3 style="font-family:Georgia,'Times New Roman',serif;color:#1a3a5c;font-size:15px;margin-top:16px;margin-bottom:8px;">Clinical Trials ({{ trials_count }})</h3>
+  <h3 style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;color:#6B2D3A;font-size:15px;font-weight:500;margin-top:16px;margin-bottom:8px;">Clinical Trials ({{ trials_count }})</h3>
   <ul style="padding-left:18px;margin:0 0 12px;">
-  {% for t in trials %}
+  {% for t in trials[:15] %}
     <li style="margin-bottom:6px;font-size:14px;">
-      <a href="{{ t.url }}" style="color:#2b6cb0;text-decoration:none;">{{ t.nct_id }}</a>: {{ t.title }}<br>
-      <span style="color:#8a8580;font-size:12px;">{{ t.status }} &middot; {{ t.phase }} &middot; {{ t.sponsor }} &middot; Updated: {{ t.last_update }}</span>
+      <a href="https://clinicaltrials.gov/study/{{ t.nct_id }}" style="color:#C4787A;text-decoration:none;">{{ t.brief_title or t.title }}</a>
+      <span style="color:#8a8580;font-size:12px;"> &middot; {{ t.nct_id }} &middot; {{ t.overall_status or t.status }}</span>
     </li>
   {% endfor %}
   </ul>
@@ -211,31 +209,23 @@
 
 <!-- Footer -->
 <tr>
-<td style="background:#f8f7f4;padding:24px 36px;border-top:1px solid #e8e5df;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-  <tr>
-  <td style="font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:12px;color:#8a8580;line-height:1.8;">
-    <div style="font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#1a3a5c;font-weight:600;margin-bottom:8px;">The Valve Wire</div>
-    <div>By E. Nolan Beckett &nbsp;&middot;&nbsp; <a href="mailto:nolan.beckett@pm.me" style="color:#2b6cb0;text-decoration:none;">nolan.beckett@pm.me</a></div>
-    <div style="margin-top:8px;padding-top:8px;border-top:1px solid #e8e5df;">
-      AI-synthesized from PubMed, bioRxiv, medRxiv, JACC, NEJM, Circulation, JAMA,<br>
-      Lancet, JTCVS, Google News, FDA, CMS, ClinicalTrials.gov, SEC EDGAR, Yahoo Finance
-    </div>
-    <div style="margin-top:6px;color:#a8a29e;font-size:11px;">
-      &copy; {{ date[:4] if date|length > 4 else "2026" }} The Valve Wire. All rights reserved.
-    </div>
-  </td>
-  </tr>
-  </table>
+<td bgcolor="#6B2D3A" style="background-color:#6B2D3A;padding:24px 36px;text-align:center;">
+  <p style="margin:0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:13px;color:#D4B8A0;">
+    <a href="https://thevalvewire.com" style="color:#C4787A;text-decoration:none;font-weight:600;">thevalvewire.com</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://thevalvewire.com/podcast" style="color:#C4787A;text-decoration:none;">Podcast</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://thevalvewire.com/archive" style="color:#C4787A;text-decoration:none;">Archive</a>
+  </p>
+  <p style="margin:10px 0 0;font-family:-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;font-size:11px;color:#D4B8A0;">
+    &copy; 2026 The Valve Wire &middot; AI-synthesized content. Expert analysis, not medical advice.
+  </p>
 </td>
 </tr>
 
 </table>
-<!-- /Main container -->
-
 </td></tr>
 </table>
-<!-- /Outer wrapper -->
 
 </body>
 </html>
