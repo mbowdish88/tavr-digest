@@ -10,11 +10,53 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
+import requests
+
 import config
 
 logger = logging.getLogger(__name__)
 
 WEBSITE_REPO = "mbowdish88/thevalvewire-site"
+
+# Cache of fetched OG images to avoid re-fetching
+_og_image_cache: dict[str, str | None] = {}
+
+
+def _fetch_og_image(url: str) -> str | None:
+    """Fetch the Open Graph image URL from an article page."""
+    if not url or url in _og_image_cache:
+        return _og_image_cache.get(url)
+
+    try:
+        resp = requests.get(url, timeout=8, headers={
+            "User-Agent": "Mozilla/5.0 (compatible; TheValveWire/1.0)"
+        })
+        if resp.status_code != 200:
+            _og_image_cache[url] = None
+            return None
+
+        # Quick regex to find og:image — avoids needing BeautifulSoup
+        import re
+        match = re.search(
+            r'<meta[^>]*property=["\']og:image["\'][^>]*content=["\']([^"\']+)["\']',
+            resp.text[:10000],
+            re.IGNORECASE,
+        )
+        if not match:
+            match = re.search(
+                r'<meta[^>]*content=["\']([^"\']+)["\'][^>]*property=["\']og:image["\']',
+                resp.text[:10000],
+                re.IGNORECASE,
+            )
+
+        image_url = match.group(1) if match else None
+        _og_image_cache[url] = image_url
+        if image_url:
+            logger.debug(f"OG image found for {url[:60]}")
+        return image_url
+    except Exception:
+        _og_image_cache[url] = None
+        return None
 
 
 def _classify_article(article: dict) -> str:
@@ -156,6 +198,14 @@ def build_website_data(
         "financial": {"label": "Financial Analysis", "color": "#8B7B3B", "articles": []},
     }
 
+    # Fetch OG images for articles (limit to first 20 to avoid slowdowns)
+    logger.info("Fetching article images...")
+    all_source_articles = pubmed + preprints + journals + news + financial
+    for a in all_source_articles[:20]:
+        url = a.get("url", "")
+        if url and not a.get("og_image"):
+            a["og_image"] = _fetch_og_image(url)
+
     # Combine all articles
     all_articles = []
     for i, a in enumerate(pubmed + preprints + journals):
@@ -183,7 +233,7 @@ def build_website_data(
             "date": a.get("pub_date", today),
             "abstract": a.get("snippet", a.get("abstract", "")),
             "authors": None,
-            "image_url": a.get("og_image", None),
+            "image_url": a.get("og_image"),
         })
 
     for i, a in enumerate(regulatory):
