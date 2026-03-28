@@ -172,10 +172,34 @@ def generate_podcast_script(
 
     logger.info(f"Generating podcast script with {config.CLAUDE_MODEL}")
 
+    # Check for active/recent meetings
+    from datetime import date as _date, timedelta as _td
+    from processing.summarizer import _get_active_meeting_context, MAJOR_MEETINGS
+    _today = _date.today()
+    _meeting_context = _get_active_meeting_context(_today)
+    # Also check if a meeting just ended this week (podcast covers the past week)
+    if not _meeting_context:
+        for _d in range(1, 8):
+            _meeting_context = _get_active_meeting_context(_today - _td(days=_d))
+            if _meeting_context:
+                _meeting_context = _meeting_context.replace(
+                    "is currently taking place",
+                    "took place this past week"
+                ) + (
+                    "\n\nIMPORTANT: Dedicate a significant portion of this podcast to "
+                    "summarizing the key presentations, late-breaking trials, and "
+                    "newsworthy announcements from this meeting. This should be a "
+                    "major segment, not a brief mention."
+                )
+                break
+
     # Inject guidelines knowledge into the system prompt
     from knowledge import get_full_knowledge_context
     knowledge = get_full_knowledge_context()
     system_with_knowledge = SYSTEM_PROMPT
+    if _meeting_context:
+        system_with_knowledge += "\n\n" + _meeting_context
+        logger.info("Meeting context injected into podcast prompt")
     if knowledge:
         system_with_knowledge += "\n\n" + knowledge
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
