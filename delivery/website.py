@@ -77,6 +77,58 @@ def _article_type(article: dict) -> str:
     return "Research"
 
 
+def _extract_executive_summary(digest_html: str) -> str:
+    """Extract the executive summary section from the digest HTML."""
+    if not digest_html:
+        return ""
+    import re
+    # Look for executive summary section
+    patterns = [
+        r'<h2[^>]*>.*?Executive Summary.*?</h2>\s*(.*?)(?=<h2|$)',
+        r'<h2[^>]*>.*?Key Takeaways.*?</h2>\s*(.*?)(?=<h2|$)',
+        r'<h2[^>]*>.*?Overview.*?</h2>\s*(.*?)(?=<h2|$)',
+    ]
+    for pattern in patterns:
+        match = re.search(pattern, digest_html, re.DOTALL | re.IGNORECASE)
+        if match:
+            # Strip HTML tags for clean text
+            text = re.sub(r'<[^>]+>', ' ', match.group(1))
+            text = re.sub(r'\s+', ' ', text).strip()
+            return text[:1000]  # Cap at 1000 chars
+    return ""
+
+
+def _extract_key_points(digest_html: str) -> list:
+    """Extract key points from the digest HTML."""
+    if not digest_html:
+        return []
+    import re
+    points = []
+    # Look for list items in the executive summary or key points section
+    summary_match = re.search(
+        r'<h2[^>]*>.*?(?:Executive Summary|Key Takeaways|Overview).*?</h2>(.*?)(?=<h2|$)',
+        digest_html, re.DOTALL | re.IGNORECASE,
+    )
+    if summary_match:
+        section = summary_match.group(1)
+        # Extract list items
+        items = re.findall(r'<li>(.*?)</li>', section, re.DOTALL)
+        for item in items[:5]:
+            text = re.sub(r'<[^>]+>', '', item).strip()
+            if text:
+                points.append(text)
+
+    # If no list items, extract first few sentences from paragraphs
+    if not points:
+        p_match = re.findall(r'<p>(.*?)</p>', digest_html[:3000], re.DOTALL)
+        for p in p_match[:3]:
+            text = re.sub(r'<[^>]+>', '', p).strip()
+            if len(text) > 40:
+                points.append(text[:200])
+
+    return points[:5]
+
+
 def build_website_data(
     pubmed: list, news: list, regulatory: list,
     stock_data: dict, trials: list,
@@ -87,6 +139,11 @@ def build_website_data(
 ) -> dict:
     """Build the structured JSON data for the website."""
     today = date.today().isoformat()
+
+    # Extract executive summary and key points from digest HTML
+    executive_summary = _extract_executive_summary(digest_html) if digest_html else ""
+    if not key_points:
+        key_points = _extract_key_points(digest_html) if digest_html else []
 
     # Section definitions
     sections = {
@@ -202,6 +259,7 @@ def build_website_data(
 
     return {
         "date": today,
+        "executive_summary": executive_summary,
         "key_points": key_points or [],
         "sections": sections,
         "stocks": stocks,
@@ -266,6 +324,49 @@ def _github_api_put_file(token: str, path: str, content: str, message: str) -> b
     return False
 
 
+def _merge_with_previous(data: dict, token: str) -> dict:
+    """If today's data is sparse, merge with previous day's data."""
+    import requests
+    import base64
+
+    total_articles = sum(len(s["articles"]) for s in data["sections"].values())
+    if total_articles >= 5:
+        return data  # Enough content for today
+
+    # Fetch previous latest.json from website repo
+    url = f"https://api.github.com/repos/{WEBSITE_REPO}/contents/public/data/latest.json"
+    headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
+    try:
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            return data
+        prev = json.loads(base64.b64decode(resp.json()["content"]))
+
+        # Merge: keep today's articles, fill empty sections with previous day's
+        for section_key, section in data["sections"].items():
+            if not section["articles"] and section_key in prev.get("sections", {}):
+                prev_articles = prev["sections"][section_key].get("articles", [])
+                if prev_articles:
+                    # Mark them as from a previous day
+                    for a in prev_articles:
+                        a["type"] = f"Recent {a.get('type', 'Article')}"
+                    section["articles"] = prev_articles
+
+        # Use previous executive summary if we don't have one
+        if not data.get("executive_summary") and prev.get("executive_summary"):
+            data["executive_summary"] = prev["executive_summary"]
+
+        # Use previous key points if we don't have any
+        if not data.get("key_points") and prev.get("key_points"):
+            data["key_points"] = prev["key_points"]
+
+        logger.info(f"Merged with previous day's data (today had {total_articles} articles)")
+    except Exception as e:
+        logger.warning(f"Could not merge with previous data: {e}")
+
+    return data
+
+
 def push_to_website(data: dict) -> bool:
     """Push the structured JSON to the website repo via GitHub API."""
     token = os.getenv("WEBSITE_GITHUB_TOKEN", os.getenv("GITHUB_TOKEN", ""))
@@ -274,6 +375,9 @@ def push_to_website(data: dict) -> bool:
         return False
 
     today = data["date"]
+
+    # Merge with previous day if sparse
+    data = _merge_with_previous(data, token)
 
     # Don't include digest_html in the website JSON (too large)
     website_data = {k: v for k, v in data.items() if k != "digest_html"}
