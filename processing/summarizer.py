@@ -1,10 +1,48 @@
 import logging
+from datetime import date, timedelta
 
 from anthropic import Anthropic
 
 import config
 
 logger = logging.getLogger(__name__)
+
+# Major meetings calendar — update annually
+# Format: (name, approximate_start_month, approximate_start_day, duration_days)
+MAJOR_MEETINGS = [
+    ("STS Annual Meeting", 1, 25, 4),       # Late January
+    ("ACC Scientific Sessions", 3, 27, 4),   # Late March (2026: Mar 27-30)
+    ("AATS Annual Meeting", 5, 3, 4),        # Early May
+    ("ESC Congress", 8, 29, 4),              # Late August
+    ("TCT Conference", 10, 27, 4),           # Late October
+    ("AHA Scientific Sessions", 11, 15, 4),  # Mid November
+    ("EACTS Annual Meeting", 10, 7, 4),      # Early October
+]
+
+
+def _get_active_meeting_context(today: date) -> str:
+    """Check if a major meeting is currently happening and return context."""
+    for name, month, day, duration in MAJOR_MEETINGS:
+        try:
+            start = date(today.year, month, day)
+            end = start + timedelta(days=duration)
+            # Include 1 day before and 2 days after for pre/post coverage
+            if (start - timedelta(days=1)) <= today <= (end + timedelta(days=2)):
+                return (
+                    f"## ACTIVE MEETING: {name}\n"
+                    f"The {name} is currently taking place ({start.strftime('%B %d')} - "
+                    f"{end.strftime('%B %d, %Y')}). Pay special attention to:\n"
+                    f"- Late-breaking clinical trial presentations\n"
+                    f"- Simultaneous publications in NEJM, JACC, Lancet, EHJ\n"
+                    f"- Press releases from Edwards, Medtronic, Abbott, Boston Scientific\n"
+                    f"- TCTMD and Cardiovascular Business meeting coverage\n"
+                    f"- Guideline updates or consensus statements\n"
+                    f"When reporting on articles, note if they were presented at {name}. "
+                    f"Frame the digest as covering this major meeting."
+                )
+        except ValueError:
+            continue
+    return ""
 
 SYSTEM_PROMPT = """\
 You are a medical literature and market analyst specializing in structural heart \
@@ -425,10 +463,18 @@ def create_digest(
         f"to Claude ({config.CLAUDE_MODEL}) for summarization"
     )
 
+    # Check if a major meeting is occurring
+    from datetime import date as _date
+    _today = _date.today()
+    _meeting_context = _get_active_meeting_context(_today)
+
     # Inject guidelines knowledge into the system prompt
     from knowledge import get_full_knowledge_context
     knowledge = get_full_knowledge_context()
     system_with_knowledge = SYSTEM_PROMPT
+    if _meeting_context:
+        system_with_knowledge += "\n\n" + _meeting_context
+        logger.info(f"Active meeting context injected")
     if knowledge:
         system_with_knowledge += "\n\n" + knowledge
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
