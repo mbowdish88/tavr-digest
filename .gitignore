@@ -5,3 +5,8 @@ __pycache__/
 data/
 .DS_Store
 =0.2.36
+# Large binary files
+*.psd
+*.flac
+music/
+art work/

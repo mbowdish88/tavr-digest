@@ -1,0 +1,612 @@
+{
+  "meta": {
+    "description": "Structured index of valve guideline recommendations for The Valve Wire editorial engine",
+    "sources": [
+      {
+        "id": "ACCAHA2020",
+        "title": "2020 ACC/AHA Guideline for Management of Patients With Valvular Heart Disease",
+        "citation": "Otto CM et al. J Am Coll Cardiol. 2021;77:e25-197",
+        "year": 2020,
+        "organization": "ACC/AHA"
+      },
+      {
+        "id": "ESC2025",
+        "title": "2025 ESC/EACTS Guidelines for the Management of Valvular Heart Disease",
+        "citation": "Praz F, Borger MA et al. Eur Heart J. 2025;46:4635-4736",
+        "year": 2025,
+        "organization": "ESC/EACTS"
+      }
+    ],
+    "last_updated": "2026-03-27"
+  },
+
+  "aortic_stenosis": {
+    "treatment_decision_framework": {
+      "ACCAHA2020": {
+        "age_cutoffs": {
+          "under_65": "SAVR recommended (Class I, LOE A). No RCT data for TAVI in this group.",
+          "65_to_80": "Either SAVR or transfemoral TAVI recommended after shared decision-making (Class I, LOE A). Balance longevity vs valve durability.",
+          "over_80": "Transfemoral TAVI recommended in preference to SAVR if no anatomic contraindication (Class I, LOE A).",
+          "life_expectancy_less_10y": "Transfemoral TAVI recommended in preference to SAVR (Class I, LOE A).",
+          "life_expectancy_greater_20y": "SAVR recommended (Class I, LOE A)."
+        },
+        "risk_thresholds": {
+          "high_or_prohibitive_risk": "TAVI recommended if post-TAVI survival >12 months with acceptable QoL (Class I, LOE A).",
+          "low_risk": "Both SAVR and TAVI options; age-based decision framework applies.",
+          "prohibitive_risk_above_15_percent": "Palliative care if post-procedure survival <12 months."
+        },
+        "anatomic_criteria": {
+          "BAV": "TAVI may be considered (Class IIb, LOE B-NR). SAVR preferred due to asymmetric calcification.",
+          "transfemoral_access_not_feasible": "SAVR recommended (Class I, LOE A).",
+          "porcelain_aorta": "Favors TAVI.",
+          "small_or_large_annulus": "May favor SAVR for annular enlargement procedures.",
+          "concurrent_severe_CAD_requiring_CABG": "Favors SAVR with concomitant CABG."
+        }
+      },
+      "ESC2025": {
+        "age_cutoffs": {
+          "under_70": "SAVR recommended if surgical risk is low (STS-PROM and EuroSCORE II <4%) (Class I, LOE B).",
+          "70_and_over_tricuspid_AV": "TAVI recommended if anatomy suitable for transfemoral approach (Class I, LOE A).",
+          "all_remaining_bioprosthesis_candidates": "SAVR or TAVI recommended per Heart Team assessment (Class I, LOE B)."
+        },
+        "risk_thresholds": {
+          "low_surgical_risk_definition": "STS-PROM <4% AND EuroSCORE II <4% AND Heart Team assessment.",
+          "unsuitable_for_surgery_and_TF": "Non-transfemoral TAVI should be considered (Class IIa, LOE B)."
+        },
+        "anatomic_criteria": {
+          "BAV": "TAVI may be considered at increased surgical risk if anatomy suitable (Class IIb, LOE B). SAVR remains primary treatment for BAV, especially if young or coexistent aortopathy.",
+          "transfemoral_access_required_for_Class_I_TAVI": true,
+          "non_TF_TAVI_for_inoperable": "Class IIa, LOE B"
+        }
+      }
+    },
+
+    "class_I_recommendations": [
+      {
+        "recommendation": "AVR indicated in symptomatic severe high-gradient AS",
+        "ACCAHA2020": {"COR": "I", "LOE": "A"},
+        "ESC2025": {"COR": "I", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "AVR indicated in asymptomatic severe AS with LVEF <50%",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "AVR indicated in symptomatic low-flow low-gradient severe AS with reduced LVEF after confirmation",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "AVR indicated in asymptomatic severe AS undergoing other cardiac surgery",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "C"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "Heart Team assessment required for mode of intervention",
+        "ACCAHA2020": {"COR": "I", "LOE": "C-EO"},
+        "ESC2025": {"COR": "I", "LOE": "C"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "TAVI recommended for elderly patients with suitable anatomy",
+        "ACCAHA2020": {"detail": ">80 years or life expectancy <10y, Class I LOE A"},
+        "ESC2025": {"detail": ">=70 years with tricuspid AV and suitable anatomy, Class I LOE A"},
+        "agreement": "DISAGREE on age threshold: ACC/AHA uses 80, ESC uses 70"
+      },
+      {
+        "recommendation": "SAVR recommended for younger patients",
+        "ACCAHA2020": {"detail": "<65 years or life expectancy >20y, Class I LOE A"},
+        "ESC2025": {"detail": "<70 years if surgical risk is low, Class I LOE B"},
+        "agreement": "DISAGREE on age threshold: ACC/AHA uses 65, ESC uses 70"
+      }
+    ],
+
+    "class_IIa_recommendations": [
+      {
+        "recommendation": "AVR reasonable in asymptomatic very severe AS (Vmax >=5 m/s) with low surgical risk",
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+        "ESC2025": {"COR": "IIa", "LOE": "B", "note": "Grouped with other triggers: severe calcification + rapid progression, elevated BNP, LVEF <55%"}
+      },
+      {
+        "recommendation": "AVR reasonable in asymptomatic severe AS with abnormal exercise test",
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+        "ESC2025": {"COR": "IIa", "LOE": "C"}
+      },
+      {
+        "recommendation": "AVR reasonable in asymptomatic severe AS with BNP >3x normal",
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+        "ESC2025": {"COR": "IIa", "LOE": "B", "note": "Listed as trigger within composite recommendation"}
+      },
+      {
+        "recommendation": "Early intervention should be considered as alternative to watchful waiting in asymptomatic severe high-gradient AS with low procedural risk",
+        "ACCAHA2020": "Not explicitly a Class IIa recommendation in 2020 (preceded EARLY TAVR trial)",
+        "ESC2025": {"COR": "IIa", "LOE": "A", "note": "NEW recommendation based on EARLY TAVR, RECOVERY, AVATAR, EVoLVeD trials"}
+      },
+      {
+        "recommendation": "Intervention should be considered in symptomatic low-flow low-gradient AS with preserved LVEF after confirmation",
+        "ACCAHA2020": "Not explicitly separated",
+        "ESC2025": {"COR": "IIa", "LOE": "B"}
+      },
+      {
+        "recommendation": "Non-transfemoral TAVI should be considered for inoperable patients without TF access",
+        "ACCAHA2020": "Not explicitly addressed as Class IIa",
+        "ESC2025": {"COR": "IIa", "LOE": "B"}
+      }
+    ],
+
+    "class_IIb_recommendations": [
+      {
+        "recommendation": "AVR may be considered in asymptomatic severe AS with rapid Vmax progression >=0.3 m/s/year",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "B-NR"},
+        "ESC2025": "Incorporated as IIa trigger (upgrade)"
+      },
+      {
+        "recommendation": "AVR may be considered in asymptomatic severe AS with progressive decrease in LVEF to <60%",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "C-EO"},
+        "ESC2025": "Incorporated as IIa trigger: LVEF <55% (upgrade and stricter threshold)"
+      },
+      {
+        "recommendation": "AVR may be considered in moderate AS undergoing other cardiac surgery",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "C-EO"},
+        "ESC2025": {"COR": "IIa", "LOE": "C", "note": "Upgraded to IIa"}
+      },
+      {
+        "recommendation": "TAVI may be considered for BAV stenosis at increased surgical risk if anatomy suitable",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "B-NR"},
+        "ESC2025": {"COR": "IIb", "LOE": "B"}
+      },
+      {
+        "recommendation": "Balloon aortic valvotomy may be considered as bridge",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "C-EO"},
+        "ESC2025": {"COR": "IIb", "LOE": "C"}
+      }
+    ],
+
+    "class_III_recommendations": [
+      {
+        "recommendation": "Palliative care recommended if post-procedure survival <12 months or minimal QoL improvement expected",
+        "ACCAHA2020": {"COR": "I for palliative care", "LOE": "C-EO"},
+        "note": "Not Class III per se, but explicit recommendation against intervention in futile cases"
+      }
+    ],
+
+    "key_trials": [
+      "PARTNER (high risk, balloon-expandable vs medical therapy/SAVR)",
+      "PARTNER 2 (intermediate risk, balloon-expandable vs SAVR)",
+      "PARTNER 3 (low risk, balloon-expandable vs SAVR)",
+      "Evolut Low Risk (low risk, self-expanding vs SAVR)",
+      "DEDICATE (low risk, investigator-initiated, TAVI vs SAVR - cited only by ESC 2025)",
+      "NOTION (all-risk, self-expanding vs SAVR)",
+      "NOTION 2 (includes BAV subgroup - cited only by ESC 2025)",
+      "EARLY TAVR (asymptomatic severe AS, TAVI vs surveillance - cited only by ESC 2025)",
+      "EVoLVeD (asymptomatic severe AS with fibrosis, early intervention vs surveillance - cited only by ESC 2025)",
+      "RECOVERY (asymptomatic very severe AS, early SAVR vs surveillance)",
+      "AVATAR (asymptomatic severe AS, early SAVR vs surveillance)"
+    ]
+  },
+
+  "aortic_regurgitation": {
+    "class_I_recommendations": [
+      {
+        "recommendation": "AV surgery recommended in symptomatic severe AR regardless of LV function",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "AV surgery recommended in asymptomatic severe AR with LV dysfunction",
+        "ACCAHA2020": {"detail": "LVEF <=55% or LVESD >50mm or LVESDi >25mm/m2", "COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"detail": "LVESD >50mm or LVESDi >25mm/m2 or LVEF <=50%", "COR": "I", "LOE": "B"},
+        "agreement": "Slight difference in LVEF threshold: ACC/AHA <=55%, ESC <=50% for Class I"
+      },
+      {
+        "recommendation": "AV surgery recommended in severe AR patients undergoing other cardiac surgery",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "C"},
+        "agreement": "Full agreement"
+      }
+    ],
+
+    "class_IIa_recommendations": [
+      {
+        "recommendation": "AV repair should be considered in selected patients at experienced centres when durable results expected",
+        "ESC2025": {"COR": "IIa", "LOE": "C"},
+        "ACCAHA2020": "Not explicitly a separate recommendation"
+      }
+    ],
+
+    "class_IIb_recommendations": [
+      {
+        "recommendation": "AV surgery may be considered in asymptomatic severe AR with LVESDi >22mm/m2 or LVESVi >45mL/m2 or LVEF <=55% if low surgical risk",
+        "ESC2025": {"COR": "IIb", "LOE": "B"},
+        "ACCAHA2020": "Partially covered by IIa recommendation with different thresholds"
+      },
+      {
+        "recommendation": "TAVI may be considered for severe AR in symptomatic patients ineligible for surgery if anatomy suitable",
+        "ESC2025": {"COR": "IIb", "LOE": "B"},
+        "ACCAHA2020": "Not addressed (emerging technology at time of publication)"
+      }
+    ],
+
+    "surgical_vs_transcatheter": {
+      "summary": "Surgery remains the standard for AR. TAVI for AR is only IIb in ESC 2025 for inoperable patients. ACC/AHA 2020 did not address TAVI for AR. This is a purely surgical domain in both guidelines."
+    }
+  },
+
+  "mitral_regurgitation": {
+    "primary_MR": {
+      "class_I_recommendations": [
+        {
+          "recommendation": "MV intervention recommended in symptomatic severe primary MR",
+          "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+          "ESC2025": {"COR": "I", "LOE": "B"},
+          "agreement": "Full agreement"
+        },
+        {
+          "recommendation": "MV surgery recommended in asymptomatic severe primary MR with LV dysfunction (LVEF <=60% or LVESD >=40mm)",
+          "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+          "ESC2025": {"COR": "I", "LOE": "B", "detail": "LVESD >=40mm or LVESDi >=20mm/m2 or LVEF <=60%"},
+          "agreement": "Full agreement; ESC adds indexed threshold"
+        },
+        {
+          "recommendation": "MV repair preferred over replacement when durable result expected",
+          "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+          "ESC2025": {"COR": "I", "LOE": "B"},
+          "agreement": "Full agreement"
+        },
+        {
+          "recommendation": "Surgical MV repair recommended in low-risk asymptomatic patients with severe PMR and preserved LV function if criteria met",
+          "ACCAHA2020": "Not a Class I; listed as IIa with >95% success rate and <1% mortality",
+          "ESC2025": {"COR": "I", "LOE": "B", "detail": "If at least 3 of: AF, SPAP >50mmHg, LAVI >=60mL/m2, concomitant TR >=moderate"},
+          "agreement": "DISAGREE: ESC 2025 upgrades early repair to Class I with specific criteria; ACC/AHA 2020 had as IIa"
+        }
+      ],
+
+      "class_IIa_recommendations": [
+        {
+          "recommendation": "TEER should be considered in symptomatic severe PMR at high surgical risk with suitable anatomy",
+          "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR", "detail": "NYHA III-IV, high/prohibitive surgical risk"},
+          "ESC2025": {"COR": "IIa", "LOE": "B"},
+          "agreement": "Full agreement"
+        },
+        {
+          "recommendation": "Early MV repair reasonable in asymptomatic severe PMR with normal LV function if >95% repair success",
+          "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+          "ESC2025": {"detail": "Upgraded to Class I with specific criteria (see above)"},
+          "agreement": "ESC upgraded this"
+        },
+        {
+          "recommendation": "MV surgery should be considered in asymptomatic PMR with PH (SPAP >50mmHg) or new AF",
+          "ESC2025": {"COR": "IIa", "LOE": "B"},
+          "ACCAHA2020": "Partially covered"
+        }
+      ],
+
+      "class_IIb_recommendations": [
+        {
+          "recommendation": "Minimally invasive MV surgery may be considered at experienced centres",
+          "ESC2025": {"COR": "IIb", "LOE": "B"},
+          "ACCAHA2020": "Not explicitly classified"
+        }
+      ],
+
+      "class_III_recommendations": [
+        {
+          "recommendation": "MV replacement should not be performed for limited posterior leaflet disease unless repair attempted and failed at experienced centre",
+          "ACCAHA2020": {"COR": "III Harm", "LOE": "B-NR"},
+          "ESC2025": "Implied by repair-first strategy"
+        }
+      ]
+    },
+
+    "secondary_MR": {
+      "ventricular_SMR": {
+        "class_I_recommendations": [
+          {
+            "recommendation": "GDMT optimization mandatory before considering intervention",
+            "ACCAHA2020": {"COR": "I", "LOE": "A"},
+            "ESC2025": {"COR": "I", "LOE": "A", "note": "Includes SGLT2i in GDMT regimen (newer)"},
+            "agreement": "Full agreement; ESC adds SGLT2i"
+          },
+          {
+            "recommendation": "TEER recommended for symptomatic ventricular SMR with LVEF <50% on optimized GDMT meeting COAPT criteria",
+            "ACCAHA2020": {"COR": "IIa", "LOE": "B-R", "detail": "LVEF 20-50%, LVESD <=70mm, PASP <=70mmHg"},
+            "ESC2025": {"COR": "I", "LOE": "A", "detail": "Fulfilling specific clinical and echo criteria (Table 7)"},
+            "agreement": "MAJOR DISAGREEMENT: ESC 2025 upgraded TEER for ventricular SMR from IIa to Class I based on COAPT 5-year data, RESHAPE-HF2, and meta-analysis"
+          },
+          {
+            "recommendation": "MV surgery recommended in severe ventricular SMR undergoing CABG",
+            "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+            "ESC2025": {"COR": "I", "LOE": "B"},
+            "agreement": "ESC upgraded to Class I"
+          }
+        ],
+
+        "class_IIb_recommendations": [
+          {
+            "recommendation": "TEER may be considered for symptomatic ventricular SMR NOT meeting COAPT criteria after evaluation for LVAD/HTx",
+            "ESC2025": {"COR": "IIb", "LOE": "B"},
+            "ACCAHA2020": "Not explicitly addressed"
+          },
+          {
+            "recommendation": "MV surgery may be considered in severe ventricular SMR without advanced HF, not suitable for TEER",
+            "ESC2025": {"COR": "IIb", "LOE": "C"},
+            "ACCAHA2020": {"COR": "IIb", "LOE": "B-NR"}
+          },
+          {
+            "recommendation": "MV surgery may be considered in moderate SMR undergoing CABG",
+            "ESC2025": {"COR": "IIb", "LOE": "B"},
+            "ACCAHA2020": "Not explicitly addressed"
+          }
+        ],
+
+        "COAPT_criteria_for_TEER": {
+          "anatomy": "Suitable for M-TEER",
+          "NYHA": ">=II",
+          "LVEF": "20-50%",
+          "LVESD": "<=70mm",
+          "SPAP": "<=70mmHg",
+          "HF_hospitalization": "At least one within previous year or elevated natriuretic peptides (BNP >=300 or NT-proBNP >=1000)",
+          "exclusions": ["Severe RV dysfunction", "Stage D / advanced HF", "CAD requiring revascularization", "Severe AV/TV disease", "Hypertrophic/restrictive/infiltrative cardiomyopathy"]
+        }
+      },
+
+      "atrial_SMR": {
+        "class_IIa_recommendations": [
+          {
+            "recommendation": "MV surgery + surgical AF ablation + LAAO should be considered in symptomatic severe atrial SMR on optimal medical therapy",
+            "ESC2025": {"COR": "IIa", "LOE": "B"},
+            "ACCAHA2020": {"COR": "IIb", "LOE": "B-NR", "note": "Less specific, mentioned MV surgery for annular dilation with preserved LV function"},
+            "agreement": "ESC more specific and upgraded vs ACC/AHA"
+          }
+        ],
+
+        "class_IIb_recommendations": [
+          {
+            "recommendation": "TEER may be considered in symptomatic atrial SMR not eligible for surgery",
+            "ESC2025": {"COR": "IIb", "LOE": "B"},
+            "ACCAHA2020": "Not specifically addressed for atrial SMR"
+          }
+        ],
+
+        "definition_ESC2025": {
+          "LVEF": ">=50%",
+          "no_regional_wall_motion_abnormalities": true,
+          "no_or_mild_LV_dilation": true,
+          "MA_dilation": "AP diameter >35mm",
+          "LA_enlargement": "LAVI >34mL/m2"
+        }
+      },
+
+      "key_trials": [
+        "COAPT (MitraClip vs GDMT for ventricular SMR - positive at 2 and 5 years)",
+        "MITRA-FR (MitraClip vs GDMT for ventricular SMR - neutral at 1 and 2 years)",
+        "RESHAPE-HF2 (MitraClip vs GDMT for ventricular SMR - positive for HF hospitalization reduction)",
+        "MATTERHORN (TEER vs surgery for ventricular SMR - non-inferiority, better safety with TEER)"
+      ]
+    }
+  },
+
+  "mitral_stenosis": {
+    "rheumatic_MS": {
+      "class_I_recommendations": [
+        {
+          "recommendation": "PMC recommended in symptomatic patients without unfavourable characteristics",
+          "ACCAHA2020": {"COR": "I", "LOE": "A"},
+          "ESC2025": {"COR": "I", "LOE": "B"},
+          "agreement": "Full agreement"
+        },
+        {
+          "recommendation": "PMC recommended in symptomatic patients with contraindication or high risk for surgery",
+          "ESC2025": {"COR": "I", "LOE": "C"},
+          "ACCAHA2020": "Covered within intervention recommendations"
+        },
+        {
+          "recommendation": "MV surgery recommended in symptomatic patients not suitable for PMC",
+          "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+          "ESC2025": {"COR": "I", "LOE": "C"},
+          "agreement": "Full agreement"
+        }
+      ],
+
+      "class_IIa_recommendations": [
+        {
+          "recommendation": "PMC should be considered as initial treatment in symptomatic patients with suboptimal anatomy but no unfavourable clinical characteristics",
+          "ESC2025": {"COR": "IIa", "LOE": "C"},
+          "ACCAHA2020": "Covered in nuanced fashion"
+        },
+        {
+          "recommendation": "PMC should be considered in asymptomatic patients without unfavourable characteristics if high thromboembolic risk or high risk of hemodynamic decompensation",
+          "ESC2025": {"COR": "IIa", "LOE": "C"},
+          "ACCAHA2020": "Similar recommendation"
+        }
+      ]
+    },
+
+    "degenerative_MS_with_MAC": {
+      "class_IIb_recommendations": [
+        {
+          "recommendation": "TMVI may be considered in symptomatic patients with extensive MAC and severe MV dysfunction at experienced centres",
+          "ESC2025": {"COR": "IIb", "LOE": "C"},
+          "ACCAHA2020": "Not explicitly addressed with TMVI"
+        }
+      ],
+      "note": "Both guidelines acknowledge this is a high-risk population with limited options. ESC 2025 explicitly mentions dedicated TMVI devices as safer than off-label TAVI-in-MAC."
+    }
+  },
+
+  "tricuspid_regurgitation": {
+    "class_I_recommendations": [
+      {
+        "recommendation": "Heart Team evaluation recommended before intervention for severe TR",
+        "ESC2025": {"COR": "I", "LOE": "C"},
+        "ACCAHA2020": "Implied but not separate recommendation"
+      },
+      {
+        "recommendation": "Concomitant TV surgery recommended in severe TR during left-sided valve surgery",
+        "ACCAHA2020": {"COR": "I", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "TV surgery recommended in symptomatic severe primary TR without severe RV dysfunction or PH",
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR"},
+        "ESC2025": {"COR": "I", "LOE": "C"},
+        "agreement": "ESC upgraded from IIa to Class I"
+      }
+    ],
+
+    "class_IIa_recommendations": [
+      {
+        "recommendation": "Concomitant TV repair should be considered in moderate TR during left-sided surgery",
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR", "detail": "With annular dilation >40mm or prior RHF signs"},
+        "ESC2025": {"COR": "IIa", "LOE": "B"},
+        "agreement": "Full agreement"
+      },
+      {
+        "recommendation": "TV surgery should be considered in asymptomatic severe primary TR with RV dilation/dysfunction",
+        "ESC2025": {"COR": "IIa", "LOE": "C"},
+        "ACCAHA2020": {"COR": "IIb", "LOE": "C-LD"},
+        "agreement": "ESC upgraded"
+      },
+      {
+        "recommendation": "TV surgery should be considered in severe secondary TR with symptoms or RV dilation/dysfunction",
+        "ESC2025": {"COR": "IIa", "LOE": "B"},
+        "ACCAHA2020": {"COR": "IIa", "LOE": "B-NR", "note": "Only for annular dilation type without PH or LV disease"}
+      },
+      {
+        "recommendation": "Transcatheter TV treatment should be considered in high-risk patients with symptomatic severe TR despite optimal medical therapy without severe RV dysfunction or pre-capillary PH",
+        "ESC2025": {"COR": "IIa", "LOE": "A"},
+        "ACCAHA2020": "Not addressed (TRILUMINATE not yet published)",
+        "agreement": "NEW ESC 2025 recommendation - major advance"
+      }
+    ],
+
+    "class_IIb_recommendations": [
+      {
+        "recommendation": "Concomitant TV repair may be considered in mild secondary TR with annular dilation (>=40mm) during left-sided surgery",
+        "ESC2025": {"COR": "IIb", "LOE": "B"},
+        "ACCAHA2020": "Not specifically addressed at mild TR level"
+      },
+      {
+        "recommendation": "Isolated TV surgery may be considered after previous left-sided surgery without severe PH or RV dysfunction",
+        "ACCAHA2020": {"COR": "IIb", "LOE": "B-NR"},
+        "ESC2025": "Covered within IIa for secondary TR"
+      }
+    ],
+
+    "key_trials": [
+      "TRILUMINATE Pivotal (tricuspid TEER vs medical therapy - positive for QoL, HF hospitalizations at 2y - cited only by ESC 2025)",
+      "Tri.Fr (tricuspid TEER + GDMT vs GDMT - positive composite driven by PROMs - cited only by ESC 2025)",
+      "TRISCEND II (transcatheter TV replacement vs medical therapy - positive for symptoms/QoL - cited only by ESC 2025)"
+    ],
+
+    "surgical_vs_transcatheter": {
+      "summary": "ESC 2025 introduced transcatheter TR treatment as Class IIa (LOE A) for high-risk symptomatic patients. ACC/AHA 2020 did not address transcatheter TR therapy at all. This is one of the biggest advances between the two guidelines."
+    }
+  },
+
+  "prosthetic_valve_selection": {
+    "mechanical_vs_bioprosthetic": {
+      "ACCAHA2020": {
+        "mechanical_preferred": "Age <50 (Class IIa, LOE B-R)",
+        "individualized": "Age 50-65 (Class IIa, LOE B-R)",
+        "bioprosthetic_preferred": "Age >65 (Class IIa, LOE B-R)"
+      },
+      "ESC2025": {
+        "mechanical_preferred": "Age <60 in aortic position",
+        "bioprosthetic_preferred": "Age >65 in aortic position",
+        "patient_preference_paramount": "Both MHV and BHV are Class I recommendations based on informed patient desire"
+      }
+    }
+  },
+
+  "antithrombotic_therapy_post_TAVI": {
+    "ESC2025_Class_I": "Low-dose ASA (75-100mg/day) for 12 months after TAVI without OAC indication (Class I, LOE A)",
+    "ESC2025_Class_III": [
+      "DAPT not recommended after TAVI unless clear indication (Class III, LOE A)",
+      "Routine OAC not recommended after TAVI without baseline indication (Class III, LOE A)"
+    ],
+    "ACCAHA2020": "SAPT (aspirin) or DAPT for 3-6 months, with less definitive recommendation"
+  },
+
+  "guideline_agreements": [
+    "Symptomatic severe AS requires intervention regardless of risk level",
+    "Heart Team decision-making is mandatory for all severe VHD",
+    "MV repair preferred over replacement for primary MR",
+    "GDMT optimization required before any intervention for secondary MR",
+    "Concomitant TV surgery recommended for severe TR during left-sided surgery",
+    "Bioprosthetic valve preferred in elderly; mechanical in young patients",
+    "BAV remains primarily surgical territory",
+    "Palliative care appropriate when survival <12 months even with intervention",
+    "Valve-sparing aortic root replacement recommended in young patients with aortic root disease"
+  ],
+
+  "guideline_disagreements": [
+    {
+      "topic": "Age threshold for TAVI as primary treatment in AS",
+      "ACCAHA2020": ">80 years (Class I) or 65-80 shared decision",
+      "ESC2025": ">=70 years with tricuspid AV (Class I)",
+      "significance": "CRITICAL: ESC expanded TAVI indication by 10 years, reflecting DEDICATE, longer follow-up data",
+      "editorial_angle": "This is the single most impactful change for TAVI volumes globally"
+    },
+    {
+      "topic": "Age threshold below which SAVR is preferred",
+      "ACCAHA2020": "<65 years",
+      "ESC2025": "<70 years if low surgical risk",
+      "significance": "HIGH: 5-year difference. ESC acknowledges limited RCT data <70",
+      "editorial_angle": "The 65-70 age gap is the key battleground. ESC is more conservative than ACC/AHA for this group"
+    },
+    {
+      "topic": "TEER for ventricular secondary MR",
+      "ACCAHA2020": "Class IIa (reasonable)",
+      "ESC2025": "Class I (recommended)",
+      "significance": "CRITICAL: ESC upgraded based on COAPT 5-year, RESHAPE-HF2 data",
+      "editorial_angle": "MitraClip is now a Class I therapy in Europe for properly selected patients"
+    },
+    {
+      "topic": "Transcatheter tricuspid valve treatment",
+      "ACCAHA2020": "Not addressed",
+      "ESC2025": "Class IIa, LOE A",
+      "significance": "CRITICAL: Entirely new therapy class since 2020",
+      "editorial_angle": "TRILUMINATE and TRISCEND II created an entirely new treatment paradigm"
+    },
+    {
+      "topic": "Early intervention in asymptomatic severe AS",
+      "ACCAHA2020": "IIa for very severe AS, IIb for rapid progression",
+      "ESC2025": "IIa for all asymptomatic severe high-gradient AS with low procedural risk (based on EARLY TAVR, RECOVERY, AVATAR)",
+      "significance": "HIGH: ESC supports broader early intervention",
+      "editorial_angle": "EARLY TAVR trial fundamentally changed the watchful waiting paradigm"
+    },
+    {
+      "topic": "Surgical repair for primary MR in asymptomatic patients with preserved LV",
+      "ACCAHA2020": "Class IIa with strict criteria (>95% repair success, <1% mortality)",
+      "ESC2025": "Class I if 3+ criteria (AF, SPAP, LA dilation, TR) at experienced centres",
+      "significance": "MODERATE: ESC expanded indications for early surgery",
+      "editorial_angle": "More asymptomatic patients will be referred for surgery under ESC guidelines"
+    },
+    {
+      "topic": "TAVI for aortic regurgitation",
+      "ACCAHA2020": "Not addressed",
+      "ESC2025": "Class IIb for inoperable patients with suitable anatomy",
+      "significance": "LOW-MODERATE: New option for inoperable AR patients"
+    },
+    {
+      "topic": "TV surgery for symptomatic primary TR",
+      "ACCAHA2020": "Class IIa",
+      "ESC2025": "Class I",
+      "significance": "MODERATE: ESC reflects growing recognition of TR burden"
+    },
+    {
+      "topic": "Atrial secondary MR as distinct entity",
+      "ACCAHA2020": "Briefly mentioned; treatment Class IIb",
+      "ESC2025": "Formal definition, separate management pathway, Class IIa for surgery + AF ablation + LAAO",
+      "significance": "MODERATE: ESC provides first structured framework for atrial SMR"
+    }
+  ]
+}

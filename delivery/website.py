@@ -254,8 +254,12 @@ def build_website_data(
             "change_6m_pct": data.get("change_6m_pct", 0),
         }
 
-    # Get podcast info
-    podcast_info = _get_latest_podcast()
+    # Get podcast episodes
+    all_episodes = _get_all_podcast_episodes()
+    latest_episode = all_episodes[0] if all_episodes else {
+        "title": "The Valve Wire Weekly", "date": "", "duration": "",
+        "mp3_url": "", "show_notes": "No episodes yet.",
+    }
 
     return {
         "date": today,
@@ -263,36 +267,34 @@ def build_website_data(
         "key_points": key_points or [],
         "sections": sections,
         "stocks": stocks,
-        "podcast": {"latest_episode": podcast_info},
+        "podcast": {
+            "latest_episode": latest_episode,
+            "all_episodes": all_episodes,
+        },
         "digest_html": digest_html,
     }
 
 
-def _get_latest_podcast() -> dict:
-    """Get info about the latest podcast episode."""
+def _get_all_podcast_episodes() -> list:
+    """Get all podcast episodes."""
     episodes_file = config.BASE_DIR / "data" / "podcast_episodes.json"
     if episodes_file.exists():
         try:
             episodes = json.loads(episodes_file.read_text())
-            if episodes:
-                ep = episodes[-1]
-                return {
+            return [
+                {
                     "title": ep.get("title", "The Valve Wire Weekly"),
-                    "date": ep.get("date", ""),
+                    "date": ep.get("episode_date", ep.get("date", "")),
                     "duration": ep.get("duration", ""),
                     "mp3_url": ep.get("mp3_url", ""),
-                    "show_notes": ep.get("show_notes", ""),
+                    "show_notes": ep.get("description", ep.get("show_notes", "")),
+                    "show_notes_html": ep.get("show_notes_html", ""),
                 }
+                for ep in reversed(episodes)  # newest first
+            ]
         except Exception:
             pass
-
-    return {
-        "title": "The Valve Wire Weekly",
-        "date": "",
-        "duration": "",
-        "mp3_url": "",
-        "show_notes": "No episodes yet.",
-    }
+    return []
 
 
 def _github_api_put_file(token: str, path: str, content: str, message: str) -> bool:
