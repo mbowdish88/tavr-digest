@@ -394,8 +394,8 @@ def run_weekly_summary():
         logger.error(f"Weekly email failed: {e}", exc_info=True)
         return
 
-    # Clear daily digests after successful send
-    clear_week_digests()
+    # Daily digests are NEVER cleared — they are the permanent foundation
+    # for the weekly, podcast, website archive, and all future features
     logger.info("=== The Valve Wire Weekly complete ===")
 
 
