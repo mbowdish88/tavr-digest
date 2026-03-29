@@ -136,7 +136,7 @@ def _extract_executive_summary(digest_html: str) -> str:
             # Strip HTML tags for clean text
             text = re.sub(r'<[^>]+>', ' ', match.group(1))
             text = re.sub(r'\s+', ' ', text).strip()
-            return text[:1000]  # Cap at 1000 chars
+            return text[:3000]  # Allow full executive summary
     return ""
 
 
@@ -288,13 +288,22 @@ def build_website_data(
             "sponsor": t.get("lead_sponsor", t.get("sponsor")),
         })
 
-    # Format stock data
+    # Format stock data with price history
     stocks = {}
     for ticker, data in stock_data.items():
         if ticker.startswith("_"):
             continue
         if not isinstance(data, dict):
             continue
+
+        # Get price history for charts
+        history = []
+        if data.get("chart_url"):
+            # The history is stored during fetch_stock_data in all_histories
+            # We need to pass it through — check for dates/closes arrays
+            pass
+
+        history = data.get("price_history", {})
         stocks[ticker] = {
             "company": data.get("company", ticker),
             "price": data.get("close_price", 0),
@@ -302,6 +311,14 @@ def build_website_data(
             "change_pct": data.get("change_pct", 0),
             "change_6m": data.get("change_6m", 0),
             "change_6m_pct": data.get("change_6m_pct", 0),
+            "high_6m": data.get("high_6m", 0),
+            "low_6m": data.get("low_6m", 0),
+            "market_cap": data.get("market_cap"),
+            "pe_ratio": data.get("pe_ratio"),
+            "target_price": data.get("target_price"),
+            "recommendation": data.get("recommendation", ""),
+            "next_earnings_date": data.get("next_earnings_date"),
+            "price_history": history,
         }
 
     # Get podcast episodes
