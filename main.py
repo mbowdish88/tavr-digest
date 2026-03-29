@@ -548,14 +548,7 @@ if __name__ == "__main__":
             if "--test-weekly" not in sys.argv:
                 sys.exit(0)
 
-        # Daily digest on weekdays (skip weekends/holidays)
-        if not is_publish_day():
-            logger.info(
-                f"Today is {date.today().strftime('%A, %B %d')} — "
-                f"skipping daily digest (weekend or holiday)."
-            )
-            sys.exit(0)
-
+        # Daily digest runs every day (including weekends for meeting coverage)
         run_daily_digest()
     except KeyboardInterrupt:
         logger.info("Interrupted by user.")
