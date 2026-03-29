@@ -2,8 +2,8 @@ name: Daily Valve Wire Digest
 
 on:
   schedule:
-    # 6 AM US Central (UTC-6) = 12:00 UTC, weekdays only
-    - cron: '0 12 * * 1-5'
+    # 6 AM US Central (UTC-6) = 12:00 UTC, every day
+    - cron: '0 12 * * *'
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:
