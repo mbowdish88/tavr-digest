@@ -309,6 +309,7 @@ def fetch_stock_data() -> dict:
                 "change_6m_pct": round(change_6m_pct, 2),
                 "volume": volume,
                 "market_cap": market_cap,
+                "price_history": {"dates": dates, "closes": closes},
                 "pe_ratio": round(pe_ratio, 2) if pe_ratio else None,
                 "forward_pe": round(forward_pe, 2) if forward_pe else None,
                 "beta": round(beta, 2) if beta else None,
