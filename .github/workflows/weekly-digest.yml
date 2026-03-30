@@ -24,14 +24,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Restore weekly digest cache
-        uses: actions/cache@v4
-        with:
-          path: data/weekly
-          key: weekly-digests-${{ github.run_number }}
-          restore-keys: |
-            weekly-digests-
-
       - name: Run weekly summary
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

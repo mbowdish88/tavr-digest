@@ -2,7 +2,9 @@ venv/
 __pycache__/
 *.pyc
 .env
-data/
+data/*
+!data/weekly/
+!data/podcast_episodes.json
 .DS_Store
 =0.2.36
 # Large binary files
