@@ -66,7 +66,7 @@ Each module fetches from one external API/feed and returns a list of article dic
 - `emailer.py` - SMTP email with HTML+plain-text via Jinja2 templates
 - `beehiiv.py` - Publishes via Beehiiv API v2 (automated newsletter delivery to subscribers)
 - `site.py` - GitHub Pages publication to `docs/` directory
-- `website.py` - Vercel website API (structured JSON push)
+- `website.py` - Builds structured JSON (article classification, OG images, stock data, podcast episodes) and pushes to `mbowdish88/thevalvewire-site` via GitHub API for Vercel deployment. Merges with previous day's data when content is sparse (<5 articles).
 - `substack.py` - Substack integration
 
 ### Podcast (`podcast/`)

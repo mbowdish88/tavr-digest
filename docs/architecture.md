@@ -27,7 +27,8 @@ graph TB
         EMAIL[Email<br/>SMTP + Jinja2]
         BEE[Beehiiv<br/>API v2]
         PAGES[GitHub Pages<br/>docs/]
-        WEB[Vercel Website<br/>JSON API]
+        WEB[website.py<br/>Build JSON + Classify]
+        WEB_REPO[thevalvewire-site<br/>Vercel via GitHub API]
     end
 
     subgraph Weekly["📅 Weekly Pipeline"]
@@ -68,6 +69,7 @@ graph TB
 
     %% Daily Delivery
     CLAUDE_D --> EMAIL & BEE & PAGES & WEB
+    WEB -->|GitHub API push| WEB_REPO
     FALLBACK --> EMAIL
 
     %% Weekly
@@ -100,7 +102,7 @@ graph TB
 
     class PUB,PRE,JRN,NEWS,REG,TRI,STK,SOC,FIN source
     class MAIN,DEDUP,CLAUDE_D,FALLBACK process
-    class EMAIL,BEE,PAGES,WEB deliver
+    class EMAIL,BEE,PAGES,WEB,WEB_REPO deliver
     class SCRIPT,TTS,AUDIO,TRANS,NOTES,PUB_POD,RSS podcast
     class BOT,MON,SUM ops
     class GUIDE,PAPERS knowledge
@@ -234,6 +236,73 @@ graph LR
     assembler --> audio_processing
 ```
 
+## Vercel Website Data Flow
+
+The Vercel website lives in a separate repo (`mbowdish88/thevalvewire-site`) and receives structured JSON from `delivery/website.py` via the GitHub API.
+
+```mermaid
+flowchart TB
+    subgraph tavr-digest["tavr-digest repo"]
+        MAIN[main.py] --> BUILD[website.py<br/>build_website_data]
+        
+        BUILD --> CLASS[Classify Articles<br/>aortic/mitral/tricuspid<br/>surgical/trials/regulatory/financial]
+        BUILD --> OG[Fetch OG Images<br/>first 20 articles]
+        BUILD --> SUMMARY[Extract Executive<br/>Summary + Key Points]
+        BUILD --> STOCKS[Format Stock Data<br/>EW MDT ABT BSX AVR.AX]
+        BUILD --> POD_EP[Load Podcast<br/>Episodes]
+    end
+
+    subgraph push["GitHub API Push"]
+        CLASS & OG & SUMMARY & STOCKS & POD_EP --> JSON[Structured JSON]
+        JSON --> MERGE{Sparse today?<br/>< 5 articles}
+        MERGE -->|yes| FILL[Fill empty sections<br/>from previous day]
+        MERGE -->|no| PUSH[Push to repo]
+        FILL --> PUSH
+    end
+
+    subgraph website["thevalvewire-site repo (Vercel)"]
+        PUSH --> LATEST[public/data/<br/>latest.json]
+        PUSH --> ARCHIVE[public/data/digests/<br/>YYYY-MM-DD.json]
+        LATEST --> VERCEL[Vercel Deployment]
+    end
+
+    style tavr-digest fill:#fff3e0,stroke:#f57c00
+    style push fill:#e1f5fe,stroke:#0288d1
+    style website fill:#e8f5e9,stroke:#388e3c
+```
+
+### Website JSON Structure
+
+```
+latest.json
+├── date                    # ISO date
+├── executive_summary       # Extracted from Claude digest HTML
+├── key_points[]            # Up to 5 bullet points
+├── sections
+│   ├── aortic              # TAVR/TAVI articles
+│   ├── mitral              # MitraClip, PASCAL, TMVR
+│   ├── tricuspid           # TriClip, TTVR
+│   ├── surgical            # Surgical vs transcatheter
+│   ├── trials              # ClinicalTrials.gov updates
+│   ├── regulatory          # FDA alerts, approvals
+│   └── financial           # SEC filings, M&A
+│       └── articles[]
+│           ├── id, type, title, source
+│           ├── url, date, abstract
+│           ├── authors, image_url (OG)
+│           └── nct_id, phase, status (trials only)
+├── stocks
+│   └── {ticker}
+│       ├── price, change, change_pct
+│       ├── high_6m, low_6m, change_6m
+│       ├── market_cap, pe_ratio
+│       ├── target_price, recommendation
+│       └── price_history{}
+└── podcast
+    ├── latest_episode
+    └── all_episodes[]
+```
+
 ## Infrastructure
 
 ```mermaid
@@ -257,14 +326,19 @@ graph TB
         BH[Beehiiv]
         TG[Telegram]
         GH_REL[GitHub Releases]
+        GH_API[GitHub API]
     end
 
     subgraph "Publishing"
-        GP[GitHub Pages<br/>docs/]
-        VER[Vercel Website]
+        GP[GitHub Pages<br/>thevalvewire.com/docs]
+        VER_REPO[thevalvewire-site repo]
+        VER[Vercel Deployment]
     end
 
-    D --> CLAUDE & SMTP_SVC & BH & GP & VER
+    D --> CLAUDE & SMTP_SVC & BH & GP
+    D -->|website.py| GH_API
+    GH_API -->|push JSON| VER_REPO
+    VER_REPO --> VER
     W --> CLAUDE & SMTP_SVC & GP
     W -.->|triggers| P
     P --> CLAUDE & OAI & GH_REL
