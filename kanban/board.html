@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Kanban Board</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-hover: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --text-dim: #484f58;
+    --accent: #c9a55a;
+    --column-bg: #161b22;
+    --card-bg: #0d1117;
+    --card-hover: #1c2129;
+    --scrollbar: #30363d;
+    --scrollbar-hover: #484f58;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .header h1 span { color: var(--accent); }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #238636;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .status-dot.stale { background: #d29922; animation: none; }
+  .status-dot.error { background: #f85149; animation: none; }
+
+  .refresh-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+
+  .refresh-btn:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+    border-color: var(--text-dim);
+  }
+
+  /* Project filters */
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-wrap: wrap;
+  }
+
+  .filters-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-right: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+
+  .filter-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .filter-chip.active {
+    border-color: var(--chip-color);
+    color: var(--text);
+  }
+
+  .filter-chip.active .chip-dot {
+    background: var(--chip-color);
+    box-shadow: 0 0 6px var(--chip-color);
+  }
+
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: all 0.15s;
+  }
+
+  .filter-chip:hover {
+    background: var(--surface-hover);
+  }
+
+  .stats {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  /* Board */
+  .board {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px;
+    height: calc(100vh - 110px);
+    overflow-x: auto;
+  }
+
+  .column {
+    flex: 1;
+    min-width: 280px;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    background: var(--column-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .column-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .column-count {
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .column-cards {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .column-cards::-webkit-scrollbar { width: 6px; }
+  .column-cards::-webkit-scrollbar-track { background: transparent; }
+  .column-cards::-webkit-scrollbar-thumb { background: var(--scrollbar); border-radius: 3px; }
+  .column-cards::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+  /* Drop zone */
+  .column-cards.drag-over {
+    background: rgba(201, 165, 90, 0.05);
+    border: 1px dashed var(--accent);
+    border-radius: 6px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: default;
+    transition: all 0.15s;
+    border-left: 3px solid var(--card-project-color);
+  }
+
+  .card:hover {
+    background: var(--card-hover);
+    border-color: var(--text-dim);
+  }
+
+  .card.draggable {
+    cursor: grab;
+  }
+
+  .card.draggable:active { cursor: grabbing; }
+  .card.dragging { opacity: 0.5; transform: rotate(2deg); }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .card-type {
+    font-size: 11px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .card-type.commit { background: #1f3a1f; color: #56d364; }
+  .card-type.pr { background: #1f2a3f; color: #58a6ff; }
+  .card-type.issue { background: #3f2a1f; color: #f0883e; }
+  .card-type.workflow { background: #2a1f3f; color: #bc8cff; }
+  .card-type.custom { background: #3f3a1f; color: var(--accent); }
+
+  .card-project {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .card-title {
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--text);
+    margin-bottom: 6px;
+    word-break: break-word;
+  }
+
+  .card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card-title a:hover { color: var(--accent); }
+
+  .card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  .card-author { color: var(--text-muted); }
+
+  .card-status {
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .card-status.success, .card-status.merged, .card-status.committed { background: #1f3a1f; color: #56d364; }
+  .card-status.failure, .card-status.action_required { background: #3f1f1f; color: #f85149; }
+  .card-status.open { background: #1f3a1f; color: #56d364; }
+  .card-status.closed, .card-status.done { background: #2a1f3f; color: #bc8cff; }
+  .card-status.draft, .card-status.pending, .card-status.queued, .card-status.in_progress { background: #3f3a1f; color: #d29922; }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 24px 16px;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 0.3s;
+  }
+
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+  .loader {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-muted);
+    transform: translateY(100px);
+    transition: transform 0.3s;
+    z-index: 50;
+  }
+
+  .toast.show { transform: translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .board { padding: 8px; gap: 8px; }
+    .column { min-width: 260px; }
+    .header { padding: 12px 16px; }
+    .filters { padding: 8px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="loader"></div>
+</div>
+
+<header class="header">
+  <h1><span>&#9632;</span> Project Kanban</h1>
+  <div class="header-right">
+    <div class="status-indicator">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Connecting...</span>
+    </div>
+    <button class="refresh-btn" onclick="fetchData()" title="Refresh now">Refresh</button>
+  </div>
+</header>
+
+<div class="filters" id="filters">
+  <span class="filters-label">Projects</span>
+  <div class="stats" id="stats"></div>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  // ---------------------------------------------------------------------------
+  // Configuration
+  // ---------------------------------------------------------------------------
+
+  // Try multiple data sources in order
+  const DATA_URLS = [
+    './data/kanban.json',                                          // relative (Vercel)
+    'https://thevalvewire.com/data/kanban.json',                  // production
+  ];
+  const POLL_INTERVAL = 60_000; // 60 seconds
+  const COLUMNS = ['backlog', 'todo', 'in_progress', 'review', 'done'];
+
+  let currentData = null;
+  let activeProjects = new Set();
+  let pollTimer = null;
+  let dataUrl = DATA_URLS[0];
+
+  // ---------------------------------------------------------------------------
+  // Data fetching
+  // ---------------------------------------------------------------------------
+
+  async function fetchData() {
+    for (const url of DATA_URLS) {
+      try {
+        const resp = await fetch(url, { cache: 'no-store' });
+        if (!resp.ok) continue;
+        const data = await resp.json();
+        dataUrl = url;
+        onDataReceived(data);
+        return;
+      } catch (e) {
+        // Try next URL
+      }
+    }
+    setStatus('error', 'Failed to load data');
+    document.getElementById('loading').classList.add('hidden');
+  }
+
+  function onDataReceived(data) {
+    const isFirst = !currentData;
+    currentData = data;
+
+    if (isFirst) {
+      // Initialize project filters - all active
+      activeProjects = new Set(Object.keys(data.projects || {}));
+      buildFilters(data.projects);
+      document.getElementById('loading').classList.add('hidden');
+    }
+
+    renderBoard(data);
+    updateStats(data);
+
+    const updatedAt = data.updated_at ? new Date(data.updated_at) : null;
+    if (updatedAt) {
+      const ago = timeAgo(updatedAt);
+      setStatus('live', `Updated ${ago}`);
+    }
+  }
+
+  function setStatus(state, text) {
+    const dot = document.getElementById('statusDot');
+    const txt = document.getElementById('statusText');
+    dot.className = 'status-dot';
+    if (state === 'stale') dot.classList.add('stale');
+    if (state === 'error') dot.classList.add('error');
+    txt.textContent = text;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Filters
+  // ---------------------------------------------------------------------------
+
+  function buildFilters(projects) {
+    const container = document.getElementById('filters');
+    const statsEl = container.querySelector('.stats');
+
+    // Remove old chips
+    container.querySelectorAll('.filter-chip').forEach(c => c.remove());
+
+    Object.entries(projects).forEach(([key, proj]) => {
+      const chip = document.createElement('button');
+      chip.className = 'filter-chip active';
+      chip.style.setProperty('--chip-color', proj.color);
+      chip.innerHTML = `<span class="chip-dot"></span>${proj.label}`;
+      chip.dataset.project = key;
+
+      chip.addEventListener('click', () => {
+        if (activeProjects.has(key)) {
+          activeProjects.delete(key);
+          chip.classList.remove('active');
+        } else {
+          activeProjects.add(key);
+          chip.classList.add('active');
+        }
+        renderBoard(currentData);
+        updateStats(currentData);
+      });
+
+      container.insertBefore(chip, statsEl);
+    });
+  }
+
+  function updateStats(data) {
+    if (!data) return;
+    let visible = 0;
+    let total = 0;
+    for (const col of Object.values(data.columns || {})) {
+      for (const card of col.cards || []) {
+        total++;
+        if (activeProjects.has(card.project)) visible++;
+      }
+    }
+    document.getElementById('stats').textContent = `${visible} / ${total} cards`;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Board rendering
+  // ---------------------------------------------------------------------------
+
+  function renderBoard(data) {
+    const board = document.getElementById('board');
+    board.innerHTML = '';
+
+    for (const colKey of COLUMNS) {
+      const colData = data.columns?.[colKey];
+      if (!colData) continue;
+
+      const filteredCards = (colData.cards || []).filter(c => activeProjects.has(c.project));
+
+      const col = document.createElement('div');
+      col.className = 'column';
+      col.dataset.column = colKey;
+
+      col.innerHTML = `
+        <div class="column-header">
+          <span class="column-title">${colData.label}</span>
+          <span class="column-count">${filteredCards.length}</span>
+        </div>
+      `;
+
+      const cardsContainer = document.createElement('div');
+      cardsContainer.className = 'column-cards';
+      cardsContainer.dataset.column = colKey;
+
+      // Drop zone events
+      cardsContainer.addEventListener('dragover', e => {
+        e.preventDefault();
+        cardsContainer.classList.add('drag-over');
+      });
+      cardsContainer.addEventListener('dragleave', () => {
+        cardsContainer.classList.remove('drag-over');
+      });
+      cardsContainer.addEventListener('drop', e => {
+        e.preventDefault();
+        cardsContainer.classList.remove('drag-over');
+        const cardData = e.dataTransfer.getData('text/plain');
+        try {
+          const card = JSON.parse(cardData);
+          handleDrop(card, colKey);
+        } catch (err) {
+          // Ignore invalid drops
+        }
+      });
+
+      if (filteredCards.length === 0) {
+        cardsContainer.innerHTML = '<div class="empty-state">No items</div>';
+      } else {
+        filteredCards.forEach(card => {
+          cardsContainer.appendChild(createCardElement(card, data.projects));
+        });
+      }
+
+      col.appendChild(cardsContainer);
+      board.appendChild(col);
+    }
+  }
+
+  function createCardElement(card, projects) {
+    const el = document.createElement('div');
+    el.className = 'card';
+    const projColor = projects[card.project]?.color || '#8b949e';
+    el.style.setProperty('--card-project-color', projColor);
+
+    if (card.draggable) {
+      el.classList.add('draggable');
+      el.draggable = true;
+      el.addEventListener('dragstart', e => {
+        el.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', JSON.stringify(card));
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+      });
+    }
+
+    const projLabel = projects[card.project]?.label || card.project;
+    const timeStr = card.timestamp ? timeAgo(new Date(card.timestamp)) : '';
+
+    el.innerHTML = `
+      <div class="card-top">
+        <span class="card-type ${card.type}">${card.type}</span>
+        <span class="card-project">${projLabel}</span>
+      </div>
+      <div class="card-title">
+        ${card.url ? `<a href="${escapeHtml(card.url)}" target="_blank" rel="noopener">${escapeHtml(card.title)}</a>` : escapeHtml(card.title)}
+      </div>
+      <div class="card-bottom">
+        <span class="card-author">${escapeHtml(card.author)}</span>
+        <span>${timeStr}</span>
+        ${card.status ? `<span class="card-status ${card.status}">${card.status}</span>` : ''}
+      </div>
+    `;
+
+    return el;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Drag and drop (custom tasks only)
+  // ---------------------------------------------------------------------------
+
+  function handleDrop(card, targetColumn) {
+    if (!card.draggable) return;
+    showToast(`Moved "${card.title}" to ${COLUMN_LABELS[targetColumn] || targetColumn}`);
+
+    // Optimistic update: move card locally
+    if (currentData) {
+      for (const col of Object.values(currentData.columns)) {
+        col.cards = col.cards.filter(c => c.id !== card.id);
+      }
+      if (currentData.columns[targetColumn]) {
+        card.timestamp = new Date().toISOString();
+        currentData.columns[targetColumn].cards.unshift(card);
+      }
+      renderBoard(currentData);
+      updateStats(currentData);
+    }
+  }
+
+  const COLUMN_LABELS = {
+    backlog: 'Backlog',
+    todo: 'To Do',
+    in_progress: 'In Progress',
+    review: 'Review',
+    done: 'Done',
+  };
+
+  // ---------------------------------------------------------------------------
+  // Utilities
+  // ---------------------------------------------------------------------------
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function timeAgo(date) {
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+    if (diff < 60) return 'just now';
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+    return date.toLocaleDateString();
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Polling
+  // ---------------------------------------------------------------------------
+
+  function startPolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(fetchData, POLL_INTERVAL);
+  }
+
+  // Pause polling when tab is hidden, resume when visible
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      clearInterval(pollTimer);
+      pollTimer = null;
+    } else {
+      fetchData();
+      startPolling();
+    }
+  });
+
+  // ---------------------------------------------------------------------------
+  // Init
+  // ---------------------------------------------------------------------------
+
+  fetchData();
+  startPolling();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+name: Update Kanban Board
+
+on:
+  schedule:
+    # Every 15 minutes
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  update-kanban:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Generate and push kanban data
+        env:
+          GITHUB_TOKEN: ${{ secrets.WEBSITE_GITHUB_TOKEN }}
+          WEBSITE_GITHUB_TOKEN: ${{ secrets.WEBSITE_GITHUB_TOKEN }}
+        run: python -m kanban.board --push-html
