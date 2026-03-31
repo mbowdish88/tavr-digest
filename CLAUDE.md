@@ -18,6 +18,18 @@ Install dependencies: `pip install -r requirements.txt`
 
 The project runs daily at 6 AM Central via GitHub Actions. Manual trigger: `gh workflow run daily-digest.yml`
 
+### Kanban Board
+
+```bash
+# Generate kanban data locally (requires GITHUB_TOKEN env var)
+python -m kanban.board --local
+
+# Generate and push to Vercel
+python -m kanban.board --push-html
+```
+
+Runs automatically every 15 min via `.github/workflows/kanban-update.yml`.
+
 ## Architecture
 
 The pipeline follows: **Sources -> Dedup -> Summarize -> Deliver**
@@ -41,6 +53,27 @@ Each module fetches from one external API/feed and returns a list of article dic
 ### Delivery (`delivery/`)
 - `beehiiv.py` - Publishes via Beehiiv API v2 (automated newsletter delivery to subscribers)
 - `emailer.py` - SMTP email with HTML+plain-text via Jinja2 templates
+- `website.py` - Pushes JSON data to `mbowdish88/thevalvewire-site` repo via GitHub API for Vercel deployment
+- `site.py` - Publishes HTML digests to GitHub Pages (`docs/` folder)
+
+### Kanban Board (`kanban/`)
+Real-time project tracker across all GitHub repositories:
+- `board.py` - Python data generator. Queries GitHub REST API for all 7 repos (commits, PRs, issues, workflow runs). Builds `kanban.json` and pushes to thevalvewire-site via GitHub API.
+- `board.html` - Self-contained frontend (HTML/CSS/JS in one file). Dark-mode dashboard with 5 columns, project filter chips, drag-and-drop for custom tasks, auto-polls every 60s.
+
+**Tracked repos:** tavr-digest, thevalvewire-site, baseball-prospect-digest, pptx-generator, voice-notes, spotify-curator, aortic_fl_aats_2022
+
+**Custom tasks:** Create GitHub issues with `kanban:backlog`, `kanban:todo`, `kanban:in_progress`, `kanban:review`, or `kanban:done` labels. These appear as draggable cards on the board.
+
+**Card-to-column mapping:**
+| Activity | Column |
+|---|---|
+| Open issues (no kanban label) | Backlog |
+| Draft PRs | In Progress |
+| Open PRs (ready) | Review |
+| Merged PRs / successful workflows | Done |
+| Failed workflows | In Progress |
+| Issues with `kanban:*` labels | Per label |
 
 ### Configuration (`config.py`)
 Central config loading from `.env`. Defines search terms for aortic/mitral/tricuspid valves, journal RSS feeds, social media accounts, stock tickers, SEC EDGAR CIKs, and all API settings.
