@@ -26,6 +26,8 @@ The project runs daily at 6 AM Central via GitHub Actions. Manual trigger: `gh w
 
 ## Architecture
 
+Architecture diagrams are in `docs/diagrams/` (PNG + SVG) and `docs/architecture.md` (Mermaid). **Whenever the pipeline, sources, delivery channels, or infrastructure are restructured, regenerate these diagrams** by updating `generate_diagrams.py` and running `python generate_diagrams.py` (requires `graphviz`). Also update the Mermaid versions in `docs/architecture.md`.
+
 The pipeline follows: **Sources -> Dedup -> Summarize -> Deliver**
 
 ```
