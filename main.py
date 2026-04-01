@@ -37,8 +37,22 @@ logging.basicConfig(
 logger = logging.getLogger("valve-wire")
 
 
+def run_paper_indexer():
+    """Index any new papers in knowledge/papers/inbox/ before the digest runs."""
+    try:
+        from knowledge.indexer import index_papers
+        count = index_papers(process_inbox_first=True)
+        if count > 0:
+            logger.info(f"Paper indexer: indexed {count} new papers")
+    except Exception as e:
+        logger.warning(f"Paper indexer failed (non-fatal): {e}")
+
+
 def run_daily_digest():
     logger.info("=== The Valve Wire starting ===")
+
+    # 0. Index any new papers before running the digest
+    run_paper_indexer()
 
     # 1. Collect from all sources (isolated error handling)
     pubmed_articles = []
