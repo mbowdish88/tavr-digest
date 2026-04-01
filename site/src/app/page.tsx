@@ -91,6 +91,13 @@ export default function HomePage() {
                       {section.articles.length} {section.articles.length === 1 ? "article" : "articles"}
                     </span>
                   </div>
+                  {/* Section commentary from daily digest */}
+                  {section.commentary && (
+                    <div
+                      className="text-sm leading-relaxed text-gray-700 mb-4 prose prose-sm max-w-none [&_a]:text-[var(--color-burgundy)] [&_a]:underline [&_a]:hover:opacity-80 [&_strong]:text-[var(--color-wine)] [&_p]:mb-2"
+                      dangerouslySetInnerHTML={{ __html: section.commentary }}
+                    />
+                  )}
                   <div className="space-y-4">
                     {displayArticles.map((article) => (
                       <ArticleCard
@@ -206,6 +213,14 @@ export default function HomePage() {
                   })}
                 </div>
               </div>
+
+              {/* Financial commentary from daily digest */}
+              {data.sections.financial?.commentary && (
+                <div
+                  className="text-sm leading-relaxed text-gray-700 mb-4 prose prose-sm max-w-none [&_a]:text-[var(--color-burgundy)] [&_a]:underline [&_a]:hover:opacity-80 [&_strong]:text-[var(--color-wine)] [&_p]:mb-2"
+                  dangerouslySetInnerHTML={{ __html: data.sections.financial.commentary }}
+                />
+              )}
 
               {/* Financial articles */}
               {data.sections.financial?.articles?.length > 0 && (

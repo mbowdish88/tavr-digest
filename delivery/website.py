@@ -188,6 +188,54 @@ def _extract_key_points(digest_html: str) -> list:
     return points[:5]
 
 
+def _extract_section_commentary(digest_html: str) -> dict[str, str]:
+    """Extract narrative commentary for each section from the digest HTML.
+
+    Returns a dict mapping section keys to their HTML commentary.
+    """
+    if not digest_html:
+        return {}
+    import re
+
+    # Map digest section headers to website section keys
+    header_to_key = {
+        r"Aortic Valve|TAVR|TAVI": "aortic",
+        r"Mitral Valve|MitraClip|PASCAL|TMVR": "mitral",
+        r"Tricuspid Valve|TriClip|TTVR": "tricuspid",
+        r"Surgical vs|Surgical Comparison": "surgical",
+        r"Clinical Trial|Trial Updates": "trials",
+        r"Regulatory|Policy": "regulatory",
+        r"Financial Analysis|Industry.*Market|Market.*Industry": "financial",
+        r"Valve Industry Stocks|Stock": "stocks_commentary",
+        r"Preprint": "preprints",
+    }
+
+    commentary = {}
+
+    # Find all h2 sections
+    sections = re.split(r'(<h2[^>]*>.*?</h2>)', digest_html, flags=re.DOTALL | re.IGNORECASE)
+
+    current_key = None
+    for part in sections:
+        # Check if this is a header
+        header_match = re.match(r'<h2[^>]*>(.*?)</h2>', part, re.DOTALL | re.IGNORECASE)
+        if header_match:
+            header_text = re.sub(r'<[^>]+>', '', header_match.group(1)).strip()
+            current_key = None
+            for pattern, key in header_to_key.items():
+                if re.search(pattern, header_text, re.IGNORECASE):
+                    current_key = key
+                    break
+        elif current_key and part.strip():
+            # This is content for the current section
+            # Preserve links but clean up for web display
+            clean = _strip_html_preserve_links(part)
+            if clean and len(clean) > 20:
+                commentary[current_key] = part.strip()  # Keep full HTML for rendering
+
+    return commentary
+
+
 def build_website_data(
     pubmed: list, news: list, regulatory: list,
     stock_data: dict, trials: list,
@@ -199,20 +247,21 @@ def build_website_data(
     """Build the structured JSON data for the website."""
     today = date.today().isoformat()
 
-    # Extract executive summary and key points from digest HTML
+    # Extract executive summary, key points, and section commentary from digest HTML
     executive_summary = _extract_executive_summary(digest_html) if digest_html else ""
     if not key_points:
         key_points = _extract_key_points(digest_html) if digest_html else []
+    section_commentary = _extract_section_commentary(digest_html) if digest_html else {}
 
     # Section definitions
     sections = {
-        "aortic": {"label": "Aortic Valve (TAVR/TAVI)", "color": "#C4787A", "articles": []},
-        "mitral": {"label": "Mitral Valve (Repair & Replacement)", "color": "#8B5E6B", "articles": []},
-        "tricuspid": {"label": "Tricuspid Valve (Repair & Replacement)", "color": "#4A7B8B", "articles": []},
-        "surgical": {"label": "Surgical vs Transcatheter", "color": "#5B6B7B", "articles": []},
-        "trials": {"label": "Clinical Trials Update", "color": "#7B5B8B", "articles": []},
-        "regulatory": {"label": "Regulatory & Policy", "color": "#3B7B5B", "articles": []},
-        "financial": {"label": "Financial Analysis", "color": "#8B7B3B", "articles": []},
+        "aortic": {"label": "Aortic Valve (TAVR/TAVI)", "color": "#C4787A", "articles": [], "commentary": section_commentary.get("aortic", "")},
+        "mitral": {"label": "Mitral Valve (Repair & Replacement)", "color": "#8B5E6B", "articles": [], "commentary": section_commentary.get("mitral", "")},
+        "tricuspid": {"label": "Tricuspid Valve (Repair & Replacement)", "color": "#4A7B8B", "articles": [], "commentary": section_commentary.get("tricuspid", "")},
+        "surgical": {"label": "Surgical vs Transcatheter", "color": "#5B6B7B", "articles": [], "commentary": section_commentary.get("surgical", "")},
+        "trials": {"label": "Clinical Trials Update", "color": "#7B5B8B", "articles": [], "commentary": section_commentary.get("trials", "")},
+        "regulatory": {"label": "Regulatory & Policy", "color": "#3B7B5B", "articles": [], "commentary": section_commentary.get("regulatory", "")},
+        "financial": {"label": "Financial Analysis", "color": "#8B7B3B", "articles": [], "commentary": section_commentary.get("financial", "")},
     }
 
     # Fetch OG images for articles (limit to first 20 to avoid slowdowns)
@@ -442,8 +491,8 @@ def push_to_website(data: dict) -> bool:
     # Merge with previous day if sparse
     data = _merge_with_previous(data)
 
-    # Don't include digest_html in the website JSON (too large)
-    website_data = {k: v for k, v in data.items() if k != "digest_html"}
+    # Include digest_html — the website renders the full daily narrative
+    website_data = dict(data)
     json_content = json.dumps(website_data, indent=2, default=str)
 
     try:

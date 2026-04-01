@@ -100,6 +100,7 @@ export interface Section {
   label: string;
   color: string;
   articles: Article[];
+  commentary?: string;
 }
 
 export interface StockData {
