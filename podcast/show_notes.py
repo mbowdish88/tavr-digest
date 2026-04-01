@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 SECTION_NAMES = {
     "intro": "Introduction",
     "disclaimer": "Disclaimer",
+    "meeting_highlights": "Meeting Highlights",
     "top_stories": "Top Stories",
     "aortic": "Aortic Valve (TAVR/TAVI)",
     "mitral": "Mitral Valve (Repair & Replacement)",
