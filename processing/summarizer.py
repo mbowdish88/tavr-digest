@@ -491,6 +491,7 @@ def create_digest(
         max_tokens=16384,
         system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],
+        timeout=300.0,
     )
 
     digest_html = message.content[0].text

@@ -1,12 +1,9 @@
-"""Push structured JSON data to the website repo for Vercel deployment."""
+"""Write structured JSON data to site/public/data/ for Vercel deployment."""
 
 from __future__ import annotations
 
 import json
 import logging
-import os
-import subprocess
-import tempfile
 from datetime import date
 from pathlib import Path
 
@@ -15,8 +12,6 @@ import requests
 import config
 
 logger = logging.getLogger(__name__)
-
-WEBSITE_REPO = "mbowdish88/thevalvewire-site"
 
 # Cache of fetched OG images to avoid re-fetching
 _og_image_cache: dict[str, str | None] = {}
@@ -364,52 +359,23 @@ def _get_all_podcast_episodes() -> list:
     return []
 
 
-def _github_api_put_file(token: str, path: str, content: str, message: str) -> bool:
-    """Create or update a file in the website repo via GitHub API."""
-    import base64
-    import requests
 
-    url = f"https://api.github.com/repos/{WEBSITE_REPO}/contents/{path}"
-    headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
-
-    # Check if file exists (need SHA for update)
-    sha = None
-    resp = requests.get(url, headers=headers, timeout=10)
-    if resp.status_code == 200:
-        sha = resp.json().get("sha")
-
-    payload = {
-        "message": message,
-        "content": base64.b64encode(content.encode("utf-8")).decode("ascii"),
-        "committer": {"name": "valve-wire-bot", "email": "bot@thevalvewire.com"},
-    }
-    if sha:
-        payload["sha"] = sha
-
-    resp = requests.put(url, headers=headers, json=payload, timeout=30)
-    if resp.status_code in (200, 201):
-        return True
-    logger.error(f"GitHub API put failed for {path}: {resp.status_code} {resp.text[:200]}")
-    return False
+def _get_site_data_dir() -> Path:
+    """Return the path to the website data directory within this repo."""
+    return config.BASE_DIR / "site" / "public" / "data"
 
 
-def _merge_with_previous(data: dict, token: str) -> dict:
-    """If today's data is sparse, merge with previous day's data."""
-    import requests
-    import base64
-
+def _merge_with_previous(data: dict) -> dict:
+    """If today's data is sparse, merge with previous day's data from local site/."""
     total_articles = sum(len(s["articles"]) for s in data["sections"].values())
     if total_articles >= 5:
         return data  # Enough content for today
 
-    # Fetch previous latest.json from website repo
-    url = f"https://api.github.com/repos/{WEBSITE_REPO}/contents/public/data/latest.json"
-    headers = {"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"}
+    latest_path = _get_site_data_dir() / "latest.json"
     try:
-        resp = requests.get(url, headers=headers, timeout=10)
-        if resp.status_code != 200:
+        if not latest_path.exists():
             return data
-        prev = json.loads(base64.b64decode(resp.json()["content"]))
+        prev = json.loads(latest_path.read_text(encoding="utf-8"))
 
         # Merge: keep today's articles, fill empty sections with previous day's
         for section_key, section in data["sections"].items():
@@ -437,33 +403,39 @@ def _merge_with_previous(data: dict, token: str) -> dict:
 
 
 def push_to_website(data: dict) -> bool:
-    """Push the structured JSON to the website repo via GitHub API."""
-    token = os.getenv("WEBSITE_GITHUB_TOKEN", os.getenv("GITHUB_TOKEN", ""))
-    if not token:
-        logger.warning("No GITHUB_TOKEN, skipping website push")
-        return False
+    """Write structured JSON to site/public/data/ for Vercel deployment.
 
+    The site now lives inside this repo as site/. Writing locally means the
+    pipeline's git commit + push carries the website data to Vercel automatically.
+    No GitHub API token needed.
+    """
     today = data["date"]
+    data_dir = _get_site_data_dir()
+    digests_dir = data_dir / "digests"
+
+    # Ensure directories exist
+    data_dir.mkdir(parents=True, exist_ok=True)
+    digests_dir.mkdir(parents=True, exist_ok=True)
 
     # Merge with previous day if sparse
-    data = _merge_with_previous(data, token)
+    data = _merge_with_previous(data)
 
     # Don't include digest_html in the website JSON (too large)
     website_data = {k: v for k, v in data.items() if k != "digest_html"}
     json_content = json.dumps(website_data, indent=2, default=str)
 
-    # Push latest.json
-    ok1 = _github_api_put_file(
-        token, "public/data/latest.json", json_content,
-        f"Update daily digest {today}",
-    )
+    try:
+        # Write latest.json
+        latest_path = data_dir / "latest.json"
+        latest_path.write_text(json_content, encoding="utf-8")
+        logger.info(f"Wrote {latest_path} ({len(json_content)} bytes)")
 
-    # Push dated archive copy
-    ok2 = _github_api_put_file(
-        token, f"public/data/digests/{today}.json", json_content,
-        f"Archive digest {today}",
-    )
+        # Write dated archive copy
+        archive_path = digests_dir / f"{today}.json"
+        archive_path.write_text(json_content, encoding="utf-8")
+        logger.info(f"Wrote {archive_path}")
 
-    if ok1 and ok2:
-        logger.info(f"Website data pushed: latest.json + digests/{today}.json")
-    return ok1 and ok2
+        return True
+    except Exception as e:
+        logger.error(f"Failed to write website data: {e}")
+        return False

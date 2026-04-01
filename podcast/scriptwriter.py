@@ -102,9 +102,19 @@ When selecting which stories to emphasize, prioritize findings from higher-impac
 NEJM > JAMA > JACC > Lancet > EHJ > JACC:CI > surgical journals (ATS, JTCVS, EJCTS)
 An NEJM or JAMA publication should ALWAYS be a top story. Name the journal when citing.
 
+## Accuracy Safeguards (CRITICAL)
+- ONLY cite specific numbers, percentages, and enrollment figures that appear in the \
+weekly content below. If you cannot find a specific number, use qualitative language \
+("significant improvement", "substantial reduction") rather than inventing a number.
+- NEVER attribute a study to a journal unless that journal's name appears in the source material.
+- NEVER invent author names. Only mention authors whose names appear in the source content \
+or in the editorial stance instructions above.
+- When discussing study findings, state the study design if known (randomized, registry, \
+single-center, retrospective). If the design is not mentioned in the source, do not guess.
+
 ## Guidelines
-- Reference specific studies, trials, and sources by name
-- Mention specific numbers: enrollment figures, stock prices, percentage changes
+- Reference specific studies, trials, and sources by name when they appear in the source
+- Mention specific numbers ONLY when they are in the source material
 - Nolan leads the clinical sections; Claire leads the market/industry section
 - Both contribute to all sections with their respective expertise
 - The sign-off should mention subscribing to The Valve Wire newsletter
@@ -191,9 +201,9 @@ def generate_podcast_script(
                     "major segment, not a brief mention."
                 )
                 # Extract meeting name for section header
-                for m in MAJOR_MEETINGS:
-                    if m["name"] in _meeting_context:
-                        _meeting_name = m["name"]
+                for name, _month, _day, _dur in MAJOR_MEETINGS:
+                    if name in _meeting_context:
+                        _meeting_name = name
                         break
                 break
 
