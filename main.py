@@ -12,8 +12,8 @@ import smtplib
 import config
 from sources import pubmed, news, regulatory, trials, stocks, preprints, journals, social, financial
 from processing.dedup import DedupDB
-from processing.summarizer import create_digest, build_fallback_digest
-from processing.weekly import save_daily_digest, create_weekly_digest, clear_week_digests, get_week_digests
+from processing.summarizer import create_digest, build_fallback_digest, extract_structured_sidecar
+from processing.weekly import save_daily_digest, create_weekly_digest, clear_week_digests, get_week_digests, get_week_sidecars
 from podcast.scriptwriter import generate_podcast_script
 from podcast.synthesizer import synthesize_segments
 from podcast.assembler import assemble_podcast
@@ -201,8 +201,11 @@ def run_daily_digest():
             new_preprints, new_journals, new_social, new_financial,
         )
 
-    # 4. Save daily digest for weekly compilation
-    save_daily_digest(digest_content)
+    # 4. Save daily digest for weekly compilation (with structured sidecar)
+    structured_sidecar = extract_structured_sidecar(
+        new_pubmed, new_journals, new_preprints, new_news, new_regulatory,
+    )
+    save_daily_digest(digest_content, structured_sidecar=structured_sidecar)
 
     # 5. Publish to site (GitHub Pages archive)
     try:
@@ -422,9 +425,17 @@ def run_weekly_podcast(weekly_html: str = None):
     existing_episodes = _load_episodes()
     episode_number = len(existing_episodes) + 1
 
+    # Load structured article metadata from weekly sidecars
+    article_metadata = get_week_sidecars(today)
+    if article_metadata:
+        logger.info(f"Loaded {len(article_metadata)} article metadata records for podcast")
+
     # 1. Generate script
     logger.info(f"Step 1: Generating podcast script (Episode {episode_number})...")
-    script = generate_podcast_script(weekly_html, start_str, end_str, episode_number)
+    script = generate_podcast_script(
+        weekly_html, start_str, end_str, episode_number,
+        article_metadata=article_metadata or None,
+    )
     if not script:
         logger.error("Failed to generate podcast script.")
         return
@@ -529,8 +540,26 @@ def is_weekly_day() -> bool:
     return today.weekday() == publish_weekday
 
 
+def validate_api_keys():
+    """Pre-validate that required API keys are set before starting the pipeline."""
+    missing = []
+    if not config.ANTHROPIC_API_KEY:
+        missing.append("ANTHROPIC_API_KEY")
+    if "--podcast" in sys.argv and not config.OPENAI_API_KEY:
+        missing.append("OPENAI_API_KEY (required for podcast TTS/transcription)")
+    if not config.SMTP_USER or not config.SMTP_PASSWORD:
+        logger.warning("SMTP credentials not set — email delivery will fail")
+    if missing:
+        for key in missing:
+            logger.critical(f"Missing required API key: {key}")
+        sys.exit(1)
+    logger.info("API key validation passed")
+
+
 if __name__ == "__main__":
     try:
+        validate_api_keys()
+
         # Podcast generation (can run standalone)
         if "--podcast" in sys.argv:
             run_weekly_podcast()

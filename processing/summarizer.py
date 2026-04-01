@@ -1,4 +1,8 @@
+from __future__ import annotations
+
+import json
 import logging
+import re
 from datetime import date, timedelta
 
 from anthropic import Anthropic
@@ -501,6 +505,204 @@ def create_digest(
     )
 
     return digest_html
+
+
+def _extract_key_numbers(text: str) -> list[str]:
+    """Extract percentages, p-values, sample sizes, and CIs from text."""
+    if not text:
+        return []
+    numbers = []
+    # Percentages: 42.3%, 15%
+    numbers.extend(re.findall(r'\d+\.?\d*\s*%', text))
+    # P-values: p<0.001, p=0.03, P = 0.05
+    numbers.extend(re.findall(r'[Pp]\s*[<>=]\s*0?\.\d+', text))
+    # Confidence intervals: 95% CI 1.2-3.4, CI: 0.8 to 1.5
+    numbers.extend(re.findall(r'(?:95|99)\s*%?\s*CI\s*[:\s]*[\d.]+ *[-–to]+ *[\d.]+', text, re.IGNORECASE))
+    # Hazard/odds ratios: HR 0.75, OR 2.1
+    numbers.extend(re.findall(r'(?:HR|OR|RR)\s*[=:]?\s*\d+\.?\d*', text, re.IGNORECASE))
+    # Sample sizes: n=500, N = 1,200, enrolled 500 patients
+    numbers.extend(re.findall(r'[Nn]\s*=\s*[\d,]+', text))
+    return numbers
+
+
+def _extract_sample_size(text: str) -> int | None:
+    """Try to extract sample size from abstract text."""
+    if not text:
+        return None
+    # Common patterns: "N=500", "n = 1,200", "enrolled 500 patients",
+    # "500 patients", "included 1200 subjects"
+    patterns = [
+        r'[Nn]\s*=\s*([\d,]+)',
+        r'(?:enrolled|included|recruited|randomized)\s+([\d,]+)\s+(?:patients|subjects|participants)',
+        r'([\d,]+)\s+(?:patients|subjects|participants)\s+(?:were|who)',
+    ]
+    for pat in patterns:
+        m = re.search(pat, text)
+        if m:
+            try:
+                return int(m.group(1).replace(',', ''))
+            except ValueError:
+                continue
+    return None
+
+
+def _classify_study_design(text: str) -> str:
+    """Classify study design from abstract text."""
+    if not text:
+        return ""
+    text_lower = text.lower()
+    if 'randomized' in text_lower or 'randomised' in text_lower:
+        if 'controlled trial' in text_lower or 'clinical trial' in text_lower:
+            return "Randomized controlled trial"
+        return "Randomized trial"
+    if 'meta-analysis' in text_lower or 'meta analysis' in text_lower:
+        return "Meta-analysis"
+    if 'systematic review' in text_lower:
+        return "Systematic review"
+    if 'retrospective' in text_lower:
+        return "Retrospective study"
+    if 'prospective' in text_lower:
+        if 'registry' in text_lower:
+            return "Prospective registry"
+        return "Prospective study"
+    if 'registry' in text_lower:
+        return "Registry study"
+    if 'cohort' in text_lower:
+        return "Cohort study"
+    if 'case report' in text_lower or 'case series' in text_lower:
+        return "Case report/series"
+    if 'observational' in text_lower:
+        return "Observational study"
+    return ""
+
+
+def _classify_section(article: dict) -> str:
+    """Classify an article into a valve section based on title/abstract."""
+    text = (article.get('title', '') + ' ' + article.get('abstract', '')).lower()
+    if any(kw in text for kw in ['tavr', 'tavi', 'aortic valve', 'savr', 'aortic stenosis']):
+        return "aortic"
+    if any(kw in text for kw in ['mitral', 'mitraclip', 'pascal', 'tmvr', 'mitral regurgitation']):
+        return "mitral"
+    if any(kw in text for kw in ['tricuspid', 'triclip', 'ttvr', 'tricuspid regurgitation']):
+        return "tricuspid"
+    return "general"
+
+
+def _extract_first_key_finding(text: str) -> str:
+    """Extract the most likely key finding sentence from an abstract."""
+    if not text:
+        return ""
+    # Look for sentences containing results-like keywords
+    sentences = re.split(r'(?<=[.!?])\s+', text)
+    result_keywords = [
+        'significant', 'reduction', 'improvement', 'mortality', 'outcome',
+        'survival', 'compared', 'superior', 'non-inferior', 'hazard ratio',
+        'odds ratio', 'p <', 'p=', 'p =', 'difference', 'associated with',
+    ]
+    for sent in sentences:
+        sent_lower = sent.lower()
+        if any(kw in sent_lower for kw in result_keywords):
+            return sent.strip()
+    # Fallback: last sentence of abstract often contains conclusion
+    if sentences:
+        return sentences[-1].strip()
+    return ""
+
+
+def extract_structured_sidecar(
+    pubmed_articles: list[dict],
+    journal_articles: list[dict],
+    preprint_articles: list[dict],
+    news_articles: list[dict],
+    regulatory_articles: list[dict],
+) -> dict:
+    """Build structured article metadata from raw inputs (no Claude call).
+
+    Returns a dict matching the sidecar JSON schema with date and articles list.
+    """
+    today = date.today().isoformat()
+    articles = []
+
+    # Process PubMed articles
+    for a in (pubmed_articles or []):
+        abstract = a.get('abstract', '')
+        articles.append({
+            "title": a.get('title', ''),
+            "journal": a.get('journal', ''),
+            "url": a.get('url', ''),
+            "pmid": a.get('id', ''),
+            "authors": a.get('authors', ''),
+            "study_design": _classify_study_design(abstract),
+            "sample_size": _extract_sample_size(abstract),
+            "key_finding": _extract_first_key_finding(abstract),
+            "key_numbers": _extract_key_numbers(abstract),
+            "section": _classify_section(a),
+        })
+
+    # Process journal articles
+    for a in (journal_articles or []):
+        abstract = a.get('abstract', '')
+        articles.append({
+            "title": a.get('title', ''),
+            "journal": a.get('journal', ''),
+            "url": a.get('url', ''),
+            "pmid": "",
+            "authors": a.get('authors', ''),
+            "study_design": _classify_study_design(abstract),
+            "sample_size": _extract_sample_size(abstract),
+            "key_finding": _extract_first_key_finding(abstract),
+            "key_numbers": _extract_key_numbers(abstract),
+            "section": _classify_section(a),
+        })
+
+    # Process preprints
+    for a in (preprint_articles or []):
+        abstract = a.get('abstract', '')
+        articles.append({
+            "title": a.get('title', ''),
+            "journal": a.get('journal', ''),
+            "url": a.get('url', ''),
+            "pmid": "",
+            "authors": a.get('authors', ''),
+            "study_design": _classify_study_design(abstract),
+            "sample_size": _extract_sample_size(abstract),
+            "key_finding": _extract_first_key_finding(abstract),
+            "key_numbers": _extract_key_numbers(abstract),
+            "section": _classify_section(a),
+        })
+
+    # News and regulatory get lighter extraction
+    for a in (news_articles or []):
+        snippet = a.get('snippet', '')
+        articles.append({
+            "title": a.get('title', ''),
+            "journal": a.get('source_name', ''),
+            "url": a.get('url', ''),
+            "pmid": "",
+            "authors": "",
+            "study_design": "",
+            "sample_size": None,
+            "key_finding": snippet[:200] if snippet else "",
+            "key_numbers": _extract_key_numbers(snippet),
+            "section": _classify_section(a),
+        })
+
+    for a in (regulatory_articles or []):
+        snippet = a.get('snippet', '')
+        articles.append({
+            "title": a.get('title', ''),
+            "journal": a.get('source_name', 'FDA'),
+            "url": a.get('url', ''),
+            "pmid": "",
+            "authors": "",
+            "study_design": "",
+            "sample_size": None,
+            "key_finding": snippet[:200] if snippet else "",
+            "key_numbers": _extract_key_numbers(snippet),
+            "section": "regulatory",
+        })
+
+    return {"date": today, "articles": articles}
 
 
 def build_fallback_digest(

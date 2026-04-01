@@ -14,7 +14,10 @@ export default function KeyPoints({ points }: KeyPointsProps) {
         {points.map((point, i) => (
           <li key={i} className="flex gap-3 text-base leading-relaxed text-[var(--color-wine)]">
             <span className="text-[var(--color-rose)] font-bold mt-0.5">•</span>
-            <span>{point}</span>
+            <span
+              className="[&_a]:text-[var(--color-burgundy)] [&_a]:underline [&_a]:hover:opacity-80"
+              dangerouslySetInnerHTML={{ __html: point }}
+            />
           </li>
         ))}
       </ul>

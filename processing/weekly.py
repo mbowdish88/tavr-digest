@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 from datetime import date, timedelta
 from pathlib import Path
@@ -127,12 +128,27 @@ TRISCEND, PARTNER, COAPT, Evolut
 Produce the comprehensive weekly newsletter HTML now."""
 
 
-def save_daily_digest(digest_html: str, digest_date: date = None):
-    """Save a daily digest for later weekly compilation."""
+def save_daily_digest(
+    digest_html: str,
+    digest_date: date = None,
+    structured_sidecar: dict = None,
+):
+    """Save a daily digest and optional structured sidecar for later weekly compilation."""
     digest_date = digest_date or date.today()
     filepath = config.WEEKLY_DIR / f"{digest_date.isoformat()}.html"
     filepath.write_text(digest_html, encoding="utf-8")
     logger.info(f"Saved daily digest for weekly compilation: {filepath.name}")
+
+    if structured_sidecar:
+        json_path = config.WEEKLY_DIR / f"{digest_date.isoformat()}.json"
+        json_path.write_text(
+            json.dumps(structured_sidecar, indent=2, default=str),
+            encoding="utf-8",
+        )
+        logger.info(
+            f"Saved structured sidecar: {json_path.name} "
+            f"({len(structured_sidecar.get('articles', []))} articles)"
+        )
 
 
 def get_week_digests(end_date: date = None) -> list[dict]:
@@ -154,6 +170,30 @@ def get_week_digests(end_date: date = None) -> list[dict]:
 
     logger.info(f"Found {len(digests)} daily digests for week of {start_date} to {end_date}")
     return digests
+
+
+def get_week_sidecars(end_date: date = None) -> list[dict]:
+    """Load all structured JSON sidecars from the past week.
+
+    Returns a flat list of article metadata dicts from all daily sidecars.
+    """
+    end_date = end_date or date.today()
+    start_date = end_date - timedelta(days=6)
+
+    all_articles = []
+    current = start_date
+    while current <= end_date:
+        json_path = config.WEEKLY_DIR / f"{current.isoformat()}.json"
+        if json_path.exists():
+            try:
+                sidecar = json.loads(json_path.read_text(encoding="utf-8"))
+                all_articles.extend(sidecar.get("articles", []))
+            except (json.JSONDecodeError, KeyError) as e:
+                logger.warning(f"Failed to load sidecar {json_path.name}: {e}")
+        current += timedelta(days=1)
+
+    logger.info(f"Loaded {len(all_articles)} article metadata records from weekly sidecars")
+    return all_articles
 
 
 def _fetch_weekend_news() -> str:
