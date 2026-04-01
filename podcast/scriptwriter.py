@@ -69,8 +69,9 @@ The script should be 3,500-4,500 words total, targeting 15-20 minutes of audio.
 Return a JSON array of script segments. Each segment is an object with:
 - "speaker": "A" (Nolan) or "B" (Claire)
 - "text": The spoken dialogue (1-4 sentences, MUST be under 3500 characters)
-- "section": One of "intro", "disclaimer", "top_stories", "aortic", "mitral", \
-"tricuspid", "trials", "surgical_comparison", "market", "weekend", "closing"
+- "section": One of "intro", "disclaimer", "meeting_highlights", "top_stories", \
+"aortic", "mitral", "tricuspid", "trials", "surgical_comparison", "market", \
+"weekend", "closing"
 
 Example format:
 ```json
@@ -86,6 +87,7 @@ Example format:
 "Before we dive in, a quick reminder — this podcast is for educational and informational \
 purposes only. Nothing we discuss should be taken as medical advice. Always consult your \
 physician or care team for clinical decisions." Keep it conversational, not legalistic.
+{meeting_section}\
 3. **Top Stories** (~3 min): The 2-3 most impactful developments with analysis
 4. **Aortic Valve** (~2-3 min): TAVR developments if any
 5. **Mitral Valve** (~2-3 min): Repair and replacement developments
@@ -94,6 +96,11 @@ physician or care team for clinical decisions." Keep it conversational, not lega
 8. **Market & Industry** (~2-3 min): Stock performance, M&A, earnings — Claire leads this section
 9. **Weekend News** (~1 min): Any weekend developments
 10. **Closing** (~1 min): Key takeaways, what to watch next week, sign off
+
+## Journal Hierarchy (PRIORITIZE in this order)
+When selecting which stories to emphasize, prioritize findings from higher-impact journals:
+NEJM > JAMA > JACC > Lancet > EHJ > JACC:CI > surgical journals (ATS, JTCVS, EJCTS)
+An NEJM or JAMA publication should ALWAYS be a top story. Name the journal when citing.
 
 ## Guidelines
 - Reference specific studies, trials, and sources by name
@@ -162,22 +169,14 @@ def generate_podcast_script(
         if episode_number else ""
     )
 
-    prompt = SCRIPT_PROMPT.format(
-        start_date=start_date or "this past week",
-        end_date=end_date or "today",
-        weekly_content=weekly_html,
-        episode_label=episode_label,
-        episode_intro_note=episode_intro_note,
-    )
-
     logger.info(f"Generating podcast script with {config.CLAUDE_MODEL}")
 
-    # Check for active/recent meetings
+    # Check for active/recent meetings first — affects prompt structure (R6)
     from datetime import date as _date, timedelta as _td
     from processing.summarizer import _get_active_meeting_context, MAJOR_MEETINGS
     _today = _date.today()
     _meeting_context = _get_active_meeting_context(_today)
-    # Also check if a meeting just ended this week (podcast covers the past week)
+    _meeting_name = None
     if not _meeting_context:
         for _d in range(1, 8):
             _meeting_context = _get_active_meeting_context(_today - _td(days=_d))
@@ -191,7 +190,34 @@ def generate_podcast_script(
                     "newsworthy announcements from this meeting. This should be a "
                     "major segment, not a brief mention."
                 )
+                # Extract meeting name for section header
+                for m in MAJOR_MEETINGS:
+                    if m["name"] in _meeting_context:
+                        _meeting_name = m["name"]
+                        break
                 break
+
+    # Build meeting highlights section for script structure (R6)
+    if _meeting_name:
+        meeting_section = (
+            f'2b. **{_meeting_name} Highlights** (~5-7 min, section="meeting_highlights"): '
+            f"Dedicated segment covering the key presentations, late-breaking trials, "
+            f"and major announcements from {_meeting_name}. This is the centerpiece of "
+            f"the episode. Discuss the most impactful presentations in order of clinical "
+            f"significance. Both hosts should engage — Nolan on clinical implications, "
+            f"Claire on industry/market reactions.\n"
+        )
+    else:
+        meeting_section = ""
+
+    prompt = SCRIPT_PROMPT.format(
+        start_date=start_date or "this past week",
+        end_date=end_date or "today",
+        weekly_content=weekly_html,
+        episode_label=episode_label,
+        episode_intro_note=episode_intro_note,
+        meeting_section=meeting_section,
+    )
 
     # Inject guidelines knowledge into the system prompt
     from knowledge import get_full_knowledge_context
@@ -204,31 +230,46 @@ def generate_podcast_script(
         system_with_knowledge += "\n\n" + knowledge
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
 
-    message = client.messages.create(
-        model=config.CLAUDE_MODEL,
-        max_tokens=16384,
-        system=system_with_knowledge,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    # Generate script with retry on JSON parse failure (R7, R8)
+    script = None
+    for attempt in range(2):
+        extra_instruction = ""
+        if attempt > 0:
+            extra_instruction = (
+                "\n\nIMPORTANT: Your previous response was not valid JSON. "
+                "Return ONLY a valid JSON array. No trailing commas, no unescaped "
+                "quotes, no text outside the array."
+            )
+            logger.warning("Retrying script generation after JSON parse failure")
 
-    raw = message.content[0].text
-    logger.info(
-        f"Script generated: {len(raw)} chars, "
-        f"tokens: {message.usage.input_tokens} in / {message.usage.output_tokens} out"
-    )
+        message = client.messages.create(
+            model=config.CLAUDE_MODEL,
+            max_tokens=16384,
+            system=system_with_knowledge,
+            messages=[{"role": "user", "content": prompt + extra_instruction}],
+            timeout=300.0,
+        )
 
-    # Parse JSON from response (handle markdown code blocks)
-    json_str = raw.strip()
-    if json_str.startswith("```"):
-        json_str = re.sub(r"^```(?:json)?\s*", "", json_str)
-        json_str = re.sub(r"\s*```$", "", json_str)
+        raw = message.content[0].text
+        logger.info(
+            f"Script generated (attempt {attempt + 1}): {len(raw)} chars, "
+            f"tokens: {message.usage.input_tokens} in / {message.usage.output_tokens} out"
+        )
 
-    try:
-        script = json.loads(json_str)
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse script JSON: {e}")
-        logger.debug(f"Raw response: {raw[:500]}")
-        raise
+        # Parse JSON from response (handle markdown code blocks)
+        json_str = raw.strip()
+        if json_str.startswith("```"):
+            json_str = re.sub(r"^```(?:json)?\s*", "", json_str)
+            json_str = re.sub(r"\s*```$", "", json_str)
+
+        try:
+            script = json.loads(json_str)
+            break  # Success
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse script JSON (attempt {attempt + 1}): {e}")
+            logger.debug(f"Raw response: {raw[:500]}")
+            if attempt == 1:
+                raise  # Final attempt, propagate error
 
     # Validate and clean
     valid_speakers = {"A", "B"}
@@ -249,5 +290,64 @@ def generate_podcast_script(
             "section": seg.get("section", ""),
         })
 
+    # Validate total word count (R4)
+    total_words = sum(len(s["text"].split()) for s in cleaned)
+    if total_words < 3000:
+        logger.warning(f"Script is short: {total_words} words (target: 3,500-4,500)")
+    elif total_words > 5000:
+        logger.warning(f"Script is long: {total_words} words (target: 3,500-4,500)")
+
+    # Validate required sections are present
+    required_sections = {"intro", "top_stories", "closing"}
+    found_sections = {s["section"] for s in cleaned}
+    missing = required_sections - found_sections
+    if missing:
+        logger.warning(f"Script missing required sections: {missing}")
+
+    # Hallucination check: flag study references not found in source material (R4)
+    _validate_references(cleaned, weekly_html)
+
     logger.info(f"Script has {len(cleaned)} segments ({sum(len(s['text']) for s in cleaned)} chars total)")
     return cleaned
+
+
+def _validate_references(script: list[dict], source_html: str) -> None:
+    """Check that study/trial names in the script can be found in the source material.
+
+    Logs warnings for any references that appear fabricated. Does not block generation
+    — this is a quality signal, not a gate.
+    """
+    if not source_html:
+        return
+
+    source_lower = source_html.lower()
+
+    # Extract potential study/trial references from script text
+    all_text = " ".join(s["text"] for s in script)
+
+    # Look for common patterns: "the STUDY_NAME trial", "STUDY_NAME study", etc.
+    study_patterns = re.findall(
+        r'(?:the\s+)?([A-Z][A-Z0-9-]{2,})\s+(?:trial|study|registry|data|results|findings)',
+        all_text,
+    )
+
+    # Filter out common non-study words
+    skip_words = {
+        "THE", "AND", "FOR", "BUT", "NOT", "THIS", "THAT", "WITH", "TAVR",
+        "TAVI", "TMVR", "TTVR", "SAVR", "FDA", "CMS", "ACC", "AHA", "ESC",
+        "EACTS", "TCT", "STS", "AATS", "TTS", "RSS", "CEO", "CFO",
+    }
+
+    flagged = []
+    for study in study_patterns:
+        if study in skip_words:
+            continue
+        if study.lower() not in source_lower:
+            flagged.append(study)
+
+    if flagged:
+        logger.warning(
+            f"HALLUCINATION CHECK: {len(flagged)} study reference(s) not found in "
+            f"source material: {', '.join(flagged)}. These may be fabricated or "
+            f"from the knowledge base. Review before publishing."
+        )

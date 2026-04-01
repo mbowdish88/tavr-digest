@@ -46,20 +46,7 @@ jobs:
           LOG_LEVEL: INFO
         run: python main.py --podcast
 
-      - name: Upload episode to GitHub Releases
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          EPISODE_FILE=$(ls data/podcast/*.mp3 2>/dev/null | head -1)
-          if [ -n "$EPISODE_FILE" ]; then
-            DATE=$(date +%Y-%m-%d)
-            gh release create "podcast-${DATE}" "$EPISODE_FILE" \
-              --title "The Valve Wire Weekly - ${DATE}" \
-              --notes "Auto-generated weekly podcast episode"
-            echo "Uploaded: $EPISODE_FILE"
-          else
-            echo "No MP3 file found to upload"
-          fi
+      # Upload is handled by publisher.py — no duplicate shell upload needed (R5)
 
       - name: Update RSS feed and landing page
         run: |

@@ -26,9 +26,7 @@ def load_guidelines_context() -> str:
     # Load the readable summary
     if summary_path.exists():
         summary = summary_path.read_text(encoding="utf-8")
-        # Truncate if too long (keep under ~4000 chars for prompt space)
-        if len(summary) > 4000:
-            summary = summary[:4000] + "\n\n[Summary truncated — see full guidelines for details]"
+        # Include the full guidelines — Claude's context window handles it easily
         parts.append(summary)
         logger.info(f"Loaded guidelines summary: {len(summary)} chars")
 
@@ -36,7 +34,7 @@ def load_guidelines_context() -> str:
     if index_path.exists():
         try:
             index = json.loads(index_path.read_text(encoding="utf-8"))
-            disagreements = index.get("disagreements", [])
+            disagreements = index.get("guideline_disagreements", [])
             if disagreements:
                 parts.append("\n## Key Guideline Disagreements (Quick Reference)")
                 for d in disagreements:
