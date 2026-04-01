@@ -30,7 +30,7 @@ export default function ProjectsPage() {
   const completed = projects.filter((p) => p.status === "completed");
 
   return (
-    <div className="p-6 max-w-[900px]">
+    <div className="p-6 max-w-[1100px]">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-[18px] font-semibold mb-1">Projects</h1>
@@ -99,39 +99,50 @@ function Section({ title, projects, onUpdate }: { title: string; projects: Proje
         {projects.map((p) => (
           <div
             key={p.id}
-            className="flex items-center gap-3 p-3 rounded-lg border transition-colors"
+            className="flex items-center gap-4 px-4 py-3 rounded-lg border transition-colors"
             style={{
               background: "var(--surface)",
               borderColor: "var(--border)",
-              borderLeftWidth: 3,
+              borderLeftWidth: 4,
               borderLeftColor: p.color,
             }}
           >
-            <div className="flex-1 min-w-0">
+            {/* Color dot + Name */}
+            <div style={{ width: 220, flexShrink: 0 }}>
               <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-[14px] font-medium">{p.label || p.name}</span>
-                {p.language && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: "var(--bg)", color: "var(--text-muted)" }}>
-                    {p.language}
-                  </span>
-                )}
-                {p.source === "local" && (
-                  <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: "rgba(249,115,22,0.15)", color: "var(--warning)" }}>
-                    local
-                  </span>
-                )}
+                <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: p.color }} />
+                <span className="text-[14px] font-medium" style={{ color: "var(--text)" }}>
+                  {p.label || p.name}
+                </span>
               </div>
-              <p className="text-[12px] truncate" style={{ color: "var(--text-secondary)" }}>
+              <p className="text-[12px] truncate ml-4" style={{ color: "var(--text-secondary)" }}>
                 {p.description || p.repo}
               </p>
             </div>
 
+            {/* Badges */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              {p.language && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: "var(--bg)", color: "var(--text-muted)" }}>
+                  {p.language}
+                </span>
+              )}
+              {p.source === "local" && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: "rgba(249,115,22,0.15)", color: "var(--warning)" }}>
+                  local
+                </span>
+              )}
+            </div>
+
+            {/* Spacer */}
+            <div className="flex-1" />
+
             {/* Progress bar */}
-            <div className="w-24">
+            <div className="w-28 flex-shrink-0">
               <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "var(--bg)" }}>
                 <div
                   className="h-full rounded-full transition-all"
-                  style={{ width: `${p.progress}%`, background: p.color }}
+                  style={{ width: `${Math.max(p.progress, 2)}%`, background: p.color }}
                 />
               </div>
               <span className="text-[10px]" style={{ color: "var(--text-muted)" }}>
@@ -139,7 +150,8 @@ function Section({ title, projects, onUpdate }: { title: string; projects: Proje
               </span>
             </div>
 
-            <div className="flex items-center gap-1.5">
+            {/* Actions */}
+            <div className="flex items-center gap-1.5 flex-shrink-0">
               {p.url && (
                 <a
                   href={p.url}
