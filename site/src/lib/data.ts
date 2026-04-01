@@ -109,6 +109,13 @@ export interface StockData {
   change_pct: number;
   change_6m: number;
   change_6m_pct: number;
+  high_6m?: number;
+  low_6m?: number;
+  market_cap?: string | number;
+  pe_ratio?: number;
+  target_price?: number;
+  recommendation?: string;
+  next_earnings_date?: string;
   price_history?: {
     dates: string[];
     closes: number[];
