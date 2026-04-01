@@ -43,6 +43,7 @@ def transcribe_episode(mp3_path: Path) -> dict:
             file=f,
             response_format="verbose_json",
             timestamp_granularities=["segment"],
+            timeout=300.0,
         )
 
     result = {
@@ -104,6 +105,7 @@ def _transcribe_chunked(mp3_path: Path) -> dict:
                 file=f,
                 response_format="verbose_json",
                 timestamp_granularities=["segment"],
+                timeout=300.0,
             )
 
         all_text.append(response.text)

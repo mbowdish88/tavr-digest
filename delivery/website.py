@@ -114,12 +114,35 @@ def _article_type(article: dict) -> str:
     return "Research"
 
 
+def _strip_html_preserve_links(html: str) -> str:
+    """Strip HTML tags but preserve <a> hyperlinks for verifiability."""
+    import re
+    # Keep <a> tags intact, strip everything else
+    # First, protect <a> tags by replacing them with placeholders
+    links = []
+    def save_link(match):
+        links.append(match.group(0))
+        return f"__LINK_{len(links) - 1}__"
+
+    text = re.sub(r'<a\s[^>]*>.*?</a>', save_link, html, flags=re.DOTALL)
+    # Strip remaining HTML tags
+    text = re.sub(r'<[^>]+>', ' ', text)
+    # Restore links
+    for i, link in enumerate(links):
+        text = text.replace(f"__LINK_{i}__", link)
+    # Clean up whitespace
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text
+
+
 def _extract_executive_summary(digest_html: str) -> str:
-    """Extract the executive summary section from the digest HTML."""
+    """Extract the executive summary section from the digest HTML.
+
+    Preserves hyperlinks so readers can verify claims.
+    """
     if not digest_html:
         return ""
     import re
-    # Look for executive summary section
     patterns = [
         r'<h2[^>]*>.*?Executive Summary.*?</h2>\s*(.*?)(?=<h2|$)',
         r'<h2[^>]*>.*?Key Takeaways.*?</h2>\s*(.*?)(?=<h2|$)',
@@ -128,30 +151,29 @@ def _extract_executive_summary(digest_html: str) -> str:
     for pattern in patterns:
         match = re.search(pattern, digest_html, re.DOTALL | re.IGNORECASE)
         if match:
-            # Strip HTML tags for clean text
-            text = re.sub(r'<[^>]+>', ' ', match.group(1))
-            text = re.sub(r'\s+', ' ', text).strip()
-            return text[:3000]  # Allow full executive summary
+            text = _strip_html_preserve_links(match.group(1))
+            return text[:3000]
     return ""
 
 
 def _extract_key_points(digest_html: str) -> list:
-    """Extract key points from the digest HTML."""
+    """Extract key points from the digest HTML.
+
+    Preserves hyperlinks so readers can verify claims.
+    """
     if not digest_html:
         return []
     import re
     points = []
-    # Look for list items in the executive summary or key points section
     summary_match = re.search(
         r'<h2[^>]*>.*?(?:Executive Summary|Key Takeaways|Overview).*?</h2>(.*?)(?=<h2|$)',
         digest_html, re.DOTALL | re.IGNORECASE,
     )
     if summary_match:
         section = summary_match.group(1)
-        # Extract list items
         items = re.findall(r'<li>(.*?)</li>', section, re.DOTALL)
         for item in items[:5]:
-            text = re.sub(r'<[^>]+>', '', item).strip()
+            text = _strip_html_preserve_links(item)
             if text:
                 points.append(text)
 
@@ -159,9 +181,9 @@ def _extract_key_points(digest_html: str) -> list:
     if not points:
         p_match = re.findall(r'<p>(.*?)</p>', digest_html[:3000], re.DOTALL)
         for p in p_match[:3]:
-            text = re.sub(r'<[^>]+>', '', p).strip()
+            text = _strip_html_preserve_links(p)
             if len(text) > 40:
-                points.append(text[:200])
+                points.append(text[:300])
 
     return points[:5]
 

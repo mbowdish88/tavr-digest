@@ -154,11 +154,52 @@ single-center, retrospective). If the design is not mentioned in the source, do 
 Return ONLY the JSON array. No other text."""
 
 
+def _format_article_metadata_for_prompt(article_metadata: list[dict]) -> str:
+    """Format structured article metadata as a reference section for the prompt."""
+    if not article_metadata:
+        return ""
+
+    # Only include articles that have meaningful data
+    useful = [
+        a for a in article_metadata
+        if a.get("title") and (a.get("key_finding") or a.get("key_numbers"))
+    ]
+    if not useful:
+        return ""
+
+    lines = [
+        "\n## Verified Article Data (USE THESE as ground truth)",
+        "The following are verified facts from this week's articles. When discussing",
+        "these studies, use ONLY the numbers and attributions listed here:\n",
+    ]
+
+    for a in useful:
+        parts = [f"- **{a['title']}**"]
+        if a.get("journal"):
+            parts.append(f"  Journal: {a['journal']}")
+        if a.get("authors"):
+            parts.append(f"  Authors: {a['authors']}")
+        if a.get("study_design"):
+            parts.append(f"  Design: {a['study_design']}")
+        if a.get("sample_size"):
+            parts.append(f"  Sample size: {a['sample_size']}")
+        if a.get("key_finding"):
+            parts.append(f"  Key finding: {a['key_finding']}")
+        if a.get("key_numbers"):
+            parts.append(f"  Key numbers: {', '.join(a['key_numbers'])}")
+        if a.get("url"):
+            parts.append(f"  URL: {a['url']}")
+        lines.append("\n".join(parts))
+
+    return "\n\n".join(lines)
+
+
 def generate_podcast_script(
     weekly_html: str,
     start_date: str = "",
     end_date: str = "",
     episode_number: int = None,
+    article_metadata: list[dict] = None,
 ) -> list[dict]:
     """Generate a conversational podcast script from the weekly digest.
 
@@ -167,6 +208,7 @@ def generate_podcast_script(
         start_date: Start of the week (e.g., "March 9").
         end_date: End of the week (e.g., "March 14, 2026").
         episode_number: Episode number for the intro (e.g., 12).
+        article_metadata: Optional structured article data from daily sidecars.
 
     Returns:
         List of script segment dicts with speaker, text, and section.
@@ -228,6 +270,15 @@ def generate_podcast_script(
         episode_intro_note=episode_intro_note,
         meeting_section=meeting_section,
     )
+
+    # Append verified article metadata if available
+    metadata_section = _format_article_metadata_for_prompt(article_metadata)
+    if metadata_section:
+        prompt = prompt.replace(
+            "Return ONLY the JSON array. No other text.",
+            metadata_section + "\n\nReturn ONLY the JSON array. No other text.",
+        )
+        logger.info(f"Appended {len(article_metadata)} article metadata records to prompt")
 
     # Inject guidelines knowledge into the system prompt
     from knowledge import get_full_knowledge_context
@@ -315,14 +366,18 @@ def generate_podcast_script(
         logger.warning(f"Script missing required sections: {missing}")
 
     # Hallucination check: flag study references not found in source material (R4)
-    _validate_references(cleaned, weekly_html)
+    _validate_references(cleaned, weekly_html, article_metadata=article_metadata)
 
     logger.info(f"Script has {len(cleaned)} segments ({sum(len(s['text']) for s in cleaned)} chars total)")
     return cleaned
 
 
-def _validate_references(script: list[dict], source_html: str) -> None:
-    """Check that study/trial names in the script can be found in the source material.
+def _validate_references(
+    script: list[dict],
+    source_html: str,
+    article_metadata: list[dict] = None,
+) -> None:
+    """Check that study/trial names, numbers, and journals in the script appear in sources.
 
     Logs warnings for any references that appear fabricated. Does not block generation
     — this is a quality signal, not a gate.
@@ -331,33 +386,148 @@ def _validate_references(script: list[dict], source_html: str) -> None:
         return
 
     source_lower = source_html.lower()
-
-    # Extract potential study/trial references from script text
     all_text = " ".join(s["text"] for s in script)
 
-    # Look for common patterns: "the STUDY_NAME trial", "STUDY_NAME study", etc.
+    # Build a combined reference corpus from source HTML + metadata
+    metadata_text = ""
+    metadata_numbers = set()
+    metadata_journals = set()
+    if article_metadata:
+        for a in article_metadata:
+            metadata_text += " " + a.get("title", "") + " " + a.get("key_finding", "")
+            for n in a.get("key_numbers", []):
+                metadata_numbers.add(n.strip())
+            if a.get("journal"):
+                metadata_journals.add(a["journal"].lower().strip())
+    combined_lower = source_lower + " " + metadata_text.lower()
+
+    # --- 1. Study name validation (existing) ---
     study_patterns = re.findall(
         r'(?:the\s+)?([A-Z][A-Z0-9-]{2,})\s+(?:trial|study|registry|data|results|findings)',
         all_text,
     )
 
-    # Filter out common non-study words
     skip_words = {
         "THE", "AND", "FOR", "BUT", "NOT", "THIS", "THAT", "WITH", "TAVR",
         "TAVI", "TMVR", "TTVR", "SAVR", "FDA", "CMS", "ACC", "AHA", "ESC",
         "EACTS", "TCT", "STS", "AATS", "TTS", "RSS", "CEO", "CFO",
     }
 
-    flagged = []
+    flagged_studies = []
     for study in study_patterns:
         if study in skip_words:
             continue
-        if study.lower() not in source_lower:
-            flagged.append(study)
+        if study.lower() not in combined_lower:
+            flagged_studies.append(study)
 
-    if flagged:
+    if flagged_studies:
         logger.warning(
-            f"HALLUCINATION CHECK: {len(flagged)} study reference(s) not found in "
-            f"source material: {', '.join(flagged)}. These may be fabricated or "
-            f"from the knowledge base. Review before publishing."
+            f"HALLUCINATION CHECK: {len(flagged_studies)} study reference(s) not found "
+            f"in source material: {', '.join(flagged_studies)}. These may be fabricated "
+            f"or from the knowledge base. Review before publishing."
         )
+
+    # --- 2. Percentage validation ---
+    # Extract percentages from the script (e.g., "42.3%", "a 15% reduction")
+    script_percentages = re.findall(r'(\d+\.?\d*)\s*%', all_text)
+    flagged_pct = []
+    for pct in script_percentages:
+        pct_str = pct + "%"
+        pct_with_space = pct + " %"
+        # Check in source HTML, metadata numbers, and metadata text
+        found = (
+            pct_str in source_html
+            or pct_with_space in source_html
+            or pct_str in metadata_text
+            or any(pct in n for n in metadata_numbers)
+        )
+        if not found:
+            flagged_pct.append(pct_str)
+
+    if flagged_pct:
+        # Deduplicate
+        unique_pct = sorted(set(flagged_pct))
+        logger.warning(
+            f"ACCURACY CHECK: {len(unique_pct)} percentage(s) in script not found in "
+            f"source material: {', '.join(unique_pct)}. Verify these are not fabricated."
+        )
+
+    # --- 3. Journal name validation ---
+    # Look for "published in JOURNAL", "JOURNAL study", "in the JOURNAL" patterns
+    journal_mentions = re.findall(
+        r'(?:published in|in the|from the|reported in|in)\s+'
+        r'((?:New England Journal of Medicine|NEJM|JAMA|JACC|Lancet|'
+        r'European Heart Journal|EHJ|Circulation|Annals of Thoracic Surgery|'
+        r'JTCVS|EJCTS|Journal of the American College of Cardiology|'
+        r'Heart|BMJ|Nature Medicine|Structural Heart|'
+        r'Journal of Thoracic and Cardiovascular Surgery|'
+        r'European Journal of Cardio-Thoracic Surgery))',
+        all_text,
+        re.IGNORECASE,
+    )
+
+    flagged_journals = []
+    for journal in journal_mentions:
+        j_lower = journal.lower().strip()
+        # Check source HTML and metadata
+        if j_lower not in source_lower and j_lower not in metadata_journals:
+            # Also check common abbreviation mappings
+            abbrev_map = {
+                "nejm": "new england journal",
+                "jacc": "journal of the american college of cardiology",
+                "ehj": "european heart journal",
+                "jtcvs": "journal of thoracic and cardiovascular surgery",
+                "ejcts": "european journal of cardio-thoracic surgery",
+            }
+            expanded = abbrev_map.get(j_lower, "")
+            if not expanded or (expanded not in source_lower and expanded not in " ".join(metadata_journals)):
+                flagged_journals.append(journal)
+
+    if flagged_journals:
+        unique_journals = sorted(set(flagged_journals))
+        logger.warning(
+            f"ACCURACY CHECK: {len(unique_journals)} journal attribution(s) in script "
+            f"not found in source material: {', '.join(unique_journals)}. "
+            f"Verify these studies were actually published in these journals."
+        )
+
+    # --- 4. Numerical claims validation (enrollment, p-values, ratios) ---
+    if article_metadata:
+        # Extract specific numerical claims from script
+        # P-values
+        script_pvalues = re.findall(r'[Pp]\s*[<>=]\s*(0?\.\d+)', all_text)
+        flagged_pvals = []
+        for pv in script_pvalues:
+            found = pv in source_html or any(pv in n for n in metadata_numbers)
+            if not found:
+                flagged_pvals.append(f"p={pv}")
+
+        if flagged_pvals:
+            logger.warning(
+                f"ACCURACY CHECK: {len(flagged_pvals)} p-value(s) in script not found "
+                f"in source material: {', '.join(flagged_pvals)}. "
+                f"These may be fabricated."
+            )
+
+        # Enrollment / sample size numbers ("enrolled 500", "500 patients")
+        script_enrollment = re.findall(
+            r'(?:enrolled|included|randomized)\s+([\d,]+)\s*(?:patients|subjects|participants)',
+            all_text, re.IGNORECASE,
+        )
+        metadata_sizes = {
+            str(a["sample_size"]) for a in article_metadata
+            if a.get("sample_size")
+        }
+
+        flagged_enrollment = []
+        for n in script_enrollment:
+            n_clean = n.replace(",", "")
+            if n_clean not in source_html.replace(",", "") and n_clean not in metadata_sizes:
+                flagged_enrollment.append(n)
+
+        if flagged_enrollment:
+            logger.warning(
+                f"ACCURACY CHECK: {len(flagged_enrollment)} enrollment number(s) in "
+                f"script not found in source material: {', '.join(flagged_enrollment)}. "
+                f"Verify these sample sizes."
+            )

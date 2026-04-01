@@ -10,9 +10,10 @@ export default function ExecutiveSummary({ summary }: ExecutiveSummaryProps) {
       <h2 className="nav-font text-base font-bold uppercase tracking-wider text-[var(--color-burgundy)] mb-3">
         Executive Summary
       </h2>
-      <p className="text-base leading-relaxed text-[var(--color-wine)]">
-        {summary}
-      </p>
+      <p
+        className="text-base leading-relaxed text-[var(--color-wine)] [&_a]:text-[var(--color-burgundy)] [&_a]:underline [&_a]:hover:opacity-80"
+        dangerouslySetInnerHTML={{ __html: summary }}
+      />
     </div>
   );
 }
