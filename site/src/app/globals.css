@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-wine: #1B2A4A;
+  --color-burgundy: #2C5282;
+  --color-rose: #3182CE;
+  --color-cream: #EDF2F7;
+  --color-beige: #A0AEC0;
+  --color-warm-white: #F7FAFC;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #2c2c2c;
+  background-color: var(--color-warm-white);
+}
+
+h1, h2, h3, h4, h5, h6, .nav-font {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+}
+
+.nav-font {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+}
