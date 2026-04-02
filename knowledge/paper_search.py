@@ -2,21 +2,42 @@
 """
 Standalone PubMed paper search and download script for structural heart disease.
 
-This script is SELF-CONTAINED and does not import any project modules.
-It can be copied to any machine (e.g., a Cedars-Sinai workstation with
-institutional journal access) and run independently.
+============================================================================
+IMPORTANT: This script MUST be run from a computer with institutional journal
+access (e.g., Cedars-Sinai network). PMC and journal publishers block PDF
+downloads from home/personal networks — even for "open access" papers.
 
-Requirements: Python 3.8+, `requests` (pip install requests)
+Options for running at Cedars:
+  1. Cowork — give it this script, tell it to run it
+  2. Office computer on Cedars network — run directly
+  3. Cedars VPN from home — connect first, then run
+
+After downloading, copy the PDFs back to:
+  ~/projects/tavr-digest/knowledge/papers/inbox/
+Then run: python -m knowledge.indexer
+The indexer will catalog, rename, and integrate them into the knowledge base.
+============================================================================
+
+This script is SELF-CONTAINED — one file, no project dependencies.
+Copy it to any machine and run it. Only needs: Python 3.8+ and `requests`.
+
+Setup (one time):
+    pip install requests
 
 Usage:
     python paper_search.py                    # Full search + download
     python paper_search.py --dry-run          # Search only, no downloads
-    python paper_search.py --csv-only         # Search + CSV, no downloads
+    python paper_search.py --csv-only         # Search + CSV report only
     python paper_search.py --authors-only     # Only author-based searches
     python paper_search.py --topics-only      # Only topic-based searches
     python paper_search.py --since 2020       # Override start year
     python paper_search.py --limit 100        # Limit total downloads
     python paper_search.py --output-dir /path # Override output directory
+
+Output:
+    ./inbox/                              # Downloaded PDFs (or --output-dir)
+    ./paper_search_results.csv            # Full metadata for all papers found
+    ./needs_institutional_access.txt      # Papers that couldn't be downloaded
 """
 
 import argparse
