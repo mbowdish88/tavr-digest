@@ -1,0 +1,175 @@
+======================================================================
+KNOWLEDGE BASE REPORT — Full Library
+======================================================================
+Total indexed: 217
+Verified (your originals): 52
+Inbox (awaiting review): 215
+Excluded (non-valve): 140
+
+--- By Journal ---
+  Eur J Cardiothorac Surg               54  ███████████████████████████
+  Eur Heart J                           46  ███████████████████████
+  JACC Cardiovasc Interv                29  ██████████████
+  JACC                                  25  ████████████
+  NEJM                                  16  ████████
+  Circulation                           12  ██████
+  Ann Thorac Surg                       11  █████
+  J Thorac Cardiovasc Surg              10  █████
+  JAMA                                   3  █
+  Lancet                                 2  █
+  J Am Coll Cardiol                      2  █
+  Unknown                                2  █
+  European Heart Journal                 1  
+  JAMA Cardiol                           1  
+  Dissertation                           1  
+  Journal not specified                  1  
+  Not specified                          1  
+
+--- By Year ---
+  Unknown:   5  █████
+  2026:   6  ██████
+  2025:  25  █████████████████████████
+  2024:  38  ██████████████████████████████████████
+  2023:  31  ███████████████████████████████
+  2022:  11  ███████████
+  2021:  19  ███████████████████
+  2020:  27  ███████████████████████████
+  2019:  11  ███████████
+  2018:   5  █████
+  2017:  12  ████████████
+  2016:   7  ███████
+  2015:   3  ███
+  2014:   6  ██████
+  2013:   1  █
+  2012:   2  ██
+  2011:   5  █████
+  2010:   2  ██
+  2008:   1  █
+
+--- Study Design ---
+  Retrospective cohort                  52
+  Registry                              42
+  Prospective cohort                    30
+  Editorial/Commentary                  25
+  Randomized controlled trial           21
+  Guideline                             21
+  Other                                 11
+  Case series                            7
+  Meta-analysis                          4
+  Systematic review                      4
+
+--- Valve Coverage ---
+  aortic                135  █████████████████████████████████████████████
+  mitral                 59  ███████████████████
+  tricuspid              24  ████████
+  general                13  ████
+  pulmonic                2  
+
+--- Named Trials (39 unique) ---
+  PARTNER                               6
+  PERIGON                               5
+  ADVANCE                               4
+  LANDMARK                              2
+  CENTER2                               2
+  NOTION                                2
+  TRIGISTRY                             2
+  COAPT                                 2
+  SURTAVI                               2
+  PARTNER 2                             2
+  TAVR UNLOAD                           1
+  EARLY TAVR                            1
+  PROMISE                               1
+  DELINEATE-regurgitation               1
+  POPular PAUSE TAVI                    1
+  EVOLVED                               1
+  RESHAPE-HF2                           1
+  TCW                                   1
+  ShortCut study                        1
+  BENCHMARK                             1
+  AUTHEARTVISIT                         1
+  TRILUMINATE                           1
+  TENDER                                1
+  AD HOC                                1
+  PARTNER 2 & 3                         1
+  EXPAND G4                             1
+  EuroSMR                               1
+  PROTECTED TAVR                        1
+  CLASP                                 1
+  AMTRAC                                1
+
+--- Top Findings by Journal Tier ---
+
+  JACC (2026) [LANDMARK]
+  1-Year Outcomes of Novel Balloon-Expandable vs Contemporary 
+  -> The Myval balloon-expandable transcatheter heart valve demonstrated noninferiority to contemporary SAPIEN and Evolut ser
+
+  JACC (2025)
+  From the Hazards of Death to the Hazards of Indication Creep
+  -> Meta-analysis findings suggesting TAVR mortality advantage over SAVR in lower-risk patients may be influenced by inconsi
+
+  JACC (2025)
+  Best Practices for Imaging of Transcatheter Valve Failure: A
+  -> This updated Heart Valve Collaboratory framework provides standardized pathways and protocols for evaluating transcathet
+
+  JACC (2025)
+  Transcatheter vs Surgical Aortic Valve Replacement in Lower-
+  -> In lower-risk patients at 5 years, TAVR was associated with a 20% reduction in the hazard of all-cause death (HR: 0.80; 
+
+  JACC (2025)
+  Navigating the Landscape of Reinterventions After TAVR
+  -> TAVR reinterventions remain rare (1.7% at 8 years) but are rapidly increasing, with redo-TAVR accounting for 84% of case
+
+  JACC (2025) [TAVR UNLOAD]
+  Transcatheter Aortic Valve Replacement in Patients With Syst
+  -> TAVR was not superior to clinical surveillance for the primary hierarchical composite endpoint in patients with moderate
+
+  NEJM (2024) [POPular PAUSE TAVI]
+  Continuation versus Interruption of Oral Anticoagulation dur
+  -> Periprocedural continuation of oral anticoagulation was not noninferior to interruption during TAVI, with higher bleedin
+
+  JAMA (2024) [EVOLVED]
+  Early Intervention in Patients with Asymptomatic Severe Aort
+  -> The EVOLVED trial compared early aortic valve intervention versus guideline-directed conservative management in asymptom
+
+  JACC (2024) [RESHAPE-HF2]
+  Hospitalization of Symptomatic Patients With Heart Failure a
+  -> MitraClip transcatheter edge-to-edge repair reduced cardiovascular death or heart failure hospitalizations (HR 0.65) and
+
+  Lancet (2024) [LANDMARK]
+  LANDMARK comparison of early outcomes of newer-generation My
+  -> The Myval transcatheter heart valve demonstrated non-inferiority to contemporary valves (Sapien and Evolut) with a 25% v
+
+  Lancet (2024) [TCW]
+  TransCatheter aortic valve implantation and fractional flow 
+  -> FFR-guided PCI plus TAVI was non-inferior and superior to SAVR plus CABG for the primary composite endpoint (4% vs 23%),
+
+  JACC (2023) [PARTNER 2 & 3]
+  Cardiac damage and quality of life after aortic valve replac
+  -> The extent of extravalvular cardiac damage at baseline was associated with worse quality of life before and after AVR, a
+
+  JACC (2023)
+  Tricuspid Valve Academic Research Consortium Definitions for
+  -> This first TVARC document standardizes definitions of tricuspid regurgitation disease etiology, severity, and trial endp
+
+  NEJM (2022) [PROTECTED TAVR]
+  Cerebral Embolic Protection during Transcatheter Aortic-Valv
+  -> Among patients undergoing transfemoral TAVR, cerebral embolic protection did not significantly reduce the incidence of p
+
+  JACC (2022) [PARTNER]
+  Evolution and prognostic impact of cardiac damage after aort
+  -> In patients undergoing aortic valve replacement, cardiac damage improved in ~15%, remained unchanged in ~60%, and worsen
+
+--- Coverage Analysis ---
+  Aortic:     135 papers
+  Mitral:      59 papers
+  Tricuspid:   24 papers
+  Pulmonic:     2 papers
+  General:     13 papers
+  RCTs:        21
+  Guidelines:  21
+  Registries:  42
+
+--- Potential Gaps ---
+  * Few meta-analyses (4)
+
+======================================================================

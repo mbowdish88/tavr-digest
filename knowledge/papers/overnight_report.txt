@@ -1,0 +1,159 @@
+======================================================================
+OVERNIGHT PAPER DOWNLOAD & INDEX REPORT
+Generated: 2026-04-02 12:12
+======================================================================
+
+Total papers in knowledge base: 52
+
+--- Papers by Journal ---
+  NEJM: 20
+  JAMA Cardiol: 11
+  JAMA: 5
+  JACC: 3
+  Circulation: 2
+  JACC Cardiovasc Interv: 2
+  Ann Thorac Surg: 1
+  J Thorac Cardiovasc Surg: 1
+  Trends Cardiovasc Med: 1
+  Eur Heart J: 1
+  JACC Intv: 1
+  JAMA Netw Open: 1
+  Cardiovasc Revasc Med: 1
+  J Card Surg: 1
+  Avicenna J Med: 1
+
+--- Papers by Year ---
+  2026: 1
+  2025: 4
+  2024: 8
+  2023: 7
+  2022: 6
+  2021: 6
+  2020: 4
+  2019: 7
+  2018: 1
+  2017: 2
+
+--- Study Designs ---
+  Randomized controlled trial: 29
+  Editorial/Commentary: 6
+  Retrospective cohort: 6
+  Registry: 5
+  Meta-analysis: 3
+  Prospective cohort: 3
+
+--- Valve Type Coverage ---
+  aortic: 47
+  tricuspid: 3
+  mitral: 3
+
+--- Named Trials (34 papers) ---
+  PARTNER 3: 7 paper(s)
+  SURTAVI: 4 paper(s)
+  PARTNER: 3 paper(s)
+  NOTION-2: 2 paper(s)
+  EVOLVED: 2 paper(s)
+  TAVR UNLOAD: 2 paper(s)
+  COAPT: 2 paper(s)
+  Low Risk Bicuspid Study: 2 paper(s)
+  REPRISE III: 2 paper(s)
+  PARTNER 2: 2 paper(s)
+  TRISCEND II: 1 paper(s)
+  EARLY TAVR: 1 paper(s)
+  TRILUMINATE Pivotal: 1 paper(s)
+  PROTECTED TAVR: 1 paper(s)
+  CoreValve: 1 paper(s)
+  CoreValve US Pivotal High Risk: 1 paper(s)
+
+--- Key Findings (newest papers) ---
+
+  NEJM 2026 [PARTNER 3]
+  Transcatheter or Surgical Aortic-Valve Replacement in Low-Ri...
+  Finding: Among low-risk patients with severe, symptomatic aortic stenosis, no significant differences in composite endpoints of death, stroke, and rehospitalization were observed at 7 years between TAVR and surgical aortic-valve replacement. Bioprosthetic valve failure rates were similar (6.9% TAVR vs 7.5% surgery).
+
+  NEJM 2025 [TRISCEND II]
+  Transcatheter Valve Replacement in Severe Tricuspid Regurgit...
+  Finding: Transcatheter tricuspid-valve replacement was superior to medical therapy alone with a win ratio of 2.02, driven primarily by improvements in symptoms and quality of life. The valve-replacement group had higher rates of severe bleeding (15.4% vs 5.3%) and new permanent pacemakers (17.4% vs 2.3%).
+
+  NEJM 2025 [EARLY TAVR]
+  Transcatheter Aortic-Valve Replacement for Asymptomatic Seve...
+  Finding: Among patients with asymptomatic severe aortic stenosis, early TAVR was superior to clinical surveillance in reducing the composite endpoint of death, stroke, or unplanned hospitalization for cardiovascular causes (26.8% vs 45.3%, HR 0.50, P<0.001).
+
+  JAMA Cardiol 2025
+  Outcomes of Balloon-Expandable Transcatheter Aortic Valve Re...
+  Finding: Among patients receiving balloon-expandable TAVR, those younger than 65 years (5.7% of cohort) had higher comorbidity burden and significantly higher 1-year mortality (9.9% vs 8.2%) and readmission rates (28.2% vs 26.1%) compared to patients aged 65-80 years.
+
+  Circulation 2025 [NOTION-2]
+  Three-Year Follow-Up of the NOTION-2 Trial: TAVR Versus SAVR...
+  Finding: At 3 years, clinical outcomes were similar between TAVR and surgery in patients age 60-75 years with severe aortic stenosis at low surgical risk, with both procedures showing low rates of structural valve deterioration and reintervention.
+
+  JAMA 2024 [EVOLVED]
+  Myocardial Fibrosis and Timing of Intervention for Aortic St...
+  Finding: The EVOLVED trial found no significant difference in the primary composite endpoint between early AVR and conservative management in asymptomatic severe aortic stenosis patients with myocardial fibrosis. Secondary endpoints of unplanned hospitalizations and symptom burden favored early AVR but were not definitive.
+
+  JAMA 2024 [EVOLVED]
+  Early Intervention in Patients With Asymptomatic Severe Aort...
+  Finding: Early aortic valve intervention had no demonstrable effect on all-cause death or unplanned aortic stenosis-related hospitalization in asymptomatic patients with severe aortic stenosis and myocardial fibrosis. Early intervention was associated with lower rates of NYHA class II-IV symptoms at 12 months.
+
+  JACC 2024 [TAVR UNLOAD]
+  Transcatheter Aortic Valve Replacement in Patients With Syst...
+  Finding: TAVR was not superior to aortic stenosis surveillance for the primary hierarchical composite endpoint in patients with moderate AS and heart failure with reduced ejection fraction. However, preemptive TAVR provided clinically meaningful quality-of-life benefits at 1 year.
+
+  JACC 2024 [TAVR UNLOAD]
+  TAVR in Patients with Moderate Aortic Stenosis and Heart Fai...
+  Finding: The TAVR UNLOAD trial, the first randomized trial evaluating TAVR in moderate AS with reduced ejection fraction, failed to demonstrate superiority of early TAVR over guideline-directed medical therapy alone for the primary composite endpoint. However, TAVR showed greater improvement in quality of life scores and no increase in mortality or stroke.
+
+  Ann Thorac Surg 2024
+  Transcatheter vs Surgical Aortic Valve Replacement in Bicusp...
+  Finding: Among Medicare beneficiaries with bicuspid aortic valves, TAVR was associated with lower procedural mortality but higher rates of pacemaker implantation, longitudinal stroke, and all-cause mortality compared with SAVR. Even in young low-risk patients, TAVR showed higher longitudinal stroke rates and composite outcomes.
+
+  J Thorac Cardiovasc Surg 2024
+  Bicuspid aortic stenosis: National three-year outcomes of tr...
+  Finding: Among matched Medicare beneficiaries with bicuspid aortic stenosis, TAVR was associated with higher 3-year mortality compared to SAVR, but similar mortality risk and lower heart failure readmissions in the first 6 months.
+
+  Trends Cardiovasc Med 2024
+  Surgical vs transcatheter aortic valve replacement in bicusp...
+  Finding: SAVR and TAVR had similar in-hospital mortality and stroke rates in bicuspid aortic stenosis, but SAVR had lower rates of permanent pacemaker implantation and paravalvular leak while TAVR had lower rates of acute kidney injury, major bleeding, and pulmonary complications.
+
+  Eur Heart J 2024 [NOTION-2]
+  Transcatheter aortic valve implantation in low-risk tricuspi...
+  Finding: Among low-risk patients aged ≤75 years with severe symptomatic aortic stenosis, the 1-year composite rate of death, stroke, or rehospitalization was similar between TAVI (10.2%) and surgery (7.1%) groups (HR 1.4, 95% CI 0.7-2.9, P=0.3). TAVI outcomes in bicuspid AS patients showed numerically higher event rates and warrant caution.
+
+  NEJM 2023 [COAPT]
+  Five-Year Follow-up after Transcatheter Repair of Secondary ...
+  Finding: Transcatheter edge-to-edge repair of the mitral valve led to a lower rate of hospitalization for heart failure (33.1% vs 57.2% per year) and lower all-cause mortality (57.3% vs 67.2%) through 5 years compared to medical therapy alone in patients with heart failure and secondary mitral regurgitation.
+
+  NEJM 2023 [TRILUMINATE Pivotal]
+  Transcatheter Repair for Patients with Tricuspid Regurgitati...
+  Finding: Tricuspid TEER was safe and associated with improved quality of life compared to medical therapy, with 87.0% of TEER patients achieving tricuspid regurgitation of no greater than moderate severity at 30 days versus 4.8% in the control group.
+
+  NEJM 2023 [PARTNER 3]
+  Transcatheter Aortic-Valve Replacement in Low-Risk Patients ...
+  Finding: Among low-risk patients with severe, symptomatic aortic stenosis who underwent TAVR or surgery, there was no significant between-group difference in the two primary composite outcomes at 5 years. The composite end point occurred in 22.8% in the TAVR group versus 27.2% in the surgery group.
+
+  NEJM 2023 [PARTNER 3]
+  Transcatheter Aortic-Valve Replacement in Low-Risk Patients ...
+  Finding: Among low-risk patients with severe, symptomatic aortic stenosis who underwent TAVR or surgery, there was no significant between-group difference in the two primary composite outcomes at 5 years. The composite end point occurred in 22.8% of TAVR patients vs 27.2% of surgery patients (P=0.07).
+
+  NEJM 2023 [PARTNER 3]
+  Transcatheter Aortic-Valve Replacement in Low-Risk Patients ...
+  Finding: Among low-risk patients with severe, symptomatic aortic stenosis, there was no significant between-group difference in the two primary composite outcomes between TAVR and surgical aortic-valve replacement at 5 years. Bioprosthetic-valve failure occurred in 3.3% of TAVR patients and 3.8% of surgery patients.
+
+  JAMA Cardiol 2023
+  Indication Creep in Transcatheter Aortic Valve Implantation—...
+  Finding: Despite FDA approval of TAVI for all risk levels based on low-risk trials, significant knowledge gaps exist regarding use in patients <65 years, those with bicuspid valves, substantial CAD, and concomitant valve disease. The trials excluded many real-world patients and had highly selective populations.
+
+  JAMA Cardiol 2023 [SURTAVI]
+  Structural Valve Deterioration After Self-Expanding Transcat...
+  Finding: The cumulative incidence of structural valve deterioration at 5 years was significantly lower in patients undergoing self-expanding TAVI compared to surgery (2.20% vs 4.38%, HR 0.46, P=0.004). SVD was associated with increased 5-year all-cause mortality and heart failure hospitalizations.
+
+--- Structural Heart Relevance ---
+  Aortic valve papers: 47
+  Mitral valve papers: 3
+  Tricuspid valve papers: 3
+
+--- Potential Gaps ---
+  ⚠ Low mitral coverage (3 papers)
+  ⚠ Low tricuspid coverage (3 papers)
+
+======================================================================
