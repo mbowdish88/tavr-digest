@@ -1,0 +1,244 @@
+{
+  "date": "2026-04-03",
+  "articles": [
+    {
+      "title": "Cecal Bascule in a Cardiac Surgical Patient.",
+      "journal": "Cureus",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41930091/",
+      "pmid": "41930091",
+      "authors": "McGuirt VE, Coleman SR, Fernando RJ",
+      "study_design": "Case report/series",
+      "sample_size": null,
+      "key_finding": "A cecal bascule is a specific type of volvulus that confers a high degree of mortality if it is not addressed.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Impact of TriGUARD 3 on cerebral protection in Chinese patients undergoing transcatheter aortic valve replacement.",
+      "journal": "Frontiers in cardiovascular medicine",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41929462/",
+      "pmid": "41929462",
+      "authors": "Li Y, Wang B, Zhou S, Zhou Y, Chen M et al.",
+      "study_design": "Randomized trial",
+      "sample_size": 62,
+      "key_finding": "The primary outcome was total cerebral ischemic lesion volume on DW-MRI.",
+      "key_numbers": [
+        "p\u2009=\u20090.456",
+        "p\u2009=\u20090.181",
+        "p\u2009=\u20090.025",
+        "p\u2009=\u20090.019",
+        "p\u2009=\u20090.019",
+        "p\u2009<\u20090.05",
+        "n\u2009=\u200962",
+        "n\u2009=\u200956"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Transcatheter edge-to-edge repair for severe mitral regurgitation in a patient with a massive left atrium: a case report.",
+      "journal": "European heart journal. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41929444/",
+      "pmid": "41929444",
+      "authors": "Ni Q, Mao Z, Chen C, Chen X, Zhou H",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "BACKGROUND: Transcatheter edge-to-edge repair (TEER) poses significant technical challenges in patients with a massive left atrium (LA), where conventional anatomical criteria often deem the procedure unsuitable.",
+      "key_numbers": [],
+      "section": "mitral"
+    },
+    {
+      "title": "Development of a multi-label deep neural network model for predicting immediate paravalvular leakage and new-onset conduction disturbances after transcatheter aortic valve replacement: A retrospective cohort study.",
+      "journal": "Digital health",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41928824/",
+      "pmid": "41928824",
+      "authors": "Tang RS, Li YM, Bao Y, Zeng JD, Yao YJ et al.",
+      "study_design": "Retrospective study",
+      "sample_size": 966,
+      "key_finding": "The Muex model was validated using the bootstrap method, evaluated by area under the receiver operating characteristic curve (AUROC) and calibration curves, interpreted with Shapley Additive Explanations, and subsequently compared with a neural network model and two traditional multi-label classification models.",
+      "key_numbers": [
+        "6.63%",
+        "39.6%"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Reply to the Letter to the Editor: Addressing the Survival Paradox, Procedural Learning Curve, and Pharmacological Confounding in Patients with Left Ventricular Systolic Dysfunction Undergoing Transcatheter Aortic Valve Replacement.",
+      "journal": "Turk Kardiyoloji Dernegi arsivi : Turk Kardiyoloji Derneginin yayin organidir",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41928604/",
+      "pmid": "41928604",
+      "authors": "Keskin B, Hakg\u00f6r A, Dursun A, Akhundova A, Savur \u00dc et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Aortic stenosis and sleep disordered breathing: The effects of interventional management.",
+      "journal": "Science progress",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41928577/",
+      "pmid": "41928577",
+      "authors": "Plaitis A, Dimitriadis K, Adamopoulou E, Pyrpyris N, Beneki E et al.",
+      "study_design": "Observational study",
+      "sample_size": null,
+      "key_finding": "Indeed, encouraging results have emerged regarding the beneficial effects of transcatheter aortic valve intervention (TAVI) on SDB in patients with AS, with TAVI being associated with a reduction in the prevalence and severity of SDB and improvements of the apnea-hypopnea index (AHI).",
+      "key_numbers": [
+        "34%",
+        "90%"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Preprocedural Systemic Immune-Inflammation Index as a marker of risk for major adverse cardiac events and stroke after transcatheter aortic valve implantation.",
+      "journal": "Clinical research in cardiology : official journal of the German Cardiac Society",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925741/",
+      "pmid": "41925741",
+      "authors": "Syryca F, Krefting J, Pellegrini C, Rheude T, Mayr NP et al.",
+      "study_design": "Retrospective study",
+      "sample_size": 1822,
+      "key_finding": "RESULTS: In the derivation cohort, multivariate analysis showed that SII was independently associated with both major adverse cardiovascular events (MACE) (hazard ration [HR]: 1.0001 [1.00001; 1.00002], p\u2009=\u20090.020) and stroke (HR: 1.0003 [1.00002; 1.00004], p\u2009<\u20090.001).",
+      "key_numbers": [
+        "p\u2009=\u20090.020",
+        "p\u2009<\u20090.001",
+        "p\u2009=\u20090.013",
+        "p\u2009<\u20090.001",
+        "p\u2009=\u20090.022",
+        "p\u2009=\u20090.011",
+        "p\u2009<\u20090.001",
+        "HR: 1.0003",
+        "HR: 2.19"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Two-Staged Transcatheter Aortic Valve Replacement in Severely Calcified Sinotubular Junction.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925649/",
+      "pmid": "41925649",
+      "authors": "Bhat S, Ellingson CJ, Singh J, Eziyi U, Dressler D et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "CONCLUSION: This staged inflation method anchors the valve, minimizes STJ stress, and provides a simple, reproducible strategy that may improve safety in anatomically complex patients.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Transcatheter heart valve expansion, implant depth and repeatability in TAVR for pure native aortic regurgitation.",
+      "journal": "Journal of cardiovascular computed tomography",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925482/",
+      "pmid": "41925482",
+      "authors": "Gall E, Hovasse T, Neylon A, Laforgia P, Picard F et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Thrombolysis for Obstructive HALT in Complex Valve-in-Valve TAVR.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925276/",
+      "pmid": "41925276",
+      "authors": "Baudo M, Rahouma M",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Post-Myocardial Infarction Ventricular Septal Defect Percutaneous Closure.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925257/",
+      "pmid": "41925257",
+      "authors": "Jha S, Soltani P, Almanfi A",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "BACKGROUND: Ventricular septal rupture is an uncommon but serious complication of late post-myocardial infarctions (MI) with an exceedingly high mortality.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Safety and efficacy of transcatheter aortic valve replacement for native pure aortic valve regurgitation.",
+      "journal": "Journal of cardiovascular medicine (Hagerstown, Md.)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41925048/",
+      "pmid": "41925048",
+      "authors": "Cavalli GG, Vallabini A, Braccio M, Spatuzza P, Alemanni R et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "Although the overall 30-day mortality was 7.7%, primary composite outcomes were significantly better in the second half of the population (P\u200a=\u200a0.023 and P\u200a=\u200a0.026).",
+      "key_numbers": [
+        "92.3%",
+        "53.8%",
+        "1.5%",
+        "7.7%",
+        "1.5%",
+        "76.3%",
+        "P\u200a=\u200a0.023",
+        "P\u200a=\u200a0.026",
+        "or 38"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "New temporary pacing system for TAVR launches in US - cardiovascularbusiness.com",
+      "journal": "cardiovascularbusiness.com",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNcnZCeEhxUGx4aXlTX09UanlUNnBLN0xLNU16MHY2TVpwU3pKWk9meTJ1MU1YaXZtMmFTbndRV212YVdhTURheXM2OW5xZGlUTE5WaG5xZ21FbVdVM2N3cFJLVkZzMV8ySjlORFBRUDMwRnh0T25wWUw4YjlQRktCWDdMNEFkUlFNY2s0YnZhS0V6OThENE5EWllzZWttY194eERMUkpJNU1EMWt0Qklwc1VVT0QtZ04xZXEyS2JKZ0lzeTg?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "New temporary pacing system for TAVR launches in US&nbsp;&nbsp;cardiovascularbusiness.com",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "TAVR Embolic Protection Devices Go Head to Head: PROTECT H2H - Medscape",
+      "journal": "Medscape",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOXzhIQW1uUlBQeGtRRjZhSlJGSDNJc1YtRUl0dnUtOFc1YmFZUUVvNXJGclppMFYwVVYyMFZYQVlGcXVLdW5udE15aTdKVXh5M0FtSlhWaUFqbkVGVmdNM1hUbWp2VE1IZ2o1aTg1VlNOVlNDX3MzdURyMExBNVZMVWRGYkFUSmxKX243NG5STVF6N2V1ZGl5SjVhM3hSblpnT1BMN3d4VDZFazJlY0dROUdFeGZmZzQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TAVR Embolic Protection Devices Go Head to Head: PROTECT H2H&nbsp;&nbsp;Medscape",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "ACC 2026: Post-TAVR treatments show potential in reducing cardiovascular risks - medicaldevice-network.com",
+      "journal": "medicaldevice-network.com",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPMy00cTN2ZWN5ZmhMUFFPcmlRc2ZOck5pMGhLXy16RU5CS2JFc2NNSy1uY0JxbkFDd0lxMkkxY1NZbXE0dnpoYVNhTWZobXFxeTMyZWxiVkNodHk5SWdEZ0tXS2RWcXB6MnpiaERVemJJWGQ1QlhhUDdlMld4bFU1akEyYTR3S0ZXQTNqXzZVZEpKZFRKa0g5bDhsaXJteGczWkpvS3QwY1pJSW10QzljOHRvdnlZQVBDanV1R0V5TjRsaWdkWjB0WjJrMmY?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "ACC 2026: Post-TAVR treatments show potential in reducing cardiovascular risks&nbsp;&nbsp;medicaldevice-network.com",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Tavi Restaurant to host Pita & Pilates - NOLA Now",
+      "journal": "NOLA Now",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPcjRVWGpCYV9mTzRoU1ZhN1QtQzhwQXpJT1lzdThzeEdzYWlRUDlxZ0hQUkhmNFIyV01DVUtTNm1ZajdrbnZRX1pVbGxuTGZ0VUJhSTF5S28yYjRYTWJUaHlHQXdkZVVVTnpvSHVmM2M3aWUzRXZOSEk1UnIzNnpiTQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Tavi Restaurant to host Pita & Pilates&nbsp;&nbsp;NOLA Now",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "March's Top Stories: 40 Under 40 | Court affirms death sentence for Texas nurse | Recreational Adderall use | TAVR innovation - cardiovascularbusiness.com",
+      "journal": "cardiovascularbusiness.com",
+      "url": "https://news.google.com/rss/articles/CBMi6gFBVV95cUxNbTdIalphd1lLUTA4SFBUeG4xZHhPUmJ5MGpNLUVrVnVtZEkyT01iRGxURnp5cUlucTQwZDdCeEJhOTNSaHZpQVNOX0g5R1BLZE9YVUo1eGZFQ3RFVlFJVWQ5ckxtZ2t4SWhUWDI4SW9jelo2emhIdEF6eVBRMVI0THV0dm03WGtRRXRzZHp5NlpHdVRJNEdyaFRfdmU4dEF4OGFEbXNQZVdIWUlsT3ItTUxBVUxtdFZENUxYbU9wdDdpZUpoVk4zeHNLU3lJc0pSUlV0Tm1nMS1JWXQtd1lnbWUwZXZ4WGQ5UVE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "March's Top Stories: 40 Under 40 | Court affirms death sentence for Texas nurse | Recreational Adderall use | TAVR innovation&nbsp;&nbsp;cardiovascularbusiness.com",
+      "key_numbers": [],
+      "section": "aortic"
+    }
+  ]
+}
