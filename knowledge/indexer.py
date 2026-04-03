@@ -27,13 +27,52 @@ logger = logging.getLogger(__name__)
 
 PAPERS_DIR = Path(__file__).parent / "papers"
 INBOX_DIR = PAPERS_DIR / "inbox"
+VERIFIED_DIR = PAPERS_DIR / "verified"
+EXCLUDED_DIR = PAPERS_DIR / "excluded"
 INDEX_PATH = Path(__file__).parent / "papers_index.json"
 
+# Relevance filter — papers must match to be indexed
+VALVE_RELEVANCE = re.compile(
+    r'(?i)(tavr|tavi|aortic valve|aortic stenosis|aortic regurgitation|'
+    r'aortic insufficiency|mitral|tricuspid|pulmonic valve|'
+    r'valve replacement|valve repair|valve surgery|transcatheter.*valve|'
+    r'mitraclip|pascal|triclip|sapien|evolut|corevalve|'
+    r'structural heart|valvular|bioprosthetic|annuloplasty|'
+    r'TEER|edge-to-edge|SAVR|TMVR|TTVR|valve-in-valve|'
+    r'paravalvular|endocarditis.*valve|prosthetic valve|bicuspid|'
+    r'valve thrombosis|valve degeneration|valve durability|SVD|leaflet|'
+    r'PARTNER|COAPT|TRILUMINATE|TRISCEND|SURTAVI|NOTION|'
+    r'DEDICATE|EARLY.TAVR|EVOLVED|REPRISE|CLASP|'
+    r'Ross.Procedure|ross.operation|David.procedure|david.operation|'
+    r'bentall|sutureless|rapid.deployment|percutaneous.*valve|'
+    r'hemodynamic.*valve|valve hemodynamic)'
+)
+
 EXTRACTION_PROMPT = """\
-You are a medical research librarian. Extract structured metadata from this \
-academic paper about structural heart disease / valve therapy.
+You are a medical research librarian triaging papers for a structural heart \
+disease knowledge base focused on valve therapies.
+
+FIRST, determine if this paper is relevant. It IS relevant if it is about:
+- Aortic, mitral, tricuspid, or pulmonic VALVE disease, surgery, or intervention
+- TAVR/TAVI, SAVR, valve repair, valve replacement (any approach)
+- Specific valve devices (SAPIEN, Evolut, MitraClip, TriClip, PASCAL, etc.)
+- Valve-related trials (PARTNER, COAPT, TRILUMINATE, SURTAVI, etc.)
+- Structural heart disease directly involving valves
+- Valve guidelines, durability, hemodynamics, endocarditis of valves
+- Ross procedure, David procedure, Bentall, valve-sparing root replacement
+
+It is NOT relevant if it is about:
+- Coronary artery disease, PCI, stents, CABG (unless comparing to valve surgery)
+- Heart failure without valve focus
+- Arrhythmias, EP, ablation, pacemakers (unless valve-related complications)
+- Aortic aneurysm/dissection (unless involving the aortic valve)
+- General cardiac surgery without valve focus
+- Non-cardiac topics
+- Supplemental materials, appendices, or data supplements (not the main paper)
 
 Return a JSON object with these fields:
+- "is_relevant": true if the paper is about valve/structural heart disease, false otherwise
+- "is_supplemental": true if this is supplemental material/appendix (not the main paper), false otherwise
 - "title": Full paper title
 - "authors": First author et al. (e.g., "Mack MJ et al.")
 - "journal": Journal name (use standard abbreviations: NEJM, JACC, JAMA, etc.)
@@ -165,12 +204,13 @@ def rename_paper(pdf_path: Path, suggested_name: str) -> Path:
     return new_path
 
 
-def index_papers(reindex: bool = False, process_inbox_first: bool = False) -> int:
+def index_papers(reindex: bool = False, process_inbox_first: bool = False, limit: int = None) -> int:
     """Index new (or all) papers in knowledge/papers/.
 
     Args:
         reindex: If True, reindex all papers. If False, only new ones.
         process_inbox_first: If True, move files from inbox/ first.
+        limit: Max number of papers to index. None = no limit.
 
     Returns:
         Number of papers newly indexed.
@@ -188,13 +228,17 @@ def index_papers(reindex: bool = False, process_inbox_first: bool = False) -> in
         indexed_files = set()
         logger.info("Reindexing all papers")
 
-    # Find PDFs to process
-    all_pdfs = sorted(PAPERS_DIR.glob("*.pdf"))
+    # Find PDFs to process — check both papers/ and inbox/
+    all_pdfs = sorted(PAPERS_DIR.glob("*.pdf")) + sorted(INBOX_DIR.glob("*.pdf"))
     to_process = [p for p in all_pdfs if p.name not in indexed_files]
 
     if not to_process:
         logger.info("No new papers to index")
         return 0
+
+    if limit and len(to_process) > limit:
+        logger.info(f"Found {len(to_process)} papers, limiting to {limit}")
+        to_process = to_process[:limit]
 
     logger.info(f"Indexing {len(to_process)} papers...")
     newly_indexed = 0
@@ -214,8 +258,23 @@ def index_papers(reindex: bool = False, process_inbox_first: bool = False) -> in
             logger.warning(f"  Metadata extraction failed, skipping")
             continue
 
-        # Rename file
+        # Check relevance — Claude determines this directly
         original_name = pdf_path.name
+        title = metadata.get("title", "") or "Unknown title"
+        is_relevant = metadata.get("is_relevant", True)
+        is_supplemental = metadata.get("is_supplemental", False)
+
+        if not is_relevant or is_supplemental:
+            EXCLUDED_DIR.mkdir(parents=True, exist_ok=True)
+            excluded_path = EXCLUDED_DIR / original_name
+            if excluded_path.exists():
+                excluded_path = EXCLUDED_DIR / f"{pdf_path.stem}_dup{pdf_path.suffix}"
+            pdf_path.rename(excluded_path)
+            reason = "supplemental material" if is_supplemental else "not valve-related"
+            logger.info(f"  EXCLUDED ({reason}): {title[:60]}")
+            continue
+
+        # Rename file in place (stays in inbox until user reviews)
         suggested = metadata.pop("suggested_filename", None)
         new_path = rename_paper(pdf_path, suggested)
 
@@ -223,7 +282,7 @@ def index_papers(reindex: bool = False, process_inbox_first: bool = False) -> in
         entry = {
             "filename": new_path.name,
             "original_filename": original_name,
-            "title": metadata.get("title", ""),
+            "title": title,
             "authors": metadata.get("authors", ""),
             "journal": metadata.get("journal", ""),
             "year": metadata.get("year"),
