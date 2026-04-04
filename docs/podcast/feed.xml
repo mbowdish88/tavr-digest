@@ -6,10 +6,10 @@
      xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>The Valve Wire Weekly</title>
-    <link>https://thevalvewire.beehiiv.com</link>
+    <link>https://thevalvewire.com</link>
     <description>A weekly podcast covering the latest in transcatheter valve technology — TAVR, mitral repair and replacement, tricuspid therapies, clinical trials, and industry analysis. Balanced, evidence-based analysis with expert skepticism. Hosted by E. Nolan Beckett.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 25 Mar 2026 18:51:37 -0700</lastBuildDate>
+    <lastBuildDate>Sat, 04 Apr 2026 10:11:47 -0700</lastBuildDate>
     <itunes:author>E. Nolan Beckett</itunes:author>
     <itunes:summary>Weekly analysis of transcatheter valve technology developments for cardiac surgeons, interventional cardiologists, trainees, patients, and industry stakeholders. We present balanced, circumspect analysis — always questioning whether therapies have gotten ahead of the evidence.</itunes:summary>
     <itunes:owner>
@@ -25,8 +25,94 @@
     <image>
       <url>https://raw.githubusercontent.com/mbowdish88/tavr-digest/main/static/podcast-cover.png</url>
       <title>The Valve Wire Weekly</title>
-      <link>https://thevalvewire.beehiiv.com</link>
+      <link>https://thevalvewire.com</link>
     </image>
+    
+    <item>
+      <title>The Valve Wire Weekly - 2026-04-04</title>
+      <description>Weekly podcast covering transcatheter valve technology developments for the week ending 2026-04-04.</description>
+      
+      <content:encoded><![CDATA[<h3>The Valve Wire Weekly - 2026-04-04</h3>
+<p><strong>Duration:</strong> 23:42 | <strong>Hosts:</strong> E. Nolan Beckett, MD &amp; Claire Marchand, MBA</p>
+<h4>Timestamps</h4><ul>
+<li>[00:48] Introduction</li>
+<li>[01:55] Disclaimer</li>
+<li>[02:13] Meeting Highlights</li>
+<li>[07:54] Top Stories</li>
+<li>[10:13] Aortic Valve (TAVR/TAVI)</li>
+<li>[12:17] Mitral Valve (Repair & Replacement)</li>
+<li>[14:42] Tricuspid Valve (Repair & Replacement)</li>
+<li>[15:58] Clinical Trials Update</li>
+<li>[17:12] Market & Industry</li>
+<li>[19:19] Surgical vs. Transcatheter</li>
+<li>[21:11] Weekend News</li>
+<li>[21:33] Closing Thoughts</li>
+</ul>
+<h4>Summary</h4><p>Welcome back to The Valve Wire Weekly. I&#x27;m Nolan Beckett, and this is episode two — and what a week to be covering. ACC Scientific Sessions wrapped up in Chicago, and the structural heart world delivered some genuinely practice-changing data. It really did, Nolan. I&#x27;m Claire Marchand, and I have to say, the contrast between the clinical headlines and what&#x27;s happening in the stock market this week is striking. We&#x27;ve got landmark trial results, new FDA approvals, and yet some of these valve stocks are getting absolutely hammered. We&#x27;ve got a lot to cover. The PRO-TAVI trial published in The Lancet — that&#x27;s our headliner — telling us we may not need to do PCI before TAVR. Cerebral embolic protection devices took a beating in not one but two studies. And a fascinating Japanese registry that says frailty, not age, is what really matters in nonagenarians.</p>
+<h4>Articles &amp; Sources</h4><ul>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41921523/">PRO-TAVI trial</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMilgFBVV95cUxQbFpFTDdKb2E5ZzRkWEc0WkJiRXI1M3gyaE16MzFFUXpYb21Sajk5bnlZTTg0aHdvZGs4Vk1TZHlnWXNrUkxpbHBvV3pmSmdXMzkzenU0V2l3TjZlcXlyWm14U3UzS0VMeGVPT3ZPVE0xMGREV3lBVlhaM3JFZG1wbFdMeEZoNllKSENrZ1lMZzFPeGtOV2c?oc=5">ACC Scientific Sessions</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiuwFBVV95cUxQNURsT0EwbzBIeHl3c2pxYlJVZFZUNVdfTkVFODdGZ09wazB5ZHh4bjk3OXhnVklKOUhDRTBmWm9SbVlDMGRyS3oyN0dLUmpnQW5mS25DWFF5aWZhLVVNbkZWdEhEa2pxSGlLa0NranhBeDI5X19hSldtVDRNaGU1S3hhWjBPdkI4bkd2TnVzc2NMY2hvdHl1amhlemZDU3diRXV2WlJHSVJ2eGhUdm1fR1RHVDlVRjlFYkZF?oc=5">reduced bleeding complications</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41906603/">multicenter Japanese registry</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41929462/">Bayesian meta-analysis</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxQVURxRFNMTXlfVmt6UXp0bUEzd2hMSENwUjRRSGY4U05PWndReHp2MENNLUpCVXg3Vk1LMXBUUXpJWEc1bEV1Uk1QSmZhb3lNczd0dUN6bHBkMnZDTUctWlV1NVZZcGhzUm9nYnpIdWZoQk9PaEF2b1ltZS1HQnFtLVNQLTlLOE9TeXdfYm96a2Q1a1p3cF9sUFp3?oc=5">PROTECT H2H trial</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMidkFVX3lxTFAweGlMdmtJanhUVDFOcEs0UGJUZldNM0F3MTBhVDRZTGhsbWxkQTVHNERzamZPZUw1Nlc4NGFzWmU2dS1wdmxobUN0ZVBqWWtPUEdCdk5DVzhqZDdkaVBIUVcwMlVQQlBDc3B2NUJEd2xuTXBMZEE?oc=5">TriClip heart failure hospitalization reduction data</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT04482062">TRISCEND II trial</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41922882/">national database analysis</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41923726/">comprehensive review</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41928824/">multi-label deep learning model</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMidkFVX3lxTE9iY2ZkY1ItQWpjdG56QzB1V0xKeWNOOGM2c1hCYkRWOV96VlViYWFLc2pDNlA2ckMwd1V6V0VtYkI5QWZPUFczRXdMTTQzbjNzdS1MNmpTN0NVUjFreXQ5S21yV2xUMVllSXJJWDJvMHlRdlVBSFE?oc=5">Medtronic highlighted AI alerts</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41925649/">two-staged balloon inflation technique</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41925048/">outcomes in 65 consecutive off-label TAVR cases</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41903091/">case report</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41904366/">meta-analysis</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41904385/">meta-analysis</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41903746/">EMPAVR trial</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41902815/">aortic root reconstruction</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41922288/">hydrophilic polymer embolism</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41903925/">meta-analysis of transcatheter chordal repair</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41929444/">case report</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41923730/">comprehensive review</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41902812/">embolized transcatheter mitral valve was retrieved transapically</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMihAJBVV95cUxPWXlrUVR0d3hGTFQ1OC1WTE9kSGM0a0RYQ3llb0xwang5SVZmSHBpUVNVN0JRclhoSjhsNHB6NFZaT01VblRCQmU3UFZXZnl5NEU0ZS1oS1B1M1VFUXE2bFNQN3pQWGYxNy1GemYwWE4zYnFMZnYyZWVIVmZob2ZFVnRJU0tHZzhBZ3E4R3ZhUnNQSVdQUGNIYThSRGNLQVZRbHpFOEtGT0l1M1h4aHJ1ZEwxOVRSSWtIbEVFUThaZGpRa2F4Ym56eWlHNEE1M1FIMVVXbEFPN3dKOVRIUUFhRGd1bDVfTkxMcnhHZVU3MGlZQlYzcC1KbzNTVHB2TVRhdkI0ag?oc=5">larger cohort revisiting the MITHRAS approach</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT03904147">TRILUMINATE</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT05848284">VDyne VISTA-US early feasibility study</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT07509658">TriClip Japan Post-Approval Study</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41902817/">case series</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiYEFVX3lxTE9iZzBkbDgyVXNzNGRxVTc0OFM4YTl0YTdnV1BDb1p5S1VzZ3hZeUNBN1NYWTBHcmYwa0pQTHY4S05OZ3luRTh1SW9LMmlVVS1QOGxHUnhCSTNta1dKbkltYw?oc=5">JACC Journals publication</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41906031/">study evaluating clinical scores and biomarkers</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT02701283">NCT02701283</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT06420830">NCT06420830</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT06953206">NCT06953206</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT07450196">NCT07450196</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT03383445">NCT03383445</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT06455787">NCT06455787</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT06594705">NCT06594705</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT07509554">NCT07509554</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT06197503">NCT06197503</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT04139616">NCT04139616</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT04198870">NCT04198870</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT05051033">NCT05051033</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT03706833">NCT03706833</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT04097145">NCT04097145</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT03242642">NCT03242642</a></li>
+<li><a href="https://clinicaltrials.gov/study/NCT07501234">NCT07501234</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxNcnZCeEhxUGx4aXlTX09UanlUNnBLN0xLNU16MHY2TVpwU3pKWk9meTJ1MU1YaXZtMmFTbndRV212YVdhTURheXM2OW5xZGlUTE5WaG5xZ21FbVdVM2N3cFJLVkZzMV8ySjlORFBRUDMwRnh0T25wWUw4YjlQRktCWDdMNEFkUlFNY2s0YnZhS0V6OThENE5EWllzZWttY194eERMUkpJNU1EMWt0Qklwc1VVT0QtZ04xZXEyS2JKZ0lzeTg?oc=5">US commercial release</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMi5wFBVV95cUxPWjFDUU9QeFRyaU9CZFYyOXpsQS1zMFBHVUxla3JEOTczbEFsTnd5WXBvdmZwaWt2UVRGbFUzQldMZFBaYjlpY0hpQ25LNHM5b2FITUhtQWQzUzRaajhrQVZacFZGcmdmMk8tMGlzOXZ5dUJ3ZFI3NG9NXzVvcmIwc0NrMEVIMHFjbVdaVkZpc21COXd1SDR4ejR5ODJHZklFcVJWVkFwbHlCMVpMNk03ckw0QmRDa255VnkxeXpQVmNiRHdwSjdITjFqUGpHWFdsenJuYkZub2k1bVViTzRtUmRNOFR6Nmc?oc=5">Cardiovascular Business</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41925741/">DELINEATE-Regurgitation: AI for Echocardiographic Assessment</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41903745/">Hydrophilic Cationic Surface Modification for Blood-Contacting Devices</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41903310/">Soft Hydrophilic Interfaces for Vascular Graft Patency</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/41906609/">Pakistan Registry of Echocardiographic Screening in Pregnant Women</a></li>
+</ul>
+<p>Subscribe: <a href="https://thevalvewire.com">The Valve Wire Newsletter</a></p>]]></content:encoded>
+      
+      <enclosure url="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-04/2026-04-04_valve_wire_weekly.mp3" length="43386166" type="audio/mpeg"/>
+      <pubDate>Sat, 04 Apr 2026 10:11:47 -0700</pubDate>
+      <itunes:duration>23:42</itunes:duration>
+      <itunes:episode>2</itunes:episode>
+      <itunes:episodeType>full</itunes:episodeType>
+      <guid isPermaLink="false">25ae0f83-7137-4862-b9cf-3c00e3099945</guid>
+    </item>
     
     <item>
       <title>The Valve Wire Weekly - 2026-03-25</title>
