@@ -308,7 +308,7 @@ def generate_podcast_script(
             max_tokens=16384,
             system=system_with_knowledge,
             messages=[{"role": "user", "content": prompt + extra_instruction}],
-            timeout=900.0,
+            timeout=21600.0,
         )
 
         raw = message.content[0].text
