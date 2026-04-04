@@ -48,15 +48,27 @@ function getJournalBranding(source: string): { abbrev: string; bg: string; text:
   return null;
 }
 
+/** Tier 1-2 journals get a subtle warm background to signal importance */
+const TIER1_ABBREVS = new Set(["NEJM", "JAMA", "JACC", "Lancet", "EHJ", "JACC:CI"]);
+
+function isTier1(branding: { abbrev: string } | null): boolean {
+  return branding !== null && TIER1_ABBREVS.has(branding.abbrev);
+}
+
 export default function ArticleCard({ article, sectionColor, fullAbstract = false }: ArticleCardProps) {
   const typeStyle = TYPE_STYLES[article.type] || "bg-gray-600 text-white";
   const hasImage = article.image_url;
   const branding = getJournalBranding(article.source);
+  const tier1 = isTier1(branding);
 
   return (
-    <article className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden">
+    <article
+      className={`rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow overflow-hidden ${
+        tier1 ? "bg-[var(--color-surface-alt)]" : "bg-white"
+      }`}
+    >
       <div className="flex flex-row">
-        {/* Journal branding accent — left side */}
+        {/* Journal branding accent — left side panel (sm and up) */}
         {branding && !hasImage && (
           <div className={`w-16 md:w-20 shrink-0 ${branding.bg} hidden sm:flex items-center justify-center`}>
             <span className={`nav-font text-xs md:text-sm font-bold ${branding.text} text-center leading-tight`}>
@@ -66,6 +78,15 @@ export default function ArticleCard({ article, sectionColor, fullAbstract = fals
         )}
 
         <div className="p-5 flex-1 min-w-0">
+          {/* Mobile-only: journal badge as inline pill above title */}
+          {branding && !hasImage && (
+            <div className="sm:hidden mb-2">
+              <span className={`nav-font inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${branding.bg} ${branding.text}`}>
+                {branding.abbrev}
+              </span>
+            </div>
+          )}
+
           {/* Type badge + date */}
           <div className="flex items-center gap-2 mb-3 nav-font flex-wrap">
             <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded ${typeStyle}`}>

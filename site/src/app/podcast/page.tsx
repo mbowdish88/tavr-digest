@@ -19,11 +19,11 @@ export default function PodcastPage() {
       {/* Hero */}
       <div className="flex flex-col md:flex-row items-center gap-8 mb-12">
         <Image
-          src="/images/cover.jpg"
+          src="/images/cover-blue.jpg"
           alt="The Valve Wire Weekly Podcast"
           width={200}
           height={200}
-          className="rounded-2xl shadow-xl"
+          className="rounded-lg shadow-xl object-cover"
         />
         <div>
           <p className="nav-font text-xs font-semibold uppercase tracking-widest text-[var(--color-rose)] mb-2">
