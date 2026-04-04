@@ -23,7 +23,7 @@ from podcast.publisher import publish_podcast
 from delivery.emailer import send_digest
 # from delivery.beehiiv import publish_to_beehiiv  # Removed — not in use
 from delivery.site import publish_daily_to_site, publish_weekly_to_site
-from delivery.website import build_website_data, push_to_website
+from delivery.website import build_website_data, push_to_website, push_weekly_to_website
 
 # Set up logging
 logging.basicConfig(
@@ -399,6 +399,12 @@ def run_weekly_summary():
     weekly_latest_path = config.DATA_DIR / "weekly_latest.html"
     weekly_latest_path.write_text(weekly_html, encoding="utf-8")
     logger.info(f"Weekly HTML saved to {weekly_latest_path}")
+
+    # Publish to Next.js site (Vercel)
+    try:
+        push_weekly_to_website(weekly_html)
+    except Exception as e:
+        logger.error(f"Weekly website publish failed: {e}", exc_info=True)
 
     # Publish to site (GitHub Pages archive)
     try:
