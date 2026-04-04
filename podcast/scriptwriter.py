@@ -63,7 +63,9 @@ SCRIPT_PROMPT = """\
 Write a podcast script for "The Valve Wire Weekly" {episode_label}covering {start_date} \
 through {end_date}.
 
-The script should be 3,500-4,500 words total, targeting 15-20 minutes of audio.
+The script must be 3,000-4,000 words total — hard maximum 4,000 words (20 minutes at conversational pace). \
+Be comprehensive but tight. Every sentence must earn its place. No padding, no repetition, no lengthy transitions. \
+Cover the week's most important developments with sharp clinical commentary. Quality over quantity.
 
 ## Output Format
 Return a JSON array of script segments. Each segment is an object with:
@@ -88,14 +90,16 @@ Example format:
 purposes only. Nothing we discuss should be taken as medical advice. Always consult your \
 physician or care team for clinical decisions." Keep it conversational, not legalistic.
 {meeting_section}\
-3. **Top Stories** (~3 min): The 2-3 most impactful developments with analysis
-4. **Aortic Valve** (~2-3 min): TAVR developments if any
-5. **Mitral Valve** (~2-3 min): Repair and replacement developments
-6. **Tricuspid Valve** (~2-3 min): Repair and replacement developments
-7. **Clinical Trials** (~2-3 min): Key trial updates, landmark trial status
-8. **Market & Industry** (~2-3 min): Stock performance, M&A, earnings — Claire leads this section
-9. **Weekend News** (~1 min): Any weekend developments
-10. **Closing** (~1 min): Key takeaways, what to watch next week, sign off
+3. **Top Stories** (~3 min): The 2-3 most impactful developments with sharp analysis
+4. **Aortic Valve** (~2 min): TAVR — top findings only, skip minor updates
+5. **Mitral Valve** (~2 min): Repair and replacement — top findings only
+6. **Tricuspid Valve** (~1-2 min): Top findings only, omit if light week
+7. **Clinical Trials** (~1-2 min): Notable status changes only, not every trial
+8. **Market & Industry** (~2 min): Stock performance, M&A, earnings — Claire leads
+9. **Weekend News** (~30 sec): Only if genuinely newsworthy
+10. **Closing** (~1 min): 2-3 key takeaways, what to watch, sign off
+
+Keep each section tight. If a section has nothing significant, compress or skip it rather than padding.
 
 ## Journal Hierarchy (PRIORITIZE in this order)
 When selecting which stories to emphasize, prioritize findings from higher-impact journals:
@@ -353,10 +357,27 @@ def generate_podcast_script(
 
     # Validate total word count (R4)
     total_words = sum(len(s["text"].split()) for s in cleaned)
-    if total_words < 3000:
-        logger.warning(f"Script is short: {total_words} words (target: 3,500-4,500)")
-    elif total_words > 5000:
-        logger.warning(f"Script is long: {total_words} words (target: 3,500-4,500)")
+    if total_words < 2500:
+        logger.warning(f"Script is short: {total_words} words (target: 3,000-4,000)")
+    elif total_words > 4000:
+        logger.warning(f"Script exceeds 20-min limit: {total_words} words — trimming to 4,000")
+        # Hard trim: drop segments from the end (before closing) until under 4,000 words
+        closing = [s for s in cleaned if s.get("section") == "closing"]
+        body = [s for s in cleaned if s.get("section") != "closing"]
+        trimmed = []
+        word_count = 0
+        closing_words = sum(len(s["text"].split()) for s in closing)
+        budget = 4000 - closing_words
+        for seg in body:
+            seg_words = len(seg["text"].split())
+            if word_count + seg_words <= budget:
+                trimmed.append(seg)
+                word_count += seg_words
+            else:
+                break
+        cleaned = trimmed + closing
+        final_words = sum(len(s["text"].split()) for s in cleaned)
+        logger.info(f"Trimmed script to {final_words} words ({len(cleaned)} segments)")
 
     # Validate required sections are present
     required_sections = {"intro", "top_stories", "closing"}
