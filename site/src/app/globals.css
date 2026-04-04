@@ -1,84 +1,71 @@
 @import "tailwindcss";
 
 @theme {
-  --color-wine: #1B2A4A;
-  --color-burgundy: #2C5282;
-  --color-rose: #3182CE;
-  --color-cream: #EDF2F7;
-  --color-beige: #A0AEC0;
-  --color-warm-white: #F7FAFC;
+  --color-ink:     #0F172A;
+  --color-paper:   #FFFFFF;
+  --color-navy:    #1B2A4A;
+  --color-accent:  #8B2035;
+  --color-rule:    #E2E8F0;
+  --color-muted:   #64748B;
+  --color-podcast: #8B2035;
+
+  /* Legacy aliases so existing var() references don't break */
+  --color-steel:      #8B2035;
+  --color-crimson:    #8B2035;
+  --color-wine:       #1B2A4A;
+  --color-burgundy:   #8B2035;
+  --color-rose:       #8B2035;
+  --color-cream:      #FFFFFF;
+  --color-beige:      #64748B;
+  --color-warm-white: #FFFFFF;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: Georgia, "Times New Roman", serif;
-  color: #2c2c2c;
-  background-color: var(--color-warm-white);
+  color: var(--color-ink);
+  background-color: var(--color-paper);
 }
 
-h1, h2, h3, h4, h5, h6, .nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
 }
 
 .nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, sans-serif;
 }
 
-/* Weekly newsletter HTML rendering */
+/* Weekly newsletter HTML */
 .weekly-content h2 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
-  font-size: 1.4rem;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-wine);
+  color: #0F172A;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--color-cream);
+  border-bottom: 1px solid #E2E8F0;
 }
 .weekly-content h3 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
-  font-size: 1.05rem;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--color-burgundy);
+  color: #8B2035;
   margin-top: 1.5rem;
   margin-bottom: 0.4rem;
 }
-.weekly-content p {
-  line-height: 1.75;
-  margin-bottom: 1rem;
-  color: #2c2c2c;
-}
-.weekly-content ul, .weekly-content ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-.weekly-content li {
-  line-height: 1.7;
-  margin-bottom: 0.3rem;
-}
-.weekly-content a {
-  color: var(--color-rose);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.weekly-content a:hover {
-  color: var(--color-burgundy);
-}
-.weekly-content hr {
-  border: none;
-  border-top: 1px solid var(--color-cream);
-  margin: 2.5rem 0;
-}
+.weekly-content p { line-height: 1.8; margin-bottom: 1rem; color: #0F172A; }
+.weekly-content ul, .weekly-content ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+.weekly-content li { line-height: 1.75; margin-bottom: 0.3rem; }
+.weekly-content a { color: #8B2035; text-decoration: underline; text-underline-offset: 2px; }
+.weekly-content a:hover { color: #1B2A4A; }
+.weekly-content hr { border: none; border-top: 1px solid #E2E8F0; margin: 2.5rem 0; }
 .weekly-content blockquote {
-  border-left: 3px solid var(--color-rose);
+  border-left: 3px solid #8B2035;
   padding-left: 1rem;
-  color: #555;
+  color: #64748B;
   font-style: italic;
   margin: 1.5rem 0;
 }
-.weekly-content strong {
-  color: var(--color-wine);
-}
+.weekly-content strong { color: #1B2A4A; }
