@@ -179,5 +179,14 @@ def publish_podcast(
     # Regenerate RSS feed
     generate_rss_feed(episodes)
 
+    # Write episode data to site/public/data/ for Vercel deployment
+    site_data_dir = config.BASE_DIR / "site" / "public" / "data"
+    site_data_dir.mkdir(parents=True, exist_ok=True)
+    site_episodes_path = site_data_dir / "podcast_episodes.json"
+    site_episodes_path.write_text(
+        json.dumps(episodes, indent=2, default=str), encoding="utf-8"
+    )
+    logger.info(f"Wrote podcast episodes to site: {site_episodes_path}")
+
     logger.info(f"Published episode #{episode_number}: {title} ({duration})")
     return episode
