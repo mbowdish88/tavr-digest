@@ -1,15 +1,16 @@
 name: Weekly Valve Wire Podcast
 
 on:
-  workflow_run:
-    workflows: ["Weekly Valve Wire Summary"]
-    types: [completed]
+  schedule:
+    # Saturday 12:30 AM Eastern (EDT UTC-4 = 04:30 UTC, EST UTC-5 = 05:30 UTC)
+    # Runs 29 min after weekly digest — weekly_latest.html will be committed and ready
+    - cron: '30 4 * * 6'
   workflow_dispatch:
 
 jobs:
   generate-podcast:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: always()
     timeout-minutes: 360
     permissions:
       contents: write
