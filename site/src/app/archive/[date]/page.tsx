@@ -34,7 +34,8 @@ export default async function ArchiveDayPage({ params }: PageProps) {
   const prevDate = currentIndex < allDates.length - 1 ? allDates[currentIndex + 1] : null;
   const nextDate = currentIndex > 0 ? allDates[currentIndex - 1] : null;
 
-  const html: string = (digest as Record<string, unknown>).digest_html as string || "";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const html: string = (digest as any).digest_html as string || "";
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
