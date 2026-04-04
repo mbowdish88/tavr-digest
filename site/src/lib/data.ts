@@ -129,6 +129,12 @@ export interface PodcastEpisode {
   duration: string;
   mp3_url: string;
   show_notes: string;
+  show_notes_html?: string;
+  episode_date?: string;
+  number?: number;
+  guid?: string;
+  file_size?: number;
+  pub_date_rfc2822?: string;
 }
 
 export interface DigestData {
@@ -147,8 +153,20 @@ export interface DigestData {
 
 export function getLatestDigest(): DigestData {
   const filePath = path.join(process.cwd(), "public", "data", "latest.json");
-  const raw = fs.readFileSync(filePath, "utf-8");
-  return JSON.parse(raw);
+  try {
+    const raw = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(raw);
+  } catch {
+    // Return safe empty shell so the site never 500s on a missing/corrupt file
+    return {
+      date: new Date().toISOString().slice(0, 10),
+      executive_summary: "",
+      key_points: [],
+      sections: {},
+      stocks: {},
+      podcast: { latest_episode: { title: "", date: "", duration: "", mp3_url: "", show_notes: "" } },
+    };
+  }
 }
 
 export function getAllArticles(data: DigestData): Article[] {
@@ -174,6 +192,10 @@ export function getAllDigestDates(): string[] {
 }
 
 export function getDigestByDate(dateStr: string): DigestData | null {
+  // Validate format to prevent path traversal
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr) && !/^weekly-\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    return null;
+  }
   const filePath = path.join(process.cwd(), "public", "data", "digests", `${dateStr}.json`);
   try {
     const raw = fs.readFileSync(filePath, "utf-8");
