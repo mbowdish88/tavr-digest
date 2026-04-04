@@ -2,8 +2,8 @@ name: Weekly Valve Wire Summary
 
 on:
   schedule:
-    # Saturday 12:01 AM US Central (CDT UTC-5 = 05:01 UTC, CST UTC-6 = 06:01 UTC)
-    - cron: '1 5 * * 6'
+    # Saturday 12:01 AM Eastern (EDT UTC-4 = 04:01 UTC, EST UTC-5 = 05:01 UTC)
+    - cron: '1 4 * * 6'
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:
