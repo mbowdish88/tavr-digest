@@ -112,9 +112,11 @@ export default function ArticleCard({ article, sectionColor, fullAbstract = fals
           </div>
 
           {/* Abstract */}
-          <p className={`text-sm text-gray-600 leading-relaxed ${fullAbstract ? "" : "line-clamp-3"}`}>
-            {article.abstract}
-          </p>
+          {article.abstract && article.abstract !== "No abstract available." && (
+            <p className={`text-sm text-gray-600 leading-relaxed ${fullAbstract ? "" : "line-clamp-3"}`}>
+              {article.abstract}
+            </p>
+          )}
 
           {/* Trial metadata */}
           {article.phase && (
