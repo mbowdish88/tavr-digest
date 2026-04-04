@@ -395,6 +395,11 @@ def run_weekly_summary():
     msg.attach(MIMEText(text_body, "plain"))
     msg.attach(MIMEText(html_body, "html"))
 
+    # Save weekly HTML for podcast pipeline to reuse (avoids re-running Claude)
+    weekly_latest_path = config.DATA_DIR / "weekly_latest.html"
+    weekly_latest_path.write_text(weekly_html, encoding="utf-8")
+    logger.info(f"Weekly HTML saved to {weekly_latest_path}")
+
     # Publish to site (GitHub Pages archive)
     try:
         publish_weekly_to_site(weekly_html, stock_data)
@@ -427,12 +432,18 @@ def run_weekly_podcast(weekly_html: str = None):
     episode_date = today.isoformat()
     title = f"The Valve Wire Weekly - Week of {start_str} to {end_str}"
 
-    # If no weekly HTML provided, try to generate it
+    # If no weekly HTML provided, load from saved file before re-generating
     if not weekly_html:
-        weekly_html, _ = create_weekly_digest()
-        if not weekly_html:
-            logger.warning("No weekly content available for podcast.")
-            return
+        weekly_latest_path = config.DATA_DIR / "weekly_latest.html"
+        if weekly_latest_path.exists():
+            weekly_html = weekly_latest_path.read_text(encoding="utf-8")
+            logger.info(f"Loaded weekly HTML from {weekly_latest_path} ({len(weekly_html)} chars)")
+        else:
+            logger.info("No saved weekly HTML found — generating from scratch...")
+            weekly_html, _ = create_weekly_digest()
+            if not weekly_html:
+                logger.warning("No weekly content available for podcast.")
+                return
 
     # Determine episode number from existing episodes
     from podcast.publisher import _load_episodes

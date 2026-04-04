@@ -5,6 +5,7 @@ __pycache__/
 data/*
 !data/weekly/
 !data/podcast_episodes.json
+!data/weekly_latest.html
 .DS_Store
 =0.2.36
 # Large binary files
