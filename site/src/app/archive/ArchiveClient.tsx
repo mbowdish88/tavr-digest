@@ -28,6 +28,37 @@ const TOPICS = [
   { key: "financial",  label: "Financial" },
 ];
 
+// Journal hierarchy for topic view sorting (mirrors data.ts, inlined for client component)
+const JOURNAL_TIER_MAP: [string, number][] = [
+  ["new england journal", 1], ["nejm", 1], ["n engl j med", 1],
+  ["jama", 2],
+  ["jacc: cardiovascular interventions", 6], ["jacc cardiovasc interv", 6], ["jacc.ci", 6], ["jacc:ci", 6],
+  ["jacc", 3], ["j am coll cardiol", 3],
+  ["lancet", 4],
+  ["european heart journal", 5], ["eur heart j", 5], ["ehj", 5],
+  ["annals of thoracic surgery", 7], ["ann thorac surg", 7],
+  ["journal of thoracic and cardiovascular surgery", 8], ["j thorac cardiovasc surg", 8], ["jtcvs", 8],
+  ["european journal of cardio-thoracic surgery", 9], ["eur j cardiothorac surg", 9], ["ejcts", 9],
+];
+
+function getJournalTier(source: string): number {
+  if (!source) return 99;
+  const lower = source.toLowerCase();
+  for (const [journal, tier] of JOURNAL_TIER_MAP) {
+    if (lower.includes(journal)) return tier;
+  }
+  return 99;
+}
+
+function sortByJournalHierarchy<T extends { source: string; date: string }>(articles: T[]): T[] {
+  return [...articles].sort((a, b) => {
+    const tierA = getJournalTier(a.source);
+    const tierB = getJournalTier(b.source);
+    if (tierA !== tierB) return tierA - tierB;
+    return (b.date || "").localeCompare(a.date || "");
+  });
+}
+
 const TOPIC_COLORS: Record<string, string> = {
   aortic:     "#2C5282",
   mitral:     "#3182CE",
@@ -80,9 +111,9 @@ export default function ArchiveClient({ data, allArticles, dates }: ArchiveClien
     router.replace(url, { scroll: false });
   }
 
-  // When in topic mode, show all articles for that topic across all dates
+  // When in topic mode, show all articles for that topic across all dates, sorted by journal hierarchy
   const topicArticles: ArchiveArticle[] = activeTopic
-    ? allArticles.filter((a) => a.sectionKey === activeTopic)
+    ? sortByJournalHierarchy(allArticles.filter((a) => a.sectionKey === activeTopic))
     : [];
 
   // Article count per topic across all dates
