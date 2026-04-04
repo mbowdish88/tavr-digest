@@ -80,15 +80,16 @@ full context, explanations, and hyperlinks for everything mentioned.
 - Cover both repair (TriClip, TRILUMINATE, CLASP TR) and replacement (Evoque, TRISCEND, GATE)
 - Link to every study and news item
 
-### 6. <h2>Clinical Trials Update</h2>
+### 6. <h2>Surgical vs. Transcatheter Comparisons</h2>
+- Any comparative studies or debate points from the week
+- Highlight where surgical and transcatheter approaches diverge or converge on evidence
+
+### 7. <h2>Clinical Trials Update</h2>
 - Group by valve type with <h3> subheadings
 - For each trial: name, NCT ID (linked to ClinicalTrials.gov), status, phase, enrollment, sponsor
 - Highlight landmark trials: REPAIR-MR, PRIMATY, TRILUMINATE, CLASP TR, APOLLO, \
 TRISCEND, PARTNER, COAPT, Evolut
 - Note any status changes or milestones this week
-
-### 7. <h2>Surgical vs. Transcatheter Comparisons</h2>
-- Any comparative studies or debate points from the week
 
 ### 8. <h2>Valve Industry Stocks — Weekly Performance</h2>
 - For each company: weekly price change ($ and %), current price, and brief analysis
@@ -107,9 +108,10 @@ TRISCEND, PARTNER, COAPT, Evolut
 - What to watch next week: upcoming conferences, earnings, trial readouts, FDA dates
 
 ### 12. <h2>All Research & Sources This Week</h2>
-- Complete bulleted list of EVERY research article, news item, and trial update referenced
+- Complete bulleted list of EVERY research article and news item referenced in this newsletter
 - Each item must be a clickable hyperlink: <a href="URL">Title</a> — Source, Date
-- Group by: Research Articles, News, Clinical Trials
+- Group by: Research Articles | News & Regulatory
+- Do NOT re-list clinical trials here — they are covered in the Clinical Trials Update section above
 
 ## Data Sources
 
