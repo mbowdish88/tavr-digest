@@ -42,9 +42,33 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           CLAUDE_MODEL: claude-sonnet-4-20250514
           LOG_LEVEL: INFO
-        run: python main.py --podcast
+        run: |
+          # Start 30-min heartbeat in background
+          (
+            START=$(date +%s)
+            while true; do
+              sleep 1800
+              ELAPSED=$(( ($(date +%s) - START) / 60 ))
+              curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                -d chat_id="${TELEGRAM_CHAT_ID}" \
+                -d text="🎙️ *Podcast still generating* — ${ELAPSED}min elapsed, still waiting on Anthropic API..." \
+                -d parse_mode="Markdown" || true
+            done
+          ) &
+          HEARTBEAT_PID=$!
+
+          # Run podcast
+          python main.py --podcast
+          EXIT_CODE=$?
+
+          # Kill heartbeat
+          kill $HEARTBEAT_PID 2>/dev/null || true
+
+          exit $EXIT_CODE
 
       # Upload is handled by publisher.py — no duplicate shell upload needed (R5)
 
