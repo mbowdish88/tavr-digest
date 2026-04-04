@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { DigestData, Article } from "@/lib/data";
 import ArticleCard from "@/components/ArticleCard";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface ArchiveArticle extends Article {
   digestDate: string;
@@ -17,139 +18,217 @@ interface ArchiveClientProps {
   dates: string[];
 }
 
+const TOPICS = [
+  { key: "aortic",     label: "Aortic" },
+  { key: "mitral",     label: "Mitral" },
+  { key: "tricuspid",  label: "Tricuspid" },
+  { key: "surgical",   label: "Surgical" },
+  { key: "trials",     label: "Trials" },
+  { key: "regulatory", label: "Regulatory" },
+  { key: "financial",  label: "Financial" },
+];
+
+const TOPIC_COLORS: Record<string, string> = {
+  aortic:     "#2C5282",
+  mitral:     "#3182CE",
+  tricuspid:  "#6B46C1",
+  surgical:   "#2F855A",
+  trials:     "#744210",
+  regulatory: "#276749",
+  financial:  "#8B7B3B",
+};
+
+function formatDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr + "T12:00:00");
+    return d.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function formatShortDate(dateStr: string): string {
+  try {
+    const d = new Date(dateStr + "T12:00:00");
+    return d.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function ArchiveClient({ data, allArticles, dates }: ArchiveClientProps) {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Use historical articles if available, fall back to today's
-  const articles = allArticles.length > 0
-    ? allArticles
-    : Object.entries(data.sections).flatMap(([key, section]) =>
-        section.articles.map((a) => ({ ...a, digestDate: data.date, sectionKey: key, sectionColor: section.color }))
-      );
+  // Active topic from URL query param (e.g. ?topic=aortic) or state
+  const initialTopic = searchParams.get("topic") || null;
+  const [activeTopic, setActiveTopic] = useState<string | null>(initialTopic);
 
-  // Filter articles
-  const filtered = articles.filter((article) => {
-    if (activeFilter && article.sectionKey !== activeFilter) return false;
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      return (
-        article.title.toLowerCase().includes(q) ||
-        article.abstract.toLowerCase().includes(q) ||
-        (article.authors || "").toLowerCase().includes(q) ||
-        article.source.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
+  // Sync URL when topic changes
+  function handleTopicChange(topic: string | null) {
+    setActiveTopic(topic);
+    const url = topic ? `/archive?topic=${topic}` : "/archive";
+    router.replace(url, { scroll: false });
+  }
 
-  // Section counts across all articles
-  const sectionCounts: Record<string, number> = {};
-  for (const a of articles) {
-    sectionCounts[a.sectionKey] = (sectionCounts[a.sectionKey] || 0) + 1;
+  // When in topic mode, show all articles for that topic across all dates
+  const topicArticles: ArchiveArticle[] = activeTopic
+    ? allArticles.filter((a) => a.sectionKey === activeTopic)
+    : [];
+
+  // Article count per topic across all dates
+  const topicCounts: Record<string, number> = {};
+  for (const a of allArticles) {
+    topicCounts[a.sectionKey] = (topicCounts[a.sectionKey] || 0) + 1;
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <div className="mb-8">
+    <div className="max-w-5xl mx-auto px-4 py-10">
+      {/* Page header */}
+      <div className="mb-8 pb-6 border-b border-gray-200">
         <p className="nav-font text-xs font-semibold uppercase tracking-widest text-[var(--color-rose)] mb-1">
           Archive
         </p>
-        <h1 className="text-3xl font-bold text-[var(--color-wine)] mb-2">
-          All Articles
+        <h1 className="text-3xl font-bold text-[var(--color-wine)] mb-1">
+          The Valve Wire Archive
         </h1>
-        <p className="nav-font text-sm text-gray-500 mb-4">
-          {articles.length} articles across {dates.length} {dates.length === 1 ? "digest" : "digests"}
+        <p className="nav-font text-sm text-gray-500">
+          {dates.length} {dates.length === 1 ? "digest" : "digests"} &middot; {allArticles.length} articles
         </p>
-
-        {/* Digest date links */}
-        {dates.length > 1 && (
-          <div className="flex flex-wrap gap-2 mb-4 nav-font text-xs">
-            {dates.map((d) => (
-              <span key={d} className="px-2 py-1 rounded bg-gray-100 text-gray-600">
-                {d}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Search */}
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Search articles by title, author, source..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full max-w-lg px-4 py-2 rounded-lg border border-gray-200 nav-font text-sm focus:outline-none focus:border-[var(--color-rose)] focus:ring-1 focus:ring-[var(--color-rose)]"
-          />
+        <div className="flex gap-4 mt-3">
+          <Link href="/" className="nav-font text-xs text-[var(--color-rose)] hover:underline">
+            ← Today&apos;s digest
+          </Link>
+          <Link href="/weekly" className="nav-font text-xs text-[var(--color-rose)] hover:underline">
+            Weekly digest →
+          </Link>
         </div>
+      </div>
 
-        {/* Filters */}
-        <div className="flex flex-wrap gap-2 nav-font text-sm">
+      {/* Topic filter buttons */}
+      <div className="mb-8">
+        <p className="nav-font text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
+          Browse by topic
+        </p>
+        <div className="flex flex-wrap gap-2">
           <button
-            onClick={() => setActiveFilter(null)}
-            className={`px-3 py-1.5 rounded-full border transition-colors font-semibold ${
-              activeFilter === null
+            onClick={() => handleTopicChange(null)}
+            className={`nav-font px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+              activeTopic === null
                 ? "bg-[var(--color-wine)] text-white border-[var(--color-wine)]"
-                : "border-gray-200 text-gray-600 hover:border-[var(--color-rose)]"
+                : "border-gray-200 text-gray-600 hover:border-[var(--color-wine)] hover:text-[var(--color-wine)]"
             }`}
           >
-            All ({articles.length})
+            All Digests
           </button>
-          {Object.entries(data.sections).map(([key, section]) => (
-            <button
-              key={key}
-              onClick={() => setActiveFilter(activeFilter === key ? null : key)}
-              className={`px-3 py-1.5 rounded-full border transition-colors font-semibold ${
-                activeFilter === key
-                  ? "text-white border-transparent shadow-sm"
-                  : "border-gray-200 text-gray-600 hover:border-[var(--color-rose)]"
-              }`}
-              style={
-                activeFilter === key
-                  ? { backgroundColor: section.color }
-                  : { borderColor: section.color + "40" }
-              }
-            >
-              <span
-                className="inline-block w-2 h-2 rounded-full mr-1.5"
-                style={{ backgroundColor: activeFilter === key ? "white" : section.color }}
-              />
-              {section.label.split("(")[0].trim()}
-              <span className="ml-1 text-xs opacity-70">({sectionCounts[key] || 0})</span>
-            </button>
-          ))}
+          {TOPICS.map(({ key, label }) => {
+            const color = TOPIC_COLORS[key] || "#2C5282";
+            const count = topicCounts[key] || 0;
+            const isActive = activeTopic === key;
+            return (
+              <button
+                key={key}
+                onClick={() => handleTopicChange(isActive ? null : key)}
+                className={`nav-font px-4 py-2 rounded-full text-sm font-semibold border transition-colors ${
+                  isActive
+                    ? "text-white border-transparent"
+                    : "border-gray-200 text-gray-600 hover:border-opacity-60"
+                }`}
+                style={
+                  isActive
+                    ? { backgroundColor: color, borderColor: color }
+                    : { borderColor: color + "50", color: color }
+                }
+              >
+                {label}
+                <span className="ml-1.5 text-xs opacity-70">({count})</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Results count */}
-      {(activeFilter || searchQuery) && (
-        <p className="nav-font text-sm text-gray-500 mb-4">
-          Showing {filtered.length} of {articles.length} articles
-          {activeFilter && ` in ${data.sections[activeFilter]?.label}`}
-          {searchQuery && ` matching "${searchQuery}"`}
-        </p>
+      {/* TOPIC MODE — article list */}
+      {activeTopic && (
+        <div>
+          <div className="flex items-center gap-3 mb-6">
+            <div
+              className="w-1 h-6 rounded-full"
+              style={{ backgroundColor: TOPIC_COLORS[activeTopic] || "#2C5282" }}
+            />
+            <h2 className="nav-font text-xl font-semibold text-[var(--color-wine)]">
+              {TOPICS.find((t) => t.key === activeTopic)?.label} — All Articles
+            </h2>
+            <span className="nav-font text-sm text-gray-400">
+              {topicArticles.length} {topicArticles.length === 1 ? "article" : "articles"}
+            </span>
+          </div>
+
+          {topicArticles.length === 0 ? (
+            <p className="text-center text-gray-400 py-12 nav-font text-sm">
+              No articles found for this topic.
+            </p>
+          ) : (
+            <div className="space-y-4">
+              {topicArticles.map((article, i) => (
+                <ArticleCard
+                  key={`${article.id}-${article.digestDate}-${i}`}
+                  article={article}
+                  sectionColor={TOPIC_COLORS[activeTopic] || article.sectionColor}
+                  fullAbstract
+                />
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
-      {/* Article Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {filtered.map((article, i) => (
-          <ArticleCard key={`${article.id}-${article.digestDate}-${i}`} article={article} sectionColor={article.sectionColor} />
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <p className="text-center text-gray-400 py-12">
-          No articles found.{" "}
-          {(activeFilter || searchQuery) && (
-            <button
-              onClick={() => { setActiveFilter(null); setSearchQuery(""); }}
-              className="text-[var(--color-rose)] hover:underline"
-            >
-              Clear filters
-            </button>
+      {/* DATE LIST MODE — chronological list of digest days */}
+      {!activeTopic && (
+        <div>
+          <p className="nav-font text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
+            Daily Digests
+          </p>
+          {dates.length === 0 ? (
+            <p className="text-center text-gray-400 py-12 nav-font text-sm">
+              No digests available.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {dates.map((dateStr) => (
+                <Link
+                  key={dateStr}
+                  href={`/archive/${dateStr}`}
+                  className="group flex items-center justify-between px-5 py-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md hover:border-[var(--color-rose)] transition-all"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-1.5 h-8 rounded-full bg-[var(--color-rose)] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div>
+                      <p className="nav-font text-sm font-semibold text-[var(--color-wine)] group-hover:text-[var(--color-rose)] transition-colors">
+                        {formatDate(dateStr)}
+                      </p>
+                      <p className="nav-font text-xs text-gray-400 mt-0.5">
+                        Daily digest &middot; Full newsletter
+                      </p>
+                    </div>
+                  </div>
+                  <span className="nav-font text-xs text-gray-400 group-hover:text-[var(--color-rose)] transition-colors">
+                    Read →
+                  </span>
+                </Link>
+              ))}
+            </div>
           )}
-        </p>
+        </div>
       )}
     </div>
   );

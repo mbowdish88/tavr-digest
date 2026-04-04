@@ -3,6 +3,7 @@ import type { Article } from "@/lib/data";
 interface ArticleCardProps {
   article: Article;
   sectionColor?: string;
+  fullAbstract?: boolean;
 }
 
 const TYPE_STYLES: Record<string, string> = {
@@ -47,7 +48,7 @@ function getJournalBranding(source: string): { abbrev: string; bg: string; text:
   return null;
 }
 
-export default function ArticleCard({ article, sectionColor }: ArticleCardProps) {
+export default function ArticleCard({ article, sectionColor, fullAbstract = false }: ArticleCardProps) {
   const typeStyle = TYPE_STYLES[article.type] || "bg-gray-600 text-white";
   const hasImage = article.image_url;
   const branding = getJournalBranding(article.source);
@@ -111,7 +112,7 @@ export default function ArticleCard({ article, sectionColor }: ArticleCardProps)
           </div>
 
           {/* Abstract */}
-          <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+          <p className={`text-sm text-gray-600 leading-relaxed ${fullAbstract ? "" : "line-clamp-3"}`}>
             {article.abstract}
           </p>
 
