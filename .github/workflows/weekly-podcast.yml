@@ -79,6 +79,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase || true
-          git add docs/podcast/ data/podcast_episodes.json || true
-          git commit -m "Update podcast RSS feed and landing page [skip ci]" || true
+          git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json || true
+          git commit -m "Publish podcast episode $(date +%Y-%m-%d) [skip ci]" || true
           git push || true

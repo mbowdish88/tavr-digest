@@ -410,7 +410,11 @@ def build_website_data(
 
 def _get_all_podcast_episodes() -> list:
     """Get all podcast episodes."""
-    episodes_file = config.BASE_DIR / "data" / "podcast_episodes.json"
+    # Prefer site/public/data/ copy (committed to git, available in CI)
+    # Fall back to data/ local copy
+    episodes_file = config.BASE_DIR / "site" / "public" / "data" / "podcast_episodes.json"
+    if not episodes_file.exists():
+        episodes_file = config.BASE_DIR / "data" / "podcast_episodes.json"
     if episodes_file.exists():
         try:
             episodes = json.loads(episodes_file.read_text())
