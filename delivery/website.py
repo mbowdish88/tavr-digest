@@ -473,6 +473,35 @@ def _merge_with_previous(data: dict) -> dict:
     return data
 
 
+def push_weekly_to_website(weekly_html: str) -> bool:
+    """Write the weekly digest HTML to site/public/data/ for Vercel deployment."""
+    from datetime import date
+    today = date.today().isoformat()
+    data_dir = _get_site_data_dir()
+    data_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        # Write the full HTML as weekly_latest.html — the site reads this directly
+        latest_path = data_dir / "weekly_latest.html"
+        latest_path.write_text(weekly_html, encoding="utf-8")
+        logger.info(f"Wrote {latest_path} ({len(weekly_html)} bytes)")
+
+        # Write a dated archive copy
+        archive_path = data_dir / f"weekly_{today}.html"
+        archive_path.write_text(weekly_html, encoding="utf-8")
+        logger.info(f"Wrote archive copy: {archive_path.name}")
+
+        # Write a small metadata JSON so the frontend knows the date
+        import json
+        meta = {"date": today, "has_weekly": True}
+        (data_dir / "weekly_meta.json").write_text(json.dumps(meta), encoding="utf-8")
+
+        return True
+    except Exception as e:
+        logger.error(f"Failed to write weekly website data: {e}")
+        return False
+
+
 def push_to_website(data: dict) -> bool:
     """Write structured JSON to site/public/data/ for Vercel deployment.
 

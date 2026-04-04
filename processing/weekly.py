@@ -333,7 +333,7 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
 
     logger.info(
         f"Generating weekly summary from {len(digests)} daily digests "
-        f"({start_date} to {end_date}) with {config.CLAUDE_MODEL}"
+        f"({start_date} to {end_date}) with claude-opus-4-6"
     )
 
     # Inject guidelines knowledge into the system prompt
@@ -345,7 +345,7 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
 
     message = client.messages.create(
-        model=config.CLAUDE_MODEL,
+        model="claude-opus-4-6",
         max_tokens=16384,
         system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],

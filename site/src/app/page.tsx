@@ -7,11 +7,41 @@ import ArticleCard from "@/components/ArticleCard";
 import PodcastPlayer from "@/components/PodcastPlayer";
 import StockChart from "@/components/StockChart";
 import Link from "next/link";
+import fs from "fs";
+import path from "path";
 
 export const dynamic = "force-dynamic";
 
+function getWeeklyMeta(): { date: string; daysAgo: number } | null {
+  try {
+    const metaPath = path.join(process.cwd(), "public", "data", "weekly_meta.json");
+    if (!fs.existsSync(metaPath)) return null;
+    const meta = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+    if (!meta.date) return null;
+    const published = new Date(meta.date + "T12:00:00");
+    const daysAgo = Math.floor((Date.now() - published.getTime()) / 86400000);
+    if (daysAgo > 7) return null;
+    return { date: meta.date, daysAgo };
+  } catch {
+    return null;
+  }
+}
+
+function formatWeekLabel(dateStr: string): string {
+  try {
+    const d = new Date(dateStr + "T12:00:00");
+    const start = new Date(d);
+    start.setDate(d.getDate() - 6);
+    const opts: Intl.DateTimeFormatOptions = { month: "long", day: "numeric" };
+    return `${start.toLocaleDateString("en-US", opts)} – ${d.toLocaleDateString("en-US", { ...opts, year: "numeric" })}`;
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function HomePage() {
   let data = getLatestDigest();
+  const weeklyMeta = getWeeklyMeta();
 
   // Fill empty sections with historical articles
   data = fillEmptySections(data);
@@ -36,6 +66,29 @@ export default function HomePage() {
       {/* Hero Banner */}
       <HeroBanner date={formatDate(data.date)} articleCount={totalArticles} />
 
+      {/* Weekly Digest Banner — shown when weekly is fresh (within 7 days) */}
+      {weeklyMeta && (
+        <div className="bg-[var(--color-wine)] text-white">
+          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="nav-font text-xs font-semibold uppercase tracking-widest text-[var(--color-rose)]">
+                {weeklyMeta.daysAgo === 0 ? "Just Published" : weeklyMeta.daysAgo === 1 ? "Yesterday" : `${weeklyMeta.daysAgo} days ago`}
+              </span>
+              <span className="text-white/30">|</span>
+              <span className="nav-font text-sm font-medium text-white">
+                The Valve Wire Weekly — {formatWeekLabel(weeklyMeta.date)}
+              </span>
+            </div>
+            <Link
+              href="/weekly"
+              className="nav-font text-xs font-semibold text-[var(--color-rose)] hover:text-white transition-colors whitespace-nowrap"
+            >
+              Read the full weekly →
+            </Link>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Executive Summary + Weekly/Podcast sidebar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
@@ -49,15 +102,15 @@ export default function HomePage() {
               className="block bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow p-5 text-center"
             >
               <p className="nav-font text-xs font-semibold uppercase tracking-wider text-[var(--color-rose)] mb-1">
-                Latest
+                {weeklyMeta ? "This Week" : "Weekly Digest"}
               </p>
               <h3 className="nav-font text-base font-medium text-[var(--color-wine)] mb-1">
-                Weekly Digest
+                The Valve Wire Weekly
               </h3>
               <p className="text-xs text-gray-400">
-                {data.weekly_digests?.[0]
-                  ? `Week ending ${data.weekly_digests[0].date}`
-                  : "Latest weekly summary"}
+                {weeklyMeta
+                  ? `Week ending ${weeklyMeta.date}`
+                  : "Publishes every Saturday"}
               </p>
               <span className="nav-font inline-block mt-3 text-xs text-[var(--color-rose)] font-medium">
                 Read the full weekly →

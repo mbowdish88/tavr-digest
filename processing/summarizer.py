@@ -471,7 +471,7 @@ def create_digest(
     logger.info(
         f"Sending {total} articles + {len(stock_data)} stocks + {len(trials)} trials "
         f"+ {len(social_posts)} social + {len(financial_news)} financial "
-        f"to Claude ({config.CLAUDE_MODEL}) for summarization"
+        f"to Claude (claude-opus-4-6) for summarization"
     )
 
     # Check if a major meeting is occurring
@@ -491,11 +491,11 @@ def create_digest(
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
 
     message = client.messages.create(
-        model=config.CLAUDE_MODEL,
+        model="claude-opus-4-6",
         max_tokens=16384,
         system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],
-        timeout=300.0,
+        timeout=21600.0,
     )
 
     digest_html = message.content[0].text
