@@ -427,7 +427,7 @@ def _get_all_podcast_episodes() -> list:
                     "show_notes": ep.get("description", ep.get("show_notes", "")),
                     "show_notes_html": ep.get("show_notes_html", ""),
                 }
-                for ep in reversed(episodes)  # newest first
+                for ep in episodes  # already newest first (publisher inserts at index 0)
             ]
         except Exception:
             pass
