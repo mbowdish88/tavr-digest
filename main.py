@@ -231,18 +231,7 @@ def run_daily_digest():
     except Exception as e:
         logger.error(f"Site publish failed: {e}", exc_info=True)
 
-    # 6. Push structured data to website repo (Vercel)
-    try:
-        website_data = build_website_data(
-            new_pubmed, new_news, new_regulatory, stock_data, trial_updates,
-            new_preprints, new_journals, new_social, new_financial,
-            digest_html=digest_content,
-        )
-        push_to_website(website_data)
-    except Exception as e:
-        logger.error(f"Website push failed: {e}", exc_info=True)
-
-    # 7. Send email (retry once on failure)
+    # 6. Send email (retry once on failure) — must succeed before website write or dedup
     email_sent = False
     for attempt in range(2):
         try:
@@ -264,6 +253,17 @@ def run_daily_digest():
     if not email_sent:
         logger.critical("Email delivery failed. Articles NOT marked as seen (will retry next run).")
         return
+
+    # 7. Push structured data to website repo (Vercel) — only after email confirmed
+    try:
+        website_data = build_website_data(
+            new_pubmed, new_news, new_regulatory, stock_data, trial_updates,
+            new_preprints, new_journals, new_social, new_financial,
+            digest_html=digest_content,
+        )
+        push_to_website(website_data)
+    except Exception as e:
+        logger.error(f"Website push failed: {e}", exc_info=True)
 
     # 8. Mark articles as seen (only after successful email)
     all_new_articles = (

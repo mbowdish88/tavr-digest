@@ -774,6 +774,8 @@ def build_fallback_digest(
     if stock_data:
         parts.append("<h3>Valve Industry Stocks</h3><ul>")
         for ticker, d in stock_data.items():
+            if not isinstance(d, dict):  # skip _combined_chart_url and other metadata keys
+                continue
             parts.append(
                 f'<li><strong>{ticker} ({d["company"]})</strong>: '
                 f'${d["close_price"]} ({d["change_pct"]:+.2f}%)</li>'

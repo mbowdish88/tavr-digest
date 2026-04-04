@@ -1,16 +1,15 @@
 name: Weekly Valve Wire Podcast
 
 on:
-  schedule:
-    # Saturday 12:30 AM Eastern (EDT UTC-4 = 04:30 UTC, EST UTC-5 = 05:30 UTC)
-    # Runs 29 min after weekly digest — weekly_latest.html will be committed and ready
-    - cron: '30 4 * * 6'
+  workflow_run:
+    workflows: ["Weekly Valve Wire Summary"]
+    types: [completed]
   workflow_dispatch:
 
 jobs:
   generate-podcast:
     runs-on: ubuntu-latest
-    if: always()
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 360
     permissions:
       contents: write
@@ -29,15 +28,13 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      - name: Restore podcast cache
+      - name: Restore podcast segments cache
         uses: actions/cache@v4
         with:
-          path: |
-            data/podcast_episodes.json
-            data/podcast/segments
-          key: podcast-${{ github.run_number }}
+          path: data/podcast/segments
+          key: podcast-segments-${{ github.run_number }}
           restore-keys: |
-            podcast-
+            podcast-segments-
 
       - name: Generate podcast
         env:
@@ -78,7 +75,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase || true
+          git pull --rebase
           git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json || true
           git commit -m "Publish podcast episode $(date +%Y-%m-%d) [skip ci]" || true
-          git push || true
+          git push
