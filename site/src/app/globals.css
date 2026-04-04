@@ -1,12 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  --color-wine: #1B2A4A;
-  --color-burgundy: #2C5282;
-  --color-rose: #3182CE;
-  --color-cream: #EDF2F7;
-  --color-beige: #A0AEC0;
-  --color-warm-white: #F7FAFC;
+  /* Blue Figures palette — primary brand identity */
+  --color-navy: #1B2A4A;
+  --color-slate: #3D5873;
+  --color-steel: #5B7FA6;
+  --color-accent: #5B7FA6;
+  --color-accent-hover: #3D5873;
+  --color-cream: #EDE0C4;
+  --color-surface: #F8F7F4;
+  --color-surface-alt: #F0EDE6;
+  --color-muted: #718096;
+
+  /* Backward-compat aliases */
+  --color-wine: var(--color-navy);
+  --color-burgundy: var(--color-slate);
+  --color-rose: var(--color-accent);
+  --color-warm-white: var(--color-surface);
+  --color-beige: var(--color-muted);
 }
 
 html {
@@ -16,20 +27,20 @@ html {
 body {
   font-family: Georgia, "Times New Roman", serif;
   color: #2c2c2c;
-  background-color: var(--color-warm-white);
+  background-color: var(--color-surface);
 }
 
 h1, h2, h3, h4, h5, h6, .nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
 }
 
 .nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
 }
 
 /* Weekly newsletter HTML rendering */
 .weekly-content h2 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--color-wine);
@@ -39,7 +50,7 @@ h1, h2, h3, h4, h5, h6, .nav-font {
   border-bottom: 2px solid var(--color-cream);
 }
 .weekly-content h3 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-inter), -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--color-burgundy);
