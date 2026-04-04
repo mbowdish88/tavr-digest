@@ -2,14 +2,14 @@ name: Weekly Valve Wire Summary
 
 on:
   schedule:
-    # Saturday 6 AM US Central (UTC-6) = 12:00 UTC
-    - cron: '0 12 * * 6'
+    # Saturday 12:01 AM US Central (CDT UTC-5 = 05:01 UTC, CST UTC-6 = 06:01 UTC)
+    - cron: '1 5 * * 6'
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:
   run-weekly:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     permissions:
       contents: write
 
