@@ -349,7 +349,7 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
         max_tokens=16384,
         system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],
-        timeout=300.0,
+        timeout=900.0,
     )
 
     summary = message.content[0].text
