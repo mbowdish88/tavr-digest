@@ -266,3 +266,12 @@ Many structural heart technologies have gotten ahead of the science and clinical
 - No Laziness: Find root causes. No temporary fixes. Senior developer standards.
 - Minimal Impact: Only touch what's necessary. No side effects with new bugs.
 - Accuracy First: Never fabricate citations, numbers, or study names. Everything must be verifiable.
+
+## gstack
+
+[gstack](https://github.com/garrytan/gstack) is installed globally at `~/.claude/skills/gstack/` — no per-project setup needed. Its skills are available in any Claude Code session on this machine.
+
+**Use the `/browse` skill from gstack for ALL web browsing.** Never use `mcp__claude-in-chrome__*` tools.
+
+**Available gstack skills:**
+/office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /design-shotgun, /design-html, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /connect-chrome, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /autoplan, /plan-devex-review, /devex-review, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade, /learn
