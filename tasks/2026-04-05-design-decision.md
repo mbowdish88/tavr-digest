@@ -1,10 +1,58 @@
-# Design Decision — The Valve Wire Tabloid Direction
+# Design Decision — The Valve Wire (PENDING — two finalists)
 
-**Decided:** 2026-04-05 (after a 3-iteration claude.ai exploration)
-**Blueprint:** `docs/designs/CHOSEN-tabloid-v1.html`
-**Source artifact:** v3 Direction 1 from `docs/designs/explorations/v3-1-nypost-front.html`
-**Aesthetic family:** Tabloid energy (NY Post front page, applied to medical content)
+**Status:** PENDING. Two finalists on the table. User sleeping on it. Pick first thing in the morning, full energy, before any other decisions.
+**Decided:** 2026-04-05 evening, deferred to 2026-04-06 morning
 **Launch target:** Week of AATS, April 29, 2026 (24 days from decision)
+
+---
+
+## The two finalists
+
+| | **Candidate A: Tabloid (NY Post)** | **Candidate B: NEJM Enhanced** |
+|---|---|---|
+| **File** | `docs/designs/CANDIDATE-tabloid-v1.html` | `docs/designs/CANDIDATE-nejm-enhanced-v3.html` |
+| **Aesthetic** | NY Post front page applied to medical content | NEJM print era 1985 + vitals monitor strip + H&E pathology accents + editorial callout |
+| **Headline style** | 52pt Oswald, "TAVR WINS ON MORTALITY. LOSES ON DURABILITY." with key words in red | Crimson Pro masthead, drop-cap lead, justified body, the editorial in a bordered callout box |
+| **Voice/visual fit** | Voice and visual both loud — pull together | Voice has its own bordered callout — quiet journal frame around opinionated voice |
+| **Multi-audience filter** | Splits — splits the room. Some surgeons love it; some analysts/regulators may think "tabloid = unserious" | Wins clean — all 7 audience segments served |
+| **Distinctive concept** | Loud typography + opinionated headlines as the hero | Pulsing SpO2 vitals strip at top + editorial callout — both unique to this publication |
+| **Stop-and-look factor** | Very high (visual scream) | High but quieter (the live pulsing dot is the hook) |
+| **Status signal** | "We have opinions and we're loud about them" | "We are a journal, and we have opinions" |
+| **Ages well** | Tabloid energy can date | Academic typography is timeless |
+| **Risk to credibility** | Real | Low |
+| **Operationalizes daily** | Wants a hero headline every day | Handles any number of stories naturally |
+
+### How to pick in the morning (the 3-step procedure)
+
+1. **Open both files in browser tabs side by side:**
+   ```bash
+   open ~/projects/tavr-digest/docs/designs/CANDIDATE-tabloid-v1.html
+   open ~/projects/tavr-digest/docs/designs/CANDIDATE-nejm-enhanced-v3.html
+   ```
+
+2. **Apply the three-reader test.** Imagine sending the URL to:
+   - (a) A CT surgeon you respect
+   - (b) A sell-side analyst at Bernstein covering med devices
+   - (c) The head of structural heart at a large valve program
+
+   Would all three of them read it without hesitation? Both designs need to pass this test. If one of them clearly fails for any of the three readers, eliminate it.
+
+3. **Trust your gut, not your taste.** Don't pick the one that looks "best." Pick the one that **feels like Mike Bowdish's publication**. Which one would you put your name on without hesitation? Which one would you screenshot and send to a colleague at AATS?
+
+   If your gut says the same answer both times, that's the answer. Commit and move to the port.
+
+   If your gut splits, pick the one that scared you slightly — there's information in the discomfort.
+
+### After the decision
+
+Whichever you pick:
+1. Rename the chosen file from `CANDIDATE-` to `CHOSEN-`
+2. Update this doc's title and "What we chose and why" section to reflect the pick
+3. Update `tasks/todo.md` Step 0 reference
+4. Update memory `project_tavr_digest.md` design decision section
+5. Run the kickoff prompt at the bottom of this file (substituting the right blueprint filename) to start the Next.js port
+
+Whichever loses goes into `docs/designs/runner-up/` for posterity.
 
 ---
 
@@ -131,17 +179,19 @@ Refresh `:3001` after every component port and visually compare to `docs/designs
 
 ---
 
-## Tomorrow morning kickoff (paste this when you start)
+## Tomorrow morning kickoff (paste AFTER you've picked between A and B)
 
-Open Claude Code in `~/projects/tavr-digest`. Make sure you're on Claude Opus 4.6. Paste this:
+**Step 1 — Open both finalists and pick one** (see "How to pick in the morning" above). Rename the winning file from `CANDIDATE-` to `CHOSEN-` so the kickoff prompt below has a definite reference.
 
-> I'm picking up the Valve Wire tabloid redesign port from yesterday's CEO review session. The full context is in `tasks/2026-04-05-design-decision.md`. Read that file first.
+**Step 2 — Open Claude Code in `~/projects/tavr-digest`.** Make sure you're on Claude Opus 4.6. Paste this prompt (substitute the actual chosen blueprint filename):
+
+> I'm picking up the Valve Wire redesign port from yesterday's CEO review session. The full context is in `tasks/2026-04-05-design-decision.md`. Read that file first.
 >
-> The decision: we're porting `docs/designs/CHOSEN-tabloid-v1.html` (NY Post front-page tabloid energy) into Next.js components on a new branch `redesign-tabloid` cut from main. This is a translation task, not a design task: copy the HTML and CSS from the blueprint directly, do not interpret, do not improvise, do not reach for "best practices" that depart from the source. I am watching every file you produce.
+> Decision committed this morning: we're porting `docs/designs/CHOSEN-{tabloid-v1 OR nejm-enhanced-v3}.html` into Next.js components on a new branch `redesign-{tabloid OR nejm}` cut from main. This is a translation task, not a design task: copy the HTML and CSS from the blueprint directly, do not interpret, do not improvise, do not reach for "best practices" that depart from the source. I am watching every file you produce.
 >
-> Start with Step 1 of the porting procedure: create the branch `redesign-tabloid`, then create `app/(tabloid)/globals.css` with all the CSS variables and base typography from the blueprint. Show me the file before moving to component 2. Do not skip ahead. No background agents.
+> Start with Step 1 of the porting procedure: create the branch, then create `app/(redesign)/globals.css` with all the CSS variables and base typography from the blueprint. Show me the file before moving to component 2. Do not skip ahead. No background agents.
 >
-> Before starting, ask me for a decision on the list provider for `SubscribeBar.tsx` (Buttondown vs Beehiiv vs ConvertKit vs Substack — Buttondown is recommended) so I have the answer ready by the time we get to component 9.
+> Before starting, ask me for a decision on the list provider for `SubscribeBar.tsx` (Buttondown vs Beehiiv vs ConvertKit vs Substack — Buttondown is recommended) so I have the answer ready by the time we get to that component.
 
 That's the entire kickoff. Everything else is in this file or in `tasks/todo.md`.
 
