@@ -8,6 +8,9 @@ data/*
 !data/weekly_latest.html
 .DS_Store
 =0.2.36
+
+# Conductor worktrees — never commit
+.claude/worktrees/
 # Large binary files
 *.psd
 *.flac
