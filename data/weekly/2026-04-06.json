@@ -1,0 +1,88 @@
+{
+  "date": "2026-04-06",
+  "articles": [
+    {
+      "title": "Early reversal of cardiac remodeling in patients with new-onset persistent left bundle branch block after transcatheter aortic valve replacement.",
+      "journal": "Journal of cardiothoracic surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41937153/",
+      "pmid": "41937153",
+      "authors": "Wang S, Tan K, Gao X, Zhang L, Liu C et al.",
+      "study_design": "Retrospective study",
+      "sample_size": 101,
+      "key_finding": "OBJECTIVE: New-onset persistent left bundle branch block (LBBB) following transcatheter aortic valve replacement (TAVR) is an independent predictor of long-term cardiovascular mortality in patients.",
+      "key_numbers": [
+        "27.7%"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Transcatheter aortic valve replacement at metropolitan teaching hospitals among patients with heart failure.",
+      "journal": "Current problems in cardiology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41937004/",
+      "pmid": "41937004",
+      "authors": "Dixit S, Anamika F, Ramphul K, Firos JRB, Aneja A",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "Prior literature well documents an increased risk of readmission in heart failure patients undergoing TAVR; however, data comparing clinical outcomes between heart failure with preserved ejection fraction (HFpEF) and heart failure with reduced ejection fraction (HFrEF) in this population remain limited.",
+      "key_numbers": [
+        "16.25%",
+        "83.75%",
+        "11.29%",
+        "9.74%",
+        "95%",
+        "p<0.001",
+        "95% CI: 1.127-1.156",
+        "HR: 1.142"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Post-TAVR Bleeding in Atrial Fibrillation Patients Treated With Apixaban or Rivaroxaban.",
+      "journal": "The American journal of cardiology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41936852/",
+      "pmid": "41936852",
+      "authors": "Morel O, Trimaille A, Guglieri M, Marchandot B, Lenormand T et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Leaflet modification for bicuspid aortic valve tricuspidalization enabling implantation of larger transcatheter heart valves.",
+      "journal": "The American journal of cardiology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41935764/",
+      "pmid": "41935764",
+      "authors": "Tarantini G, Fabris T, Cecchetto A, Fovino LN",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Segmentation, Major Trends, and Competitive Overview of the Transcatheter Aortic Valve Replacement Market - openPR.com",
+      "journal": "openPR.com",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNalc2YldaTGxoQ3lQZGozcjgwSEJXUWFCWGRib2h1Wkw5ZkhoQ3JMZC1xWXhrZkJhcFlPU2h3emFlTlExUXJYbF9Hc3NwNXNkLXFWLTRNUWtvZlY0UHc4NEs5WVp1TXdNUXFNZl9lNER6Z1h0cFJQZHFEOExCUHN3eVJrZXpVaFNjbjVqekM5N0ZrSWM?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Segmentation, Major Trends, and Competitive Overview of the Transcatheter Aortic Valve Replacement Market&nbsp;&nbsp;openPR.com",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Vdyne Gains IDE, Taking on Edwards in Competitive TTVR Market - Medical Device and Diagnostic industry",
+      "journal": "Medical Device and Diagnostic industry",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNblJidGlTX3otV2ZKWkRUM3R3NTVla3pRbnFVM0gyUS01c0ZIQTMzQmI2bDBDTkFGanY0bFJyNnZsUDRLVGpvMlc0czVvZ3Y1dzdpc0gzVlVYQzhMS2NEazFNWGtwTmFNUFBYOFRlQklONmFfYnZuVzh1bEN5SEUxX3RFZUJ2ZkhGTVJwWkRQQQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Vdyne Gains IDE, Taking on Edwards in Competitive TTVR Market&nbsp;&nbsp;Medical Device and Diagnostic industry",
+      "key_numbers": [],
+      "section": "tricuspid"
+    }
+  ]
+}
