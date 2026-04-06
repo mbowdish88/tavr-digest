@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f2f4f3;
+    --surface: #ffffff;
+    --ink: #0a0a0a;
+    --ink-secondary: #2a2a2a;
+    --ink-tertiary: #666;
+    /* Surgical primaries */
+    --surg-green: #2a6e4a;
+    --surg-green-deep: #1a4a32;
+    --surg-green-light: #d0e8da;
+    --surg-green-wash: #e8f2ec;
+    --surg-blue: #28608a;
+    --surg-blue-deep: #1a4060;
+    --surg-blue-light: #ccdce8;
+    --surg-blue-wash: #e4ecf2;
+    /* SpO2 / vitals */
+    --spo2-green: #30b060;
+    --spo2-yellow: #e8c030;
+    --spo2-red: #d03030;
+    --vitals-bg: #0c1a14;
+    --vitals-text: #a0d8b8;
+    --rule: #c8ccc8;
+    --rule-light: #e0e4e0;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .frame {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ── Status bar — dark green vitals monitor ── */
+  .status-bar {
+    background: var(--vitals-bg);
+    color: var(--vitals-text);
+    padding: 10px 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--surg-green);
+  }
+
+  .status-indicator {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--spo2-green);
+    margin-right: 6px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .status-right {
+    color: #608878;
+    font-size: 9px;
+  }
+
+  /* ── Masthead — surgical green banner ── */
+  .masthead-block {
+    background: linear-gradient(135deg, var(--surg-green-deep), var(--surg-green));
+    color: #fff;
+    padding: 20px 24px 16px;
+  }
+
+  .m-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: #fff;
+  }
+
+  .m-sub {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--surg-green-light);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  .m-meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .content-area { padding: 0 24px; }
+
+  /* ── Section bar — surgical blue label ── */
+  .section-bar {
+    display: flex;
+    align-items: center;
+    margin: 22px 0 10px;
+    gap: 8px;
+  }
+
+  .section-bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--surg-blue);
+    white-space: nowrap;
+  }
+
+  .section-bar-line {
+    flex: 1;
+    height: 1px;
+    background: var(--surg-blue-light);
+  }
+
+  /* ── Lead — green-washed ── */
+  .lead-block {
+    padding: 16px;
+    border-left: 4px solid var(--surg-green);
+    margin: 10px 0;
+    background: var(--surg-green-wash);
+  }
+
+  .lead-block p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+  }
+
+  /* ── Items ── */
+  .item-block {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-light);
+  }
+
+  .item-block:last-of-type { border-bottom: none; }
+
+  .item-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  .item-source.journal { color: var(--surg-green); }
+  .item-source.society { color: var(--surg-blue); }
+  .item-source.alert { color: var(--spo2-red); }
+
+  /* Color-coded left border per item */
+  .item-block.journal-item {
+    border-left: 3px solid var(--surg-green);
+    padding-left: 12px;
+  }
+  .item-block.society-item {
+    border-left: 3px solid var(--surg-blue);
+    padding-left: 12px;
+  }
+  .item-block.alert-item {
+    border-left: 3px solid var(--spo2-red);
+    padding-left: 12px;
+    background: rgba(208,48,48,0.04);
+  }
+
+  .item-text {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* ── Data panels — colored backgrounds ── */
+  .data-panel {
+    margin: 14px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--rule-light);
+  }
+
+  .data-panel.trials-panel {
+    background: var(--surg-blue-wash);
+    border-color: var(--surg-blue-light);
+  }
+
+  .data-panel.industry-panel {
+    background: var(--surg-green-wash);
+    border-color: var(--surg-green-light);
+  }
+
+  .data-panel.podcast-panel {
+    background: var(--vitals-bg);
+    border-color: #1a3028;
+    color: var(--vitals-text);
+  }
+
+  .data-panel-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .data-panel-title.trial-title { color: var(--surg-blue); }
+  .data-panel-title.industry-title { color: var(--surg-green-deep); }
+  .data-panel-title.podcast-title { color: var(--spo2-green); }
+
+  .ticker-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 20px;
+  }
+
+  .ticker-item {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(42,110,74,0.15);
+  }
+
+  .ticker-name { color: var(--ink-secondary); font-weight: 400; }
+  .ticker-val { font-weight: 500; }
+  .ticker-val.up { color: var(--spo2-green); }
+  .ticker-val.dn { color: var(--spo2-red); }
+
+  .trial-list {
+    list-style: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+  }
+
+  .trial-list li {
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(40,96,138,0.15);
+    display: flex;
+    justify-content: space-between;
+    color: var(--surg-blue-deep);
+  }
+
+  .trial-list .nct { color: var(--ink-tertiary); font-size: 10px; }
+
+  .podcast-row {
+    font-size: 12px;
+    color: var(--vitals-text);
+    line-height: 1.5;
+  }
+
+  .podcast-row strong { font-weight: 500; color: #c0e8d0; }
+
+  .podcast-duration {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #608878;
+  }
+
+  /* ── SpO2-style vitals strip ── */
+  .vitals-strip {
+    margin: 18px 0 0;
+    padding: 8px 16px;
+    background: var(--vitals-bg);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: #608878;
+    letter-spacing: 0.08em;
+  }
+
+  .vital-reading {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .vital-value {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .vital-value.green { color: var(--spo2-green); }
+  .vital-value.yellow { color: var(--spo2-yellow); }
+  .vital-value.red { color: var(--spo2-red); }
+
+  /* ── Subscribe ── */
+  .subscribe-strip {
+    margin: 22px 0 0;
+    padding: 14px 0;
+    border-top: 2px solid var(--surg-green);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .subscribe-text { font-size: 13px; color: var(--ink-secondary); }
+
+  .subscribe-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--surg-green);
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  /* ── Footer ── */
+  .footer-block {
+    padding: 14px 0 40px;
+    border-top: 1px solid var(--rule-light);
+    margin-top: 12px;
+  }
+
+  .footer-nav {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-tertiary);
+    line-height: 2.2;
+  }
+
+  .footer-nav span { margin: 0 4px; color: var(--surg-green-light); }
+
+  .footer-independence {
+    font-size: 11px;
+    color: var(--surg-green);
+    margin-top: 10px;
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <div><span class="status-indicator"></span> THE VALVE WIRE — ACTIVE</div>
+    <div class="status-right">VOL III · ISSUE 47 · 2026-04-28</div>
+  </div>
+
+  <!-- Masthead -->
+  <div class="masthead-block">
+    <div class="m-title">The Valve Wire</div>
+    <div class="m-sub">A surgeon's reading of structural heart disease</div>
+    <div class="m-meta-row">
+      <span>Vol. III · Issue 47 · April 28, 2026</span>
+      <span>Michael Bowdish, MD</span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Lead -->
+    <div class="section-bar">
+      <span class="section-bar-label">Executive Summary</span>
+      <span class="section-bar-line"></span>
+    </div>
+
+    <div class="lead-block">
+      <p>The PARTNER 3 5-year extended follow-up published in <em>NEJM</em> this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about. Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.</p>
+    </div>
+
+    <!-- Vitals strip -->
+    <div class="vitals-strip">
+      <div class="vital-reading">SOURCES <span class="vital-value green">3</span></div>
+      <div class="vital-reading">RECALLS <span class="vital-value red">1</span></div>
+      <div class="vital-reading">TRIALS <span class="vital-value yellow">3</span></div>
+      <div class="vital-reading">TICKERS <span class="vital-value green">4</span></div>
+    </div>
+
+    <!-- Headlines -->
+    <div class="section-bar">
+      <span class="section-bar-label">This Week</span>
+      <span class="section-bar-line"></span>
+    </div>
+
+    <div class="item-block journal-item">
+      <div class="item-source journal">NEJM</div>
+      <div class="item-text">PARTNER 3 5-year results: TAVR mortality advantage holds, but structural valve deterioration at year 5 raises questions for sub-65 indication.</div>
+    </div>
+
+    <div class="item-block society-item">
+      <div class="item-source society">EACTS</div>
+      <div class="item-text">European cardiothoracic surgeons publish position paper: "Transcatheter mitral repair outcomes do not yet meet the threshold for routine use in surgical-eligible patients." Authors include Mehaffey and Chikwe.</div>
+    </div>
+
+    <div class="item-block alert-item">
+      <div class="item-source alert">FDA 8-K — RECALL</div>
+      <div class="item-text">Class I recall on a small lot of SAPIEN 3 Ultra valves due to a balloon catheter manufacturing defect. No patient harm reported. Affects approximately 3,400 units shipped Jan–Mar 2026.</div>
+    </div>
+
+    <!-- Data panels -->
+    <div class="section-bar">
+      <span class="section-bar-label">Data</span>
+      <span class="section-bar-line"></span>
+    </div>
+
+    <div class="data-panel trials-panel">
+      <div class="data-panel-title trial-title">Clinical Trials in Progress</div>
+      <ul class="trial-list">
+        <li><span>EARLY TAVR</span><span class="nct">NCT03042104</span></li>
+        <li><span>PROGRESS</span><span class="nct">NCT04889872</span></li>
+        <li><span>TRISCEND II</span><span class="nct">NCT04482062</span></li>
+      </ul>
+    </div>
+
+    <div class="data-panel industry-panel">
+      <div class="data-panel-title industry-title">Industry Watch</div>
+      <div class="ticker-grid">
+        <div class="ticker-item">
+          <span class="ticker-name">EW</span>
+          <span class="ticker-val up">$98.40 +2.1%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">MDT</span>
+          <span class="ticker-val dn">$84.20 −0.3%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">ABT</span>
+          <span class="ticker-val up">$112.80 +0.4%</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-name">BSX</span>
+          <span class="ticker-val up">$76.55 +0.9%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-panel podcast-panel">
+      <div class="data-panel-title podcast-title">Podcast</div>
+      <div class="podcast-row">
+        <strong>"PARTNER 3 at year 5: what the editorial does not say"</strong><br>
+        <span class="podcast-duration">18 MIN · WITH CASE DISCUSSION</span>
+      </div>
+    </div>
+
+    <!-- Subscribe -->
+    <div class="subscribe-strip">
+      <span class="subscribe-text">A surgeon's reading. Delivered daily.</span>
+      <a href="#" class="subscribe-btn">Subscribe</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-block">
+      <div class="footer-nav">
+        Aortic<span>·</span>Mitral<span>·</span>Tricuspid<span>·</span>Surgical vs Transcatheter<span>·</span>Industry<span>·</span>Trials
+      </div>
+      <div class="footer-nav">
+        Editorial Stance<span>·</span>Methodology<span>·</span>Editor<span>·</span>Archive by Date<span>·</span>Archive by Topic<span>·</span>Archive by Journal
+      </div>
+      <div class="footer-independence">The Valve Wire is independent and accepts no industry funding.</div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

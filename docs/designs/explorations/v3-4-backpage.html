@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire — BACK PAGE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo+Black&family=Roboto+Condensed:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --red: #d41920;
+    --red-bright: #ff1a1a;
+    --black: #0a0a0a;
+    --white: #fff;
+    --newsprint: #f5f1e8;
+    --yellow: #ffd000;
+    --blue: #1a3a88;
+    --ink-mid: #444;
+  }
+
+  body {
+    background: #a09888;
+    color: var(--black);
+    font-family: 'Roboto Condensed', sans-serif;
+  }
+
+  .backpage {
+    max-width: 660px;
+    margin: 20px auto;
+    background: var(--newsprint);
+    border: 3px solid var(--black);
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
+    overflow: hidden;
+  }
+
+  /* ── RED MASTHEAD BAR ── */
+  .top-bar {
+    background: var(--red);
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid var(--black);
+  }
+
+  .top-logo {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .top-right {
+    font-family: 'Oswald', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    text-align: right;
+    line-height: 1.5;
+  }
+
+  /* ── MEGA HEADLINE ── */
+  .mega-zone {
+    padding: 16px 20px 8px;
+    text-align: center;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .mega-kicker {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .mega-headline {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 72px;
+    line-height: 0.88;
+    text-transform: uppercase;
+    color: var(--black);
+    letter-spacing: -0.03em;
+  }
+
+  .mega-headline .red { color: var(--red); }
+
+  .mega-sub {
+    font-family: 'Oswald', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    margin-top: 4px;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── HERO DATA VIZ — SVD curve ── */
+  .viz-zone {
+    padding: 12px 20px 8px;
+    border-bottom: 3px solid var(--black);
+    background: var(--white);
+  }
+
+  .viz-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  .viz-zone svg {
+    width: 100%;
+    max-height: 200px;
+    display: block;
+  }
+
+  .viz-caption {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 10px;
+    color: #888;
+    text-align: center;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  /* ── DECK ── */
+  .deck-zone {
+    padding: 12px 20px;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .deck-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-mid);
+  }
+
+  .deck-text strong { color: var(--black); }
+  .deck-text em { color: var(--red); font-style: normal; font-weight: 700; }
+
+  /* ── SECONDARY HEADLINES — stacked loud ── */
+  .sec-stack {
+    border-bottom: 2px solid var(--black);
+  }
+
+  .sec-row {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .sec-row:last-child { border-bottom: none; }
+
+  .sec-badge {
+    flex: 0 0 70px;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 4px;
+  }
+
+  .sec-badge.red-badge { background: var(--red); }
+  .sec-badge.blue-badge { background: var(--blue); }
+
+  .sec-content {
+    flex: 1;
+    padding: 10px 14px;
+  }
+
+  .sec-hed {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--black);
+    margin-bottom: 3px;
+  }
+
+  .sec-body {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--ink-mid);
+  }
+
+  /* ── TICKER STRIP ── */
+  .ticker-strip {
+    background: var(--black);
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Oswald', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid var(--red);
+  }
+
+  .tick { color: #888; }
+  .tick .sym { color: var(--white); font-weight: 700; }
+  .tick .up { color: #40e070; }
+  .tick .dn { color: var(--red-bright); }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    display: flex;
+  }
+
+  .bottom-cell {
+    flex: 1;
+    padding: 10px 14px;
+    border-right: 2px solid var(--black);
+    border-bottom: 2px solid var(--black);
+  }
+
+  .bottom-cell:last-child { border-right: none; }
+
+  .bottom-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 4px;
+  }
+
+  .bottom-text {
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--ink-mid);
+  }
+
+  .bottom-text .name { font-weight: 700; color: var(--black); }
+  .bottom-text .nct { color: #999; font-size: 10px; }
+
+  .podcast-hed {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--black);
+    line-height: 1.1;
+    margin-bottom: 3px;
+  }
+
+  /* ── SUBSCRIBE ── */
+  .sub-strip {
+    background: var(--yellow);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .sub-strip-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--black);
+    letter-spacing: 0.04em;
+  }
+
+  .sub-strip-btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--red);
+    padding: 7px 18px;
+    text-decoration: none;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 8px 20px;
+    text-align: center;
+    font-size: 8px;
+    color: #999;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .footer .note {
+    color: var(--red);
+    font-weight: 700;
+    font-size: 9px;
+  }
+</style>
+</head>
+<body>
+<div class="backpage">
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="top-logo">The Valve Wire</div>
+    <div class="top-right">
+      Vol. III · Issue 47 · April 28, 2026<br>
+      Michael Bowdish, MD · A surgeon's reading
+    </div>
+  </div>
+
+  <!-- Mega headline -->
+  <div class="mega-zone">
+    <div class="mega-kicker">★ PARTNER 3 · FIVE-YEAR DATA ★</div>
+    <div class="mega-headline">
+      IT <span class="red">BREAKS</span><br>DOWN.
+    </div>
+    <div class="mega-sub">TAVR valves deteriorating at year 5 — and nobody's talking about it</div>
+  </div>
+
+  <!-- Data viz -->
+  <div class="viz-zone">
+    <div class="viz-title">Structural Valve Deterioration — TAVR vs SAVR at 5 Years</div>
+    <svg viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+      <!-- Grid -->
+      <line x1="60" y1="20" x2="60" y2="155" stroke="#ddd" stroke-width="1"/>
+      <line x1="60" y1="155" x2="570" y2="155" stroke="#333" stroke-width="1.5"/>
+      <line x1="60" y1="20" x2="570" y2="20" stroke="#eee" stroke-width="0.5"/>
+      <line x1="60" y1="60" x2="570" y2="60" stroke="#eee" stroke-width="0.5"/>
+      <line x1="60" y1="100" x2="570" y2="100" stroke="#eee" stroke-width="0.5"/>
+      <!-- Y axis labels -->
+      <text x="55" y="24" text-anchor="end" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">20%</text>
+      <text x="55" y="64" text-anchor="end" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">15%</text>
+      <text x="55" y="104" text-anchor="end" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">10%</text>
+      <text x="55" y="158" text-anchor="end" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">0%</text>
+      <!-- X axis labels -->
+      <text x="60" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 0</text>
+      <text x="162" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 1</text>
+      <text x="264" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 2</text>
+      <text x="366" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 3</text>
+      <text x="468" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 4</text>
+      <text x="570" y="172" text-anchor="middle" font-size="9" fill="#888" font-family="'Roboto Condensed', sans-serif">Yr 5</text>
+      <!-- SAVR line — blue, stays low -->
+      <polyline fill="none" stroke="#1a3a88" stroke-width="2.5"
+        points="60,155 162,152 264,148 366,142 468,136 570,130"/>
+      <!-- TAVR line — red, diverges upward at year 3-5 -->
+      <polyline fill="none" stroke="#d41920" stroke-width="3"
+        points="60,155 162,150 264,142 366,125 468,95 570,58"/>
+      <!-- Divergence zone highlight -->
+      <rect x="366" y="18" width="210" height="140" fill="#d41920" fill-opacity="0.06" rx="2"/>
+      <text x="471" y="36" text-anchor="middle" font-size="10" fill="#d41920" font-weight="bold" font-family="'Roboto Condensed', sans-serif">DIVERGENCE</text>
+      <!-- Labels -->
+      <text x="575" y="56" font-size="11" fill="#d41920" font-weight="bold" font-family="'Oswald', sans-serif">TAVR</text>
+      <text x="575" y="128" font-size="11" fill="#1a3a88" font-weight="bold" font-family="'Oswald', sans-serif">SAVR</text>
+      <!-- Year 5 callout -->
+      <circle cx="570" cy="58" r="5" fill="#d41920" fill-opacity="0.2" stroke="#d41920" stroke-width="2"/>
+    </svg>
+    <div class="viz-caption">Illustrative. Structural valve deterioration rate, PARTNER 3 extended follow-up.</div>
+  </div>
+
+  <!-- Deck -->
+  <div class="deck-zone">
+    <div class="deck-text">
+      The PARTNER 3 5-year extended follow-up published in <strong>NEJM</strong> shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but <em>the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about.</em> Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.
+    </div>
+  </div>
+
+  <!-- Secondary headlines -->
+  <div class="sec-stack">
+    <div class="sec-row">
+      <div class="sec-badge red-badge">EACTS</div>
+      <div class="sec-content">
+        <div class="sec-hed">MITRACLIP: "NOT READY FOR ROUTINE USE"</div>
+        <div class="sec-body">European cardiothoracic surgeons publish position paper. Mehaffey, Chikwe among authors. Transcatheter mitral repair doesn't meet threshold for surgical-eligible patients.</div>
+      </div>
+    </div>
+    <div class="sec-row">
+      <div class="sec-badge blue-badge">FDA</div>
+      <div class="sec-content">
+        <div class="sec-hed">SAPIEN 3 ULTRA RECALL — 3,400 UNITS</div>
+        <div class="sec-body">Class I recall. Balloon catheter manufacturing defect. No patient harm. Shipped Jan–Mar 2026.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-strip">
+    <div class="tick"><span class="sym">EW</span> $98.40 <span class="up">+2.1%</span></div>
+    <div class="tick"><span class="sym">MDT</span> $84.20 <span class="dn">−0.3%</span></div>
+    <div class="tick"><span class="sym">ABT</span> $112.80 <span class="up">+0.4%</span></div>
+    <div class="tick"><span class="sym">BSX</span> $76.55 <span class="up">+0.9%</span></div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <div class="bottom-cell">
+      <div class="bottom-label">Trials</div>
+      <div class="bottom-text">
+        <span class="name">EARLY TAVR</span> <span class="nct">NCT03042104</span><br>
+        <span class="name">PROGRESS</span> <span class="nct">NCT04889872</span><br>
+        <span class="name">TRISCEND II</span> <span class="nct">NCT04482062</span>
+      </div>
+    </div>
+    <div class="bottom-cell">
+      <div class="bottom-label">Podcast</div>
+      <div class="podcast-hed">"What the editorial does not say"</div>
+      <div class="bottom-text">18 min · Case discussion</div>
+    </div>
+  </div>
+
+  <!-- Subscribe -->
+  <div class="sub-strip">
+    <div class="sub-strip-text">A surgeon's reading. Delivered daily.</div>
+    <a href="#" class="sub-strip-btn">Subscribe</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Aortic · Mitral · Tricuspid · Surgical vs Transcatheter · Industry · Trials ·
+    Editorial Stance · Methodology · Editor · Archive
+    <div class="note">The Valve Wire is independent and accepts no industry funding.</div>
+  </div>
+
+</div>
+</body>
+</html>

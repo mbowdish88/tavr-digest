@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire — Anatomical Edition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --parchment: #f4ece0;
+    --cream: #faf6ee;
+    --ink: #2c2420;
+    --ink-mid: #5a4e44;
+    --ink-light: #8a7e72;
+    /* Netter palette */
+    --muscle-coral: #d8806e;
+    --muscle-pink: #e4a898;
+    --chamber-red: #b83838;
+    --chamber-deep: #8a2020;
+    --endocardium: #e8b8a8;
+    --vessel-wall: #c86858;
+    --arterial-red: #cc3030;
+    --venous-blue: #4868a0;
+    --venous-light: #7898c8;
+    --venous-wash: #d0dce8;
+    --fat-yellow: #e8d080;
+    --fat-light: #f0e4b8;
+    --fascia-cream: #f0e6d2;
+    --bone-white: #e8e0d0;
+    --tissue-bg: #f8ece4;
+    --annulus-brown: #886050;
+  }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'Source Serif 4', 'Georgia', serif;
+    font-size: 11pt;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 44px 36px 80px;
+  }
+
+  /* ── Masthead — warm vessel-colored banner ── */
+  .masthead {
+    text-align: center;
+    background: linear-gradient(180deg, var(--chamber-deep), #6a1818);
+    color: var(--fascia-cream);
+    padding: 24px 20px 18px;
+    margin: 0 -36px 24px;
+  }
+
+  .mast-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    color: #f8ece4;
+  }
+
+  .mast-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12pt;
+    color: var(--endocardium);
+    margin: 4px 0 8px;
+  }
+
+  .mast-meta {
+    font-family: 'Source Serif 4', serif;
+    font-size: 8pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muscle-pink);
+  }
+
+  /* ── Lead ── */
+  .lead-section {
+    margin: 0 auto 28px;
+    max-width: 580px;
+    padding: 16px 20px;
+    background: var(--tissue-bg);
+    border-top: 3px solid var(--chamber-red);
+    border-bottom: 1px solid var(--endocardium);
+  }
+
+  .lead-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chamber-red);
+    margin-bottom: 8px;
+  }
+
+  .lead-text {
+    font-size: 10.5pt;
+    line-height: 1.65;
+    color: var(--ink);
+    text-align: justify;
+  }
+
+  /* ── Anatomy sections ── */
+  .anatomy-section {
+    margin: 32px 0;
+    position: relative;
+  }
+
+  .anatomy-plate {
+    text-align: center;
+    margin-bottom: 10px;
+    padding: 16px;
+    background: var(--cream);
+    border: 1px solid var(--bone-white);
+  }
+
+  .anatomy-plate svg {
+    max-width: 300px;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .plate-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8.5pt;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .plate-number {
+    font-family: 'Source Serif 4', serif;
+    font-size: 7pt;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--annulus-brown);
+    margin-top: 2px;
+  }
+
+  .valve-region-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14pt;
+    font-weight: 600;
+    color: var(--chamber-deep);
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 10px 0;
+  }
+
+  .article-under-anatomy {
+    font-size: 10.5pt;
+    line-height: 1.6;
+    text-align: justify;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 10px 16px;
+  }
+
+  .article-under-anatomy .source-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .source-tag.arterial { color: var(--arterial-red); }
+  .source-tag.venous { color: var(--venous-blue); }
+  .source-tag.regulatory { color: var(--annulus-brown); }
+
+  /* Color-coded section backgrounds */
+  .section-aortic {
+    background: linear-gradient(180deg, rgba(200,56,56,0.06), transparent);
+    border-left: 3px solid var(--arterial-red);
+  }
+
+  .section-mitral {
+    background: linear-gradient(180deg, rgba(72,104,160,0.06), transparent);
+    border-left: 3px solid var(--venous-blue);
+  }
+
+  .section-device {
+    background: linear-gradient(180deg, rgba(232,208,128,0.12), transparent);
+    border-left: 3px solid var(--fat-yellow);
+  }
+
+  .section-divider {
+    text-align: center;
+    margin: 20px 0;
+    color: var(--endocardium);
+    font-size: 16pt;
+    letter-spacing: 0.4em;
+  }
+
+  /* ── Endmatter ── */
+  .endmatter {
+    max-width: 580px;
+    margin: 24px auto 0;
+  }
+
+  .end-section {
+    margin-bottom: 12px;
+    padding: 8px 12px;
+  }
+
+  .end-section.trials {
+    background: var(--venous-wash);
+    border-left: 3px solid var(--venous-blue);
+  }
+
+  .end-section.industry {
+    background: rgba(216,128,110,0.1);
+    border-left: 3px solid var(--muscle-coral);
+  }
+
+  .end-section.podcast {
+    background: var(--fat-light);
+    border-left: 3px solid var(--fat-yellow);
+  }
+
+  .end-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .end-label.trial-l { color: var(--venous-blue); }
+  .end-label.industry-l { color: var(--vessel-wall); }
+  .end-label.podcast-l { color: var(--annulus-brown); }
+
+  .end-content {
+    font-size: 9.5pt;
+    color: var(--ink-mid);
+    line-height: 1.5;
+  }
+
+  .t-up { color: #2e6b3a; font-weight: 600; }
+  .t-dn { color: var(--arterial-red); font-weight: 600; }
+
+  /* ── Subscribe ── */
+  .subscribe-area {
+    max-width: 580px;
+    margin: 24px auto 0;
+    text-align: center;
+    padding: 14px 0;
+    border-top: 2px solid var(--chamber-red);
+  }
+
+  .subscribe-area em {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12pt;
+    color: var(--ink-mid);
+  }
+
+  .sub-btn {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 9pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--chamber-deep);
+    padding: 7px 22px;
+    text-decoration: none;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    max-width: 580px;
+    margin: 20px auto 0;
+    text-align: center;
+    font-size: 7.5pt;
+    color: var(--ink-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .footer span { color: var(--endocardium); margin: 0 4px; }
+
+  .footer-note {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    font-size: 9pt;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-top: 12px;
+    color: var(--chamber-red);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="mast-title">The Valve Wire</div>
+    <div class="mast-sub">A surgeon's reading of structural heart disease</div>
+    <div class="mast-meta">Vol. III · Issue 47 · April 28, 2026 · Michael Bowdish, MD</div>
+  </div>
+
+  <!-- Lead -->
+  <div class="lead-section">
+    <div class="lead-label">Editorial Summary</div>
+    <div class="lead-text">
+      The PARTNER 3 5-year extended follow-up published in <em>NEJM</em> this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about. Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.
+    </div>
+  </div>
+
+  <!-- ════ AORTIC VALVE ════ -->
+  <div class="anatomy-section">
+    <div class="anatomy-plate">
+      <svg viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Aortic root background wash -->
+        <circle cx="140" cy="115" r="105" fill="#f8ece4" stroke="none"/>
+        <!-- Aortic wall -->
+        <circle cx="140" cy="115" r="95" fill="none" stroke="#c86858" stroke-width="6" opacity="0.4"/>
+        <circle cx="140" cy="115" r="95" fill="none" stroke="#886050" stroke-width="1.5"/>
+        <!-- Sinuses of Valsalva — tissue-filled -->
+        <path d="M 140 20 Q 80 55 60 115" fill="none" stroke="#c86858" stroke-width="2.5"/>
+        <path d="M 140 20 Q 200 55 220 115" fill="none" stroke="#c86858" stroke-width="2.5"/>
+        <path d="M 60 115 Q 60 180 140 210 Q 220 180 220 115" fill="none" stroke="#c86858" stroke-width="2.5"/>
+        <!-- Cusps with fill -->
+        <path d="M 140 45 Q 95 80 90 115 Q 92 88 140 78 Z" fill="#e4a898" fill-opacity="0.5" stroke="#b83838" stroke-width="1.5"/>
+        <path d="M 140 45 Q 185 80 190 115 Q 188 88 140 78 Z" fill="#e4a898" fill-opacity="0.5" stroke="#b83838" stroke-width="1.5"/>
+        <path d="M 90 115 Q 90 165 140 185 Q 190 165 190 115 Q 170 130 140 135 Q 110 130 90 115 Z" fill="#e4a898" fill-opacity="0.5" stroke="#b83838" stroke-width="1.5"/>
+        <!-- Commissure dots -->
+        <circle cx="140" cy="42" r="3.5" fill="#b83838"/>
+        <circle cx="88" cy="115" r="3.5" fill="#b83838"/>
+        <circle cx="192" cy="115" r="3.5" fill="#b83838"/>
+        <!-- Coronary ostia — arterial red -->
+        <circle cx="112" cy="58" r="5" fill="#cc3030" fill-opacity="0.3" stroke="#cc3030" stroke-width="1.2"/>
+        <text x="92" y="52" font-size="6.5" fill="#cc3030" font-style="italic" font-family="serif">LCA</text>
+        <circle cx="168" cy="58" r="5" fill="#cc3030" fill-opacity="0.3" stroke="#cc3030" stroke-width="1.2"/>
+        <text x="177" y="52" font-size="6.5" fill="#cc3030" font-style="italic" font-family="serif">RCA</text>
+        <!-- Cusp labels -->
+        <text x="140" y="105" text-anchor="middle" font-size="8" fill="#8a2020" font-weight="600" font-family="serif">NCC</text>
+        <text x="108" y="148" text-anchor="middle" font-size="8" fill="#8a2020" font-weight="600" font-family="serif">LCC</text>
+        <text x="172" y="148" text-anchor="middle" font-size="8" fill="#8a2020" font-weight="600" font-family="serif">RCC</text>
+        <!-- Fat pad suggestion — yellow -->
+        <ellipse cx="55" cy="80" rx="12" ry="6" fill="#e8d080" fill-opacity="0.4" stroke="#c8a848" stroke-width="0.5"/>
+        <ellipse cx="225" cy="80" rx="12" ry="6" fill="#e8d080" fill-opacity="0.4" stroke="#c8a848" stroke-width="0.5"/>
+      </svg>
+      <div class="plate-caption">Aortic valve, surgeon's view — three cusps with coronary ostia</div>
+      <div class="plate-number">Plate I</div>
+    </div>
+    <div class="valve-region-name">Aortic</div>
+    <div class="article-under-anatomy section-aortic">
+      <span class="source-tag arterial">NEJM</span> — PARTNER 3 5-year results: TAVR mortality advantage holds, but structural valve deterioration at year 5 raises questions for sub-65 indication.
+    </div>
+  </div>
+
+  <div class="section-divider">⁂</div>
+
+  <!-- ════ MITRAL VALVE ════ -->
+  <div class="anatomy-section">
+    <div class="anatomy-plate">
+      <svg viewBox="0 0 280 250" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left atrium wash — venous blue -->
+        <rect x="20" y="0" width="240" height="55" fill="#d0dce8" rx="4"/>
+        <text x="140" y="18" text-anchor="middle" font-size="7" fill="#4868a0" font-family="serif" letter-spacing="0.1em">LEFT ATRIUM</text>
+        <!-- Left ventricle wash — chamber red -->
+        <path d="M 30 55 Q 30 200 140 235 Q 250 200 250 55 Z" fill="#f8e4dc" stroke="none"/>
+        <text x="140" y="210" text-anchor="middle" font-size="7" fill="#b83838" font-family="serif" letter-spacing="0.1em">LEFT VENTRICLE</text>
+        <!-- Annulus ring -->
+        <ellipse cx="140" cy="55" rx="95" ry="18" fill="none" stroke="#886050" stroke-width="3" opacity="0.5"/>
+        <ellipse cx="140" cy="55" rx="95" ry="18" fill="none" stroke="#886050" stroke-width="1"/>
+        <!-- Anterior leaflet — filled -->
+        <path d="M 45 55 Q 65 120 140 145" fill="#e4a898" fill-opacity="0.45" stroke="#b83838" stroke-width="2"/>
+        <!-- Posterior leaflet — filled -->
+        <path d="M 235 55 Q 215 120 140 145" fill="#e4a898" fill-opacity="0.45" stroke="#b83838" stroke-width="2"/>
+        <!-- Coaptation zone -->
+        <line x1="128" y1="138" x2="152" y2="138" stroke="#8a2020" stroke-width="3" stroke-linecap="round"/>
+        <!-- Chordae — vessel color -->
+        <line x1="105" y1="130" x2="88" y2="188" stroke="#c86858" stroke-width="0.9"/>
+        <line x1="120" y1="140" x2="88" y2="188" stroke="#c86858" stroke-width="0.9"/>
+        <line x1="135" y1="145" x2="88" y2="188" stroke="#c86858" stroke-width="0.6"/>
+        <line x1="155" y1="140" x2="192" y2="188" stroke="#c86858" stroke-width="0.9"/>
+        <line x1="175" y1="130" x2="192" y2="188" stroke="#c86858" stroke-width="0.9"/>
+        <line x1="145" y1="145" x2="192" y2="188" stroke="#c86858" stroke-width="0.6"/>
+        <!-- Papillary muscles — deep muscle coral -->
+        <ellipse cx="88" cy="195" rx="14" ry="9" fill="#d8806e" stroke="#b83838" stroke-width="1.2"/>
+        <ellipse cx="192" cy="195" rx="14" ry="9" fill="#d8806e" stroke="#b83838" stroke-width="1.2"/>
+        <!-- Labels -->
+        <text x="75" y="100" font-size="8" fill="#8a2020" font-family="serif" font-weight="600">AL</text>
+        <text x="195" y="100" font-size="8" fill="#8a2020" font-family="serif" font-weight="600">PL</text>
+        <text x="88" y="215" text-anchor="middle" font-size="6.5" fill="#886050" font-family="serif">APM</text>
+        <text x="192" y="215" text-anchor="middle" font-size="6.5" fill="#886050" font-family="serif">PPM</text>
+      </svg>
+      <div class="plate-caption">Mitral apparatus — parasternal long axis with chordae and papillary muscles</div>
+      <div class="plate-number">Plate II</div>
+    </div>
+    <div class="valve-region-name">Mitral</div>
+    <div class="article-under-anatomy section-mitral">
+      <span class="source-tag venous">EACTS</span> — European cardiothoracic surgeons publish position paper: "Transcatheter mitral repair outcomes do not yet meet the threshold for routine use in surgical-eligible patients." Authors include Mehaffey and Chikwe.
+    </div>
+  </div>
+
+  <div class="section-divider">⁂</div>
+
+  <!-- ════ TRICUSPID / DEVICE SAFETY ════ -->
+  <div class="anatomy-section">
+    <div class="anatomy-plate">
+      <svg viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Right atrial view background — venous blue wash -->
+        <circle cx="140" cy="108" r="105" fill="#e4ecf4" stroke="none"/>
+        <!-- Annulus — with fat pad suggestions -->
+        <ellipse cx="140" cy="108" r="95" ry="80" fill="none" stroke="#886050" stroke-width="3" opacity="0.4"/>
+        <ellipse cx="140" cy="108" r="95" ry="80" fill="none" stroke="#886050" stroke-width="1.2"/>
+        <!-- Fat pads along annulus — yellow -->
+        <ellipse cx="60" cy="75" rx="15" ry="7" fill="#e8d080" fill-opacity="0.45" stroke="#c8a848" stroke-width="0.5" transform="rotate(-20 60 75)"/>
+        <ellipse cx="220" cy="75" rx="15" ry="7" fill="#e8d080" fill-opacity="0.45" stroke="#c8a848" stroke-width="0.5" transform="rotate(20 220 75)"/>
+        <ellipse cx="140" cy="185" rx="18" ry="6" fill="#e8d080" fill-opacity="0.35" stroke="#c8a848" stroke-width="0.5"/>
+        <!-- Three leaflets — filled in tissue color -->
+        <path d="M 140 30 Q 90 55 70 108 Q 80 70 140 65 Z" fill="#e4a898" fill-opacity="0.4" stroke="#b83838" stroke-width="1.5"/>
+        <path d="M 140 30 Q 190 55 210 108 Q 200 70 140 65 Z" fill="#e4a898" fill-opacity="0.4" stroke="#b83838" stroke-width="1.5"/>
+        <path d="M 70 108 Q 80 160 140 185 Q 200 160 210 108 Q 180 140 140 148 Q 100 140 70 108 Z" fill="#d0dce8" fill-opacity="0.35" stroke="#4868a0" stroke-width="1.5"/>
+        <!-- Central coaptation -->
+        <circle cx="140" cy="108" r="4" fill="#8a2020"/>
+        <!-- Labels -->
+        <text x="140" y="58" text-anchor="middle" font-size="8" fill="#8a2020" font-weight="600" font-family="serif">Anterior</text>
+        <text x="60" y="140" text-anchor="middle" font-size="8" fill="#4868a0" font-weight="600" font-family="serif">Septal</text>
+        <text x="220" y="140" text-anchor="middle" font-size="8" fill="#8a2020" font-weight="600" font-family="serif">Posterior</text>
+        <!-- AV node — cautionary marking -->
+        <circle cx="78" cy="128" r="5" fill="#cc3030" fill-opacity="0.2" stroke="#cc3030" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <line x1="73" y1="128" x2="54" y2="135" stroke="#cc3030" stroke-width="0.6"/>
+        <text x="28" y="138" font-size="6" fill="#cc3030" font-family="serif" font-style="italic">AV node</text>
+        <!-- Conduction label -->
+        <text x="28" y="146" font-size="5" fill="#cc3030" font-family="serif">(caution)</text>
+      </svg>
+      <div class="plate-caption">Tricuspid annulus — right atrial view with AV node proximity</div>
+      <div class="plate-number">Plate III</div>
+    </div>
+    <div class="valve-region-name">Device Safety</div>
+    <div class="article-under-anatomy section-device">
+      <span class="source-tag regulatory">FDA 8-K (Edwards Lifesciences)</span> — Class I recall on a small lot of SAPIEN 3 Ultra valves due to a balloon catheter manufacturing defect. No patient harm reported. Affects approximately 3,400 units shipped Jan–Mar 2026.
+    </div>
+  </div>
+
+  <!-- Endmatter -->
+  <div class="endmatter">
+    <div class="end-section trials">
+      <div class="end-label trial-l">Clinical Trials in Progress</div>
+      <div class="end-content">EARLY TAVR (NCT03042104) · PROGRESS (NCT04889872) · TRISCEND II (NCT04482062)</div>
+    </div>
+    <div class="end-section industry">
+      <div class="end-label industry-l">Industry Watch</div>
+      <div class="end-content">
+        Edwards Lifesciences (EW) $98.40 <span class="t-up">+2.1%</span> ·
+        Medtronic (MDT) $84.20 <span class="t-dn">−0.3%</span> ·
+        Abbott (ABT) $112.80 <span class="t-up">+0.4%</span> ·
+        Boston Scientific (BSX) $76.55 <span class="t-up">+0.9%</span>
+      </div>
+    </div>
+    <div class="end-section podcast">
+      <div class="end-label podcast-l">This Week's Podcast</div>
+      <div class="end-content">"PARTNER 3 at year 5: what the editorial does not say" — 18 minutes — with case discussion</div>
+    </div>
+  </div>
+
+  <!-- Subscribe -->
+  <div class="subscribe-area">
+    <em>A surgeon's reading. Delivered daily.</em><br>
+    <a href="#" class="sub-btn">Subscribe</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Aortic<span>·</span>Mitral<span>·</span>Tricuspid<span>·</span>Surgical vs Transcatheter<span>·</span>Industry<span>·</span>Trials<br>
+    Editorial Stance<span>·</span>Methodology<span>·</span>Editor<span>·</span>Archive by Date<span>·</span>Archive by Topic<span>·</span>Archive by Journal
+    <div class="footer-note">The Valve Wire is independent and accepts no industry funding.</div>
+  </div>
+
+</div>
+</body>
+</html>

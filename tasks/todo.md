@@ -49,10 +49,11 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
 
 ### Priority 3 — Signup capture (cherry-pick #1)
 - [ ] Form on website (built into redesign, not bolted on)
-- [ ] Captures: name, email, role (cardiologist / surgeon / fellow / NP / industry / patient / other), institution (optional)
+- [ ] Captures: name, email, **role** (full audience: CT surgeon, cardiologist, interventional cardiologist, fellow/trainee, NP/PA, hospital administrator, industry, financial analyst, regulator, patient, other), institution (optional)
 - [ ] Wired to list provider (decide: Buttondown, Beehiiv reactivated, ConvertKit, Substack import, other)
 - [ ] Open-rate tracking enabled
 - [ ] Privacy/HIPAA disclaimer if needed (you're not collecting PHI, but a clear note helps trust)
+- [ ] **Note:** The full audience is broader than I originally framed it. The Valve Wire is for the entire structural heart ecosystem (clinical + administrative + industry + financial + regulatory), not just surgeons. The surgeon's editorial VOICE is the moat; the audience is the ecosystem. Role capture should reflect that.
 
 ### Priority 4 — Quality rubric (new, derived from launch trigger)
 - [ ] Write down explicitly what "issue meets the bar" means:
@@ -74,14 +75,18 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
 ### Priority 6 — Launch outreach list
 - [ ] Decide who gets the announcement on April 29
 - [ ] Reuse `JACC_EMAIL.pdf` and `generate_proposal.py` as inputs (existing outreach work)
-- [ ] Suggested categories:
-  - AATS 2026 attendees / program committee (highest leverage)
-  - Cited critical voices (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) — may already include you
-  - Cardiothoracic fellowship program directors
-  - Trusted colleagues at Cedars-Sinai and beyond who would amplify
-  - Valve industry contacts (relationship-building, not selling)
-- [ ] Draft the announcement copy (reuse generate_proposal.py output if applicable)
-- [ ] Decide channel: personal email vs newsletter blast vs LinkedIn post vs all three
+- [ ] **The full audience spans 7 groups, not just surgeons.** Outreach should reflect that breadth even though AATS week is the launch hook. Suggested categories:
+  - **Clinical (AATS room):** AATS 2026 attendees / program committee (highest leverage for the launch hook)
+  - **Clinical (cardiology):** Interventional cardiology program directors, structural heart program leads, ACC structural heart council members
+  - **Clinical (general cardiology / fellows):** Cardiothoracic AND interventional cardiology fellowship program directors
+  - **Cited critical voices** (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) — may already include you; ensure they get personal outreach
+  - **Health system / administrative:** Service line directors at the top 25-50 valve programs by volume (Cedars-Sinai, Mayo, Cleveland Clinic, Mass General, Mount Sinai, etc.)
+  - **Industry:** Select contacts at Edwards, Medtronic, Abbott, Boston Scientific (relationship-building, not selling). Important: include even though you may sometimes be critical of their devices — the publication is for them too.
+  - **Financial:** Sell-side analysts covering med devices at the top 5-8 firms (Morgan Stanley, Evercore ISI, Wells Fargo, Bernstein, Piper Sandler, BTIG, Jefferies, etc.)
+  - **Regulatory:** Selected FDA CDRH and CMS contacts where appropriate (judgment call — relationship-dependent)
+  - **Trusted colleagues** at Cedars-Sinai and beyond who would amplify
+- [ ] Draft the announcement copy (reuse generate_proposal.py output if applicable). Tone: "publication for the structural heart ecosystem, written from a surgeon's perspective." NOT "publication for surgeons."
+- [ ] Decide channel: personal email vs newsletter blast vs LinkedIn post vs all three. Likely all three with different copy for each audience segment.
 
 ---
 
@@ -144,20 +149,13 @@ After the port lands, return to this document and execute Priorities 2-6.
 
 ---
 
-## Step 0 — Distinctive design exploration (BEFORE the procedure)
+## Step 0 — Distinctive design exploration ✅ COMPLETE (2026-04-05)
 
-**Why this step exists:** The user evaluated the v2 HTML on 2026-04-05 and reported "it's better but still looks very similar to all the others." Diagnosis: AI-generated newsletter designs converge on a Stratechery/Substack/Axios local minimum because the training distribution averages to that aesthetic. Even clean-slate prompts produce variants of the same look. To escape, you need explicit non-newsletter visual references and a context-free conversation.
+The exploration ran across 3 iterations in claude.ai (15 HTML mockups across 5 visual directions × 3 iterations). All 15 are preserved in `docs/designs/explorations/v[1-3]-[1-5]-*.html`. Full decision documented in `tasks/2026-04-05-design-decision.md`.
 
-**Action:** Open `tasks/distinctive-design-prompt.md`, copy the prompt verbatim, paste it into a fresh claude.ai conversation (NEW conversation, no project context, no files loaded, Opus 4.6). The prompt produces 5 self-contained HTML files in 5 distinct visual directions (NEJM print era, surgeon's dossier, anatomical-first, OR minimalism, retro academic). Save the output files to `~/Downloads/` and open all 5 in browser tabs side by side.
+**Decision: tabloid direction (NY Post front page energy).** Blueprint: `docs/designs/CHOSEN-tabloid-v1.html`. The publication's editorial voice is opinionated and willing to call BS on hyped device technology, and the visual finally matches that voice. The 52pt Oswald headline "TAVR WINS ON MORTALITY. LOSES ON DURABILITY." (with key phrases in red) IS the editorial stance made loud.
 
-**Decision rule:**
-- **If one direction clicks** → save that HTML as `~/Downloads/the-valve-wire-distinctive-v1.html` and run the porting procedure below against THAT file instead of the v2 HTML.
-- **If none of the 5 click but one is close** → reply in the same claude.ai conversation with specific feedback ("direction 2 is close but the typography is wrong, try X") and iterate. Two iterations max. If it's not converging after 2 iterations, fall back to v2.
-- **If none of the 5 click and none are close** → ship v2 HTML for AATS launch with a clear conscience. Plan a real visual identity redesign for July or August once you have subscriber data and launch is behind you. v2 is acceptable, just not distinctive.
-
-**Time budget:** 1 hour. Hard cap. If you blow past the cap, you are in design rabbit-hole territory and you should ship v2.
-
-**What success looks like:** A new HTML blueprint that looks like NOTHING else in the AI-generated medical newsletter space. People stop and look. The visual identity itself signals "this publication is different."
+**Open fallback:** an enhanced NEJM direction (NEJM v2 base + vitals monitor strip from OR minimalism + H&E pathology palette accents) is queued as Plan B. Prompt at `tasks/distinctive-design-prompt-nejm-enhanced.md`. Run it tomorrow morning before committing to tabloid if you want both options on the table when fully rested. If the NEJM-enhanced direction is meaningfully stronger AND clears the multi-audience filter, swap it in as the chosen direction and run the porting procedure against it instead.
 
 ---
 

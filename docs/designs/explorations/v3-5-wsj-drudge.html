@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=Roboto+Condensed:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #f8f4ec;
+    --cream-dark: #efe8d8;
+    --red: #c01818;
+    --red-dark: #901010;
+    --black: #111;
+    --ink: #1a1a1a;
+    --ink-mid: #3a3a3a;
+    --ink-light: #666;
+    --rule: #222;
+    --rule-light: #ccc4b0;
+  }
+
+  body {
+    background: var(--cream-dark);
+    color: var(--ink);
+    font-family: 'Lora', Georgia, serif;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 660px;
+    margin: 20px auto;
+    background: var(--cream);
+    border: 2px solid var(--black);
+    overflow: hidden;
+  }
+
+  /* ── MASTHEAD — cream + red rule ── */
+  .masthead {
+    padding: 14px 24px 10px;
+    border-bottom: 4px solid var(--red);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  .mast-left {
+    line-height: 1;
+  }
+
+  .mast-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--black);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .mast-name .the {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    display: block;
+    margin-bottom: -4px;
+  }
+
+  .mast-tagline {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-light);
+    margin-top: 4px;
+  }
+
+  .mast-right {
+    text-align: right;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 9px;
+    color: var(--ink-light);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+
+  /* ── KICKER ── */
+  .kicker {
+    background: var(--red);
+    color: var(--cream);
+    padding: 6px 24px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 2px solid var(--black);
+  }
+
+  /* ── LEAD STORY ── */
+  .lead-zone {
+    padding: 18px 24px 14px;
+    border-bottom: 3px solid var(--black);
+  }
+
+  .lead-hed {
+    font-family: 'Oswald', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--black);
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .lead-hed .red { color: var(--red); }
+
+  .lead-deck {
+    font-family: 'Lora', serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .lead-deck strong { color: var(--ink); }
+
+  .lead-source {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-top: 8px;
+    display: block;
+  }
+
+  /* ── SECONDARY STORIES ── */
+  .stories {
+    border-bottom: 2px solid var(--black);
+  }
+
+  .story {
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--rule-light);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .story:last-child { border-bottom: none; }
+
+  .story-badge {
+    flex: 0 0 auto;
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--red);
+    color: var(--cream);
+    padding: 3px 10px;
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+
+  .story-badge.fda {
+    background: var(--black);
+  }
+
+  .story-right {}
+
+  .story-hed {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.05;
+    color: var(--black);
+    margin-bottom: 4px;
+  }
+
+  .story-body {
+    font-family: 'Lora', serif;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink-light);
+  }
+
+  /* ── DATA STRIP ── */
+  .data-strip {
+    background: var(--black);
+    padding: 8px 24px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
+    border-bottom: 3px solid var(--red);
+  }
+
+  .tick {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px;
+    color: #888;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+
+  .tick .sym { color: var(--cream); }
+  .tick .up { color: #40d870; }
+  .tick .dn { color: #ff4040; }
+
+  /* ── BOTTOM ── */
+  .bottom-grid {
+    display: flex;
+    border-bottom: 2px solid var(--black);
+  }
+
+  .bottom-col {
+    flex: 1;
+    padding: 12px 18px;
+  }
+
+  .bottom-col:first-child {
+    border-right: 1px solid var(--rule-light);
+  }
+
+  .bottom-col-head {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--rule-light);
+  }
+
+  .trial-line {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    padding: 3px 0;
+  }
+
+  .trial-line .nct {
+    font-weight: 400;
+    color: var(--ink-light);
+    font-size: 10px;
+  }
+
+  .podcast-hed {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--black);
+    line-height: 1.15;
+    margin-bottom: 4px;
+  }
+
+  .podcast-meta {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-light);
+  }
+
+  /* ── SUBSCRIBE ── */
+  .subscribe {
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--black);
+    background: var(--cream);
+  }
+
+  .sub-text {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-mid);
+  }
+
+  .sub-btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: var(--red);
+    padding: 8px 20px;
+    text-decoration: none;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 10px 24px;
+    text-align: center;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 8px;
+    color: var(--ink-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 2;
+  }
+
+  .footer span { margin: 0 3px; color: var(--rule-light); }
+
+  .footer .note {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    color: var(--red);
+    font-size: 10px;
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    padding: 10px 24px;
+    border-top: 2px solid var(--red);
+    border-bottom: 2px solid var(--red);
+    margin: 0;
+    text-align: center;
+  }
+
+  .pull-quote-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--red);
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+
+  .pull-quote-attr {
+    font-family: 'Lora', serif;
+    font-size: 10px;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Masthead -->
+  <div class="masthead">
+    <div class="mast-left">
+      <div class="mast-name">
+        <span class="the">THE</span>
+        VALVE WIRE
+      </div>
+      <div class="mast-tagline">A surgeon's reading of structural heart disease</div>
+    </div>
+    <div class="mast-right">
+      Vol. III · Issue 47<br>
+      April 28, 2026<br>
+      Michael Bowdish, MD
+    </div>
+  </div>
+
+  <!-- Kicker -->
+  <div class="kicker">★ PARTNER 3: FIVE-YEAR DATA DROPS — THE HEADLINE EDWARDS WANTS YOU TO READ VS. THE ONE YOU SHOULD ★</div>
+
+  <!-- Lead story -->
+  <div class="lead-zone">
+    <div class="lead-hed">
+      TAVR'S <span class="red">DURABILITY</span> PROBLEM<br>
+      JUST GOT <span class="red">DATA.</span>
+    </div>
+    <div class="lead-deck">
+      The PARTNER 3 5-year extended follow-up published in <em>NEJM</em> this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but <strong>the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about.</strong> Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.
+    </div>
+    <span class="lead-source">NEJM · PARTNER 3 5-Year Extended Follow-Up</span>
+  </div>
+
+  <!-- Pull quote -->
+  <div class="pull-quote">
+    <div class="pull-quote-text">"The back-half of the paper is more sobering than the press release."</div>
+    <div class="pull-quote-attr">— The Valve Wire editorial analysis</div>
+  </div>
+
+  <!-- Secondary stories -->
+  <div class="stories">
+    <div class="story">
+      <div class="story-badge">EACTS</div>
+      <div class="story-right">
+        <div class="story-hed">MITRACLIP NOT READY FOR PRIME TIME</div>
+        <div class="story-body">European cardiothoracic surgeons publish position paper: "Transcatheter mitral repair outcomes do not yet meet the threshold for routine use in surgical-eligible patients." Authors include Mehaffey and Chikwe.</div>
+      </div>
+    </div>
+    <div class="story">
+      <div class="story-badge fda">FDA</div>
+      <div class="story-right">
+        <div class="story-hed">SAPIEN 3 ULTRA: 3,400 VALVES RECALLED</div>
+        <div class="story-body">Class I recall on a small lot due to balloon catheter manufacturing defect. No patient harm reported. Affects units shipped Jan–Mar 2026.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data strip -->
+  <div class="data-strip">
+    <div class="tick"><span class="sym">EW</span> $98.40 <span class="up">+2.1%</span></div>
+    <div class="tick"><span class="sym">MDT</span> $84.20 <span class="dn">−0.3%</span></div>
+    <div class="tick"><span class="sym">ABT</span> $112.80 <span class="up">+0.4%</span></div>
+    <div class="tick"><span class="sym">BSX</span> $76.55 <span class="up">+0.9%</span></div>
+  </div>
+
+  <!-- Bottom grid -->
+  <div class="bottom-grid">
+    <div class="bottom-col">
+      <div class="bottom-col-head">Trials in Progress</div>
+      <div class="trial-line">EARLY TAVR <span class="nct">NCT03042104</span></div>
+      <div class="trial-line">PROGRESS <span class="nct">NCT04889872</span></div>
+      <div class="trial-line">TRISCEND II <span class="nct">NCT04482062</span></div>
+    </div>
+    <div class="bottom-col">
+      <div class="bottom-col-head">Podcast</div>
+      <div class="podcast-hed">"What the editorial does not say"</div>
+      <div class="podcast-meta">PARTNER 3 at year 5 — 18 minutes — with case discussion</div>
+    </div>
+  </div>
+
+  <!-- Subscribe -->
+  <div class="subscribe">
+    <div class="sub-text">A surgeon's reading. Delivered daily.</div>
+    <a href="#" class="sub-btn">Subscribe</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Aortic<span>·</span>Mitral<span>·</span>Tricuspid<span>·</span>Surgical vs Transcatheter<span>·</span>Industry<span>·</span>Trials<br>
+    Editorial Stance<span>·</span>Methodology<span>·</span>Editor<span>·</span>Archive by Date<span>·</span>Archive by Topic<span>·</span>Archive by Journal
+    <div class="note">The Valve Wire is independent and accepts no industry funding.</div>
+  </div>
+
+</div>
+</body>
+</html>
