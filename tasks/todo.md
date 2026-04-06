@@ -144,6 +144,89 @@ After the port lands, return to this document and execute Priorities 2-6.
 
 ---
 
+## The Procedure — how to actually do the v2 HTML → Next.js port
+
+Inputs already in place: approved palette (terracotta `#c4553a` on navy `#0a1628`), approved blueprint (`~/Downloads/the-valve-wire-dark-v2.html`, secondary `~/Desktop/medical-publication.html`), worktree at `.claude/worktrees/agent-a291173c/`, branch `redesign-hybrid` reset to clean Phase 1.
+
+**This is a translation task, not a design task.** Every step below exists to prevent the agent from anchoring to existing code and producing another reverted Phase 2.
+
+### Step 1 — Confirm the blueprint is still right
+```bash
+open ~/Downloads/the-valve-wire-dark-v2.html
+```
+Look at it. If anything is off, fix the HTML in a separate context-free Claude conversation FIRST. The blueprint is the source of truth. Do not "fix" it during the port — that reintroduces the anchoring problem.
+
+### Step 2 — Switch to the worktree
+```bash
+cd ~/projects/tavr-digest/.claude/worktrees/agent-a291173c
+git status   # confirm on redesign-hybrid, Phase 1 is HEAD
+```
+
+### Step 3 — Start the dev server in one terminal
+```bash
+cd site && npm run dev -- --port 3001
+```
+Leave it running. Refresh `http://localhost:3001` after every component port to verify visually before moving to the next.
+
+### Step 4 — Open a fresh Claude Opus session in this directory
+Opening prompt (the constraint sentences are what prevent the failure mode):
+
+> I have an approved HTML blueprint at `~/Downloads/the-valve-wire-dark-v2.html`. I need to port it to Next.js components in this repo, file by file, with me watching every change. **This is a translation task: copy the CSS and HTML from the blueprint directly, do not interpret, do not improvise, do not reach for "best practices" that depart from the source.** I will tell you which component to port next. Start with `Header.tsx`.
+
+### Step 5 — Port one component at a time, in this order
+1. `Header.tsx` — nav + dark/light theme toggle. Small, builds confidence.
+2. `Footer.tsx` — 3-column footer. Small, includes the methodology page link slot.
+3. `Masthead.tsx` — two-tone wordmark ("The Valve" cream + "*Wire*" terracotta italic). Signature visual.
+4. `EditionStrip.tsx` — vol/edition + inline tickers. Anchors the masthead.
+5. `Headlines.tsx` — numbered "Today's Intelligence" briefing, ~720px constraint.
+6. `ArticleList.tsx` + `TrialsSidebar.tsx` — two-column layout, most of the page area.
+7. `MarketSnapshot.tsx` — 4-column financial grid (incl. "Global TAVR Procedures").
+8. `WeeklyLongRead.tsx` — podcast play button left, editorial text right.
+9. **`SubscribeBar.tsx` LAST** — the launch button. "Intelligence, not noise." tagline already approved. Wire to a list provider in the same session if you've decided which one. If not, leave the form action as a TODO with a clear comment so cherry-pick #1 lands cleanly later.
+
+**After EVERY component port, refresh `:3001` and visually compare to the blueprint side-by-side.** If something drifted, stop and fix it before moving on. Do not let drift accumulate.
+
+### Step 6 — When component-complete, run rendered-output gstack skills
+```
+/qa http://localhost:3001
+/design-review http://localhost:3001
+```
+These are SAFE skills (they operate on rendered output, not source). They will catch what file-by-file translation missed: spacing, hover states, dark-mode toggling, mobile breakpoints, broken links, missing empty/loading/error states.
+
+### Step 7 — Merge to main and deploy
+```
+/ship
+/land-and-deploy
+```
+**Do not skip approval.** Per `feedback_deploy_approval` in memory: never deploy visual changes to the live site without explicit go-ahead. Ask before pushing. Watch with `/canary` after deploy.
+
+---
+
+## Three temptations that will break the procedure (don't)
+
+1. **"Let me just spawn a background agent to do the boring components in parallel."**
+   No. That's the failure mode. Background agents = local minimum = reverted Phase 2 again.
+
+2. **"Opus knows how to write Next.js better than the v2 HTML pattern, let me let it improvise this one component."**
+   No. The blueprint is the source of truth. If the blueprint is wrong, fix the blueprint in a separate context-free session. Improvisation in the port reintroduces the anchoring problem.
+
+3. **"Let me try `/design-html` instead of doing this manually."**
+   No. `/design-html` is in the "not recommended" list above precisely for this reason. The skill description is aspirational. Use Opus directly.
+
+---
+
+## Pre-flight checklist (do this BEFORE the focused day)
+
+If you have one hour before the focused day starts, the highest-leverage thing is to **open the v2 HTML and confirm it's still what you want**. If it's not, you do not want to discover that mid-port.
+
+- [ ] `open ~/Downloads/the-valve-wire-dark-v2.html` — confirm the blueprint
+- [ ] `open ~/Desktop/medical-publication.html` — confirm the secondary reference
+- [ ] Decide on a list provider for `SubscribeBar.tsx` (Buttondown / Beehiiv reactivated / ConvertKit / Substack / other)
+- [ ] Skim this `tasks/todo.md` once so the procedure is in your head when you start
+- [ ] Block the calendar for the focused day, treat as non-negotiable
+
+---
+
 ## Recommended gstack skills for tavr-digest
 
 Curated from the full gstack skill list. Skipped skills that don't fit (office-hours, design-consultation, design-shotgun, autoplan, devex-review, etc) because the product, design, and team shape don't match those skills' purpose.
