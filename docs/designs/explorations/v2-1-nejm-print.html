@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire — Vol. III · Issue 47</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --page-bg: #f7f2ea;
+    --ink: #1a1a1a;
+    --ink-light: #4a4a4a;
+    --tissue-red: #a03030;
+    --oxygenated: #c43838;
+    --venous-blue: #3b5998;
+    --venous-dark: #2c4470;
+    --chamber-red: #8b2020;
+    --fascia-cream: #f0e6d2;
+    --rose-tint: #e8d0cc;
+    --rose-light: #f2e2de;
+    --muscle-coral: #d4766a;
+    --rule-light: #c8b8a8;
+  }
+
+  body {
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
+    font-size: 11.5pt;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 60px 40px 80px;
+  }
+
+  .masthead {
+    text-align: center;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--chamber-red);
+    margin-bottom: 4px;
+  }
+
+  .masthead-inner {
+    border-bottom: 1px solid var(--tissue-red);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .pub-title {
+    font-family: 'Crimson Pro', serif;
+    font-size: 28pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    color: var(--chamber-red);
+  }
+
+  .pub-subtitle {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 11pt;
+    color: var(--ink-light);
+    letter-spacing: 0.02em;
+    margin-bottom: 10px;
+  }
+
+  .pub-meta {
+    font-family: 'Crimson Pro', serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .pub-meta span { margin: 0 8px; }
+
+  .section-head {
+    font-family: 'Crimson Pro', serif;
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-variant: small-caps;
+    color: var(--tissue-red);
+    margin-top: 28px;
+    margin-bottom: 10px;
+    padding-top: 14px;
+    border-top: 1.5px solid var(--rose-tint);
+  }
+
+  .lead {
+    font-size: 11pt;
+    line-height: 1.65;
+    margin: 16px 0 8px;
+    text-align: justify;
+    hyphens: auto;
+    padding: 14px 18px;
+    background: var(--rose-light);
+    border-left: 3px solid var(--tissue-red);
+  }
+
+  .drop-cap {
+    float: left;
+    font-family: 'Crimson Pro', serif;
+    font-size: 52pt;
+    line-height: 0.8;
+    padding-right: 6px;
+    padding-top: 4px;
+    color: var(--chamber-red);
+    font-weight: 300;
+  }
+
+  .ornament {
+    text-align: center;
+    font-size: 10pt;
+    color: var(--muscle-coral);
+    margin: 10px 0;
+    letter-spacing: 0.5em;
+  }
+
+  .article-item {
+    margin: 16px 0;
+    text-align: justify;
+    hyphens: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rose-tint);
+  }
+
+  .article-item:last-child { border-bottom: none; }
+
+  .article-item p { text-indent: 0; line-height: 1.55; }
+
+  .article-source {
+    font-family: 'Crimson Pro', serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--oxygenated);
+    display: inline;
+  }
+
+  .article-source.fda { color: var(--venous-blue); }
+
+  .article-sep {
+    display: inline;
+    margin: 0 6px;
+    color: var(--muscle-coral);
+  }
+
+  .article-title {
+    font-family: 'EB Garamond', serif;
+    font-weight: 600;
+    font-size: 11.5pt;
+    display: inline;
+  }
+
+  .endmatter {
+    margin-top: 28px;
+    padding-top: 14px;
+    border-top: 2.5px solid var(--chamber-red);
+    border-bottom: 1px solid var(--tissue-red);
+    padding-bottom: 14px;
+  }
+
+  .endmatter-section { margin-bottom: 14px; }
+
+  .endmatter-label {
+    font-family: 'Crimson Pro', serif;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--tissue-red);
+    margin-bottom: 4px;
+  }
+
+  .endmatter-label.trials { color: var(--venous-blue); }
+
+  .endmatter-content {
+    font-size: 9.5pt;
+    line-height: 1.45;
+    color: var(--ink-light);
+  }
+
+  .endmatter-content em { font-style: normal; color: var(--ink); }
+
+  .ticker-row {
+    font-family: 'Crimson Pro', serif;
+    font-size: 9pt;
+    letter-spacing: 0.04em;
+  }
+
+  .ticker-up { color: #2e6b3a; font-weight: 600; }
+  .ticker-down { color: var(--oxygenated); font-weight: 600; }
+
+  .trial-tag {
+    display: inline-block;
+    font-family: 'Crimson Pro', serif;
+    font-size: 8pt;
+    letter-spacing: 0.06em;
+    background: rgba(59, 89, 152, 0.08);
+    color: var(--venous-dark);
+    padding: 2px 8px;
+    margin: 2px 4px 2px 0;
+  }
+
+  .podcast-block {
+    padding: 8px 12px;
+    background: var(--fascia-cream);
+    border-left: 3px solid var(--muscle-coral);
+    font-size: 9.5pt;
+    color: var(--ink-light);
+  }
+
+  .subscribe-block {
+    margin-top: 28px;
+    text-align: center;
+    padding: 18px 0;
+    border-top: 1px solid var(--rose-tint);
+    border-bottom: 1px solid var(--rose-tint);
+  }
+
+  .subscribe-text {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 12pt;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+
+  .subscribe-cta {
+    display: inline-block;
+    font-family: 'Crimson Pro', serif;
+    font-size: 8pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--chamber-red);
+    padding: 7px 22px;
+    text-decoration: none;
+  }
+
+  .footer {
+    margin-top: 24px;
+    font-size: 8.5pt;
+    color: var(--ink-light);
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .footer-sections {
+    font-family: 'Crimson Pro', serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 7.5pt;
+  }
+
+  .footer-sections span { margin: 0 5px; color: var(--rose-tint); }
+
+  .thin-rule {
+    border: none;
+    border-top: 0.75px solid var(--rose-tint);
+    margin: 12px 0;
+  }
+
+  .footer-note {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 9pt;
+    margin-top: 14px;
+    color: var(--tissue-red);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <div class="masthead-inner">
+      <div class="pub-title">The Valve Wire</div>
+      <div class="pub-subtitle">A surgeon's reading of structural heart disease</div>
+    </div>
+    <div class="pub-meta">
+      <span>Vol. III · Issue 47</span><span>·</span><span>April 28, 2026</span><span>·</span><span>Michael Bowdish, MD</span>
+    </div>
+  </div>
+
+  <div class="section-head">Editorial Summary</div>
+
+  <div class="lead">
+    <span class="drop-cap">T</span>he PARTNER 3 5-year extended follow-up published in <em>NEJM</em> this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about. Dr.&nbsp;Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.
+  </div>
+
+  <div class="ornament">· · ·</div>
+
+  <div class="section-head">This Week</div>
+
+  <div class="article-item">
+    <p>
+      <span class="article-source">NEJM</span><span class="article-sep">—</span><span class="article-title">PARTNER 3 5-year results: TAVR mortality advantage holds, but structural valve deterioration at year 5 raises questions for sub-65 indication.</span>
+    </p>
+  </div>
+
+  <div class="article-item">
+    <p>
+      <span class="article-source">EACTS</span><span class="article-sep">—</span><span class="article-title">European cardiothoracic surgeons publish position paper: "Transcatheter mitral repair outcomes do not yet meet the threshold for routine use in surgical-eligible patients." Authors include Mehaffey and Chikwe.</span>
+    </p>
+  </div>
+
+  <div class="article-item">
+    <p>
+      <span class="article-source fda">FDA 8-K (Edwards Lifesciences)</span><span class="article-sep">—</span><span class="article-title">Class I recall on a small lot of SAPIEN 3 Ultra valves due to a balloon catheter manufacturing defect. No patient harm reported. Affects approximately 3,400 units shipped Jan–Mar 2026.</span>
+    </p>
+  </div>
+
+  <div class="endmatter">
+    <div class="endmatter-section">
+      <div class="endmatter-label trials">Clinical Trials in Progress</div>
+      <div class="endmatter-content">
+        <span class="trial-tag">EARLY TAVR · NCT03042104</span>
+        <span class="trial-tag">PROGRESS · NCT04889872</span>
+        <span class="trial-tag">TRISCEND II · NCT04482062</span>
+      </div>
+    </div>
+
+    <div class="endmatter-section">
+      <div class="endmatter-label">Industry Watch</div>
+      <div class="endmatter-content ticker-row">
+        <em>Edwards Lifesciences</em> (EW) $98.40 <span class="ticker-up">+2.1%</span> ·
+        <em>Medtronic</em> (MDT) $84.20 <span class="ticker-down">−0.3%</span> ·
+        <em>Abbott</em> (ABT) $112.80 <span class="ticker-up">+0.4%</span> ·
+        <em>Boston Scientific</em> (BSX) $76.55 <span class="ticker-up">+0.9%</span>
+      </div>
+    </div>
+
+    <div class="endmatter-section">
+      <div class="endmatter-label" style="color: var(--muscle-coral);">This Week's Podcast</div>
+      <div class="podcast-block">
+        "PARTNER 3 at year 5: what the editorial does not say" — 18 minutes — with case discussion
+      </div>
+    </div>
+  </div>
+
+  <div class="subscribe-block">
+    <div class="subscribe-text">A surgeon's reading. Delivered daily.</div>
+    <a href="#" class="subscribe-cta">Subscribe</a>
+  </div>
+
+  <div class="footer">
+    <div class="footer-sections">
+      Aortic<span>·</span>Mitral<span>·</span>Tricuspid<span>·</span>Surgical vs Transcatheter<span>·</span>Industry<span>·</span>Trials
+    </div>
+    <hr class="thin-rule">
+    <div class="footer-sections">
+      Editorial Stance<span>·</span>Methodology<span>·</span>Editor<span>·</span>Archive by Date<span>·</span>Archive by Topic<span>·</span>Archive by Journal
+    </div>
+    <div class="footer-note">
+      The Valve Wire is independent and accepts no industry funding.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
