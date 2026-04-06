@@ -144,9 +144,26 @@ After the port lands, return to this document and execute Priorities 2-6.
 
 ---
 
-## The Procedure — how to actually do the v2 HTML → Next.js port
+## Step 0 — Distinctive design exploration (BEFORE the procedure)
 
-Inputs already in place: approved palette (terracotta `#c4553a` on navy `#0a1628`), approved blueprint (`~/Downloads/the-valve-wire-dark-v2.html`, secondary `~/Desktop/medical-publication.html`), worktree at `.claude/worktrees/agent-a291173c/`, branch `redesign-hybrid` reset to clean Phase 1.
+**Why this step exists:** The user evaluated the v2 HTML on 2026-04-05 and reported "it's better but still looks very similar to all the others." Diagnosis: AI-generated newsletter designs converge on a Stratechery/Substack/Axios local minimum because the training distribution averages to that aesthetic. Even clean-slate prompts produce variants of the same look. To escape, you need explicit non-newsletter visual references and a context-free conversation.
+
+**Action:** Open `tasks/distinctive-design-prompt.md`, copy the prompt verbatim, paste it into a fresh claude.ai conversation (NEW conversation, no project context, no files loaded, Opus 4.6). The prompt produces 5 self-contained HTML files in 5 distinct visual directions (NEJM print era, surgeon's dossier, anatomical-first, OR minimalism, retro academic). Save the output files to `~/Downloads/` and open all 5 in browser tabs side by side.
+
+**Decision rule:**
+- **If one direction clicks** → save that HTML as `~/Downloads/the-valve-wire-distinctive-v1.html` and run the porting procedure below against THAT file instead of the v2 HTML.
+- **If none of the 5 click but one is close** → reply in the same claude.ai conversation with specific feedback ("direction 2 is close but the typography is wrong, try X") and iterate. Two iterations max. If it's not converging after 2 iterations, fall back to v2.
+- **If none of the 5 click and none are close** → ship v2 HTML for AATS launch with a clear conscience. Plan a real visual identity redesign for July or August once you have subscriber data and launch is behind you. v2 is acceptable, just not distinctive.
+
+**Time budget:** 1 hour. Hard cap. If you blow past the cap, you are in design rabbit-hole territory and you should ship v2.
+
+**What success looks like:** A new HTML blueprint that looks like NOTHING else in the AI-generated medical newsletter space. People stop and look. The visual identity itself signals "this publication is different."
+
+---
+
+## The Procedure — how to actually do the HTML → Next.js port
+
+Inputs in place: approved palette (terracotta `#c4553a` on navy `#0a1628`) **— may be replaced by Step 0 output**, blueprint (`~/Downloads/the-valve-wire-dark-v2.html` **— may be replaced by `~/Downloads/the-valve-wire-distinctive-v1.html` from Step 0**), worktree at `.claude/worktrees/agent-a291173c/`, branch `redesign-hybrid` reset to clean Phase 1.
 
 **This is a translation task, not a design task.** Every step below exists to prevent the agent from anchoring to existing code and producing another reverted Phase 2.
 
