@@ -1,0 +1,231 @@
+{
+  "date": "2026-04-08",
+  "articles": [
+    {
+      "title": "Left atrial functional recovery precedes volumetric reverse remodeling after TAVI by speckle tracking echocardiography.",
+      "journal": "Scientific reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41946793/",
+      "pmid": "41946793",
+      "authors": "Li G, Liu N, Sun W, Xu K, Wang B et al.",
+      "study_design": "Prospective study",
+      "sample_size": null,
+      "key_finding": "LA strain parameters (LASr, LAScd, LASct) improved significantly at 1 month post-TAVI (all P\u2009<\u20090.05) and continued to improve through 12 months.",
+      "key_numbers": [
+        "P\u2009<\u20090.05",
+        "P\u2009<\u20090.05",
+        "P\u2009<\u20090.05"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Surgical management of concomitant lung cancer and cardiovascular diseases: a multidisciplinary perspective.",
+      "journal": "Lung cancer management",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41945887/",
+      "pmid": "41945887",
+      "authors": "Kanzaki R, Okami J",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Simultaneously, improvements in cardiovascular therapies, including transcatheter aortic valve implantation (TAVI), thoracic endovascular aortic repair (TEVAR), and off-pump coronary artery bypass grafting (OPCAB), have enabled safer, staged approaches.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Mitral Transcatheter Edge-to-Edge Repair Using Novel Augmented Imaging Software.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41945536/",
+      "pmid": "41945536",
+      "authors": "Hahn RT, Biaggi P, Corti R, Gaemperli O, Wenaweser P et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TAKE-HOME MESSAGE: DeviceGuide artificial intelligence-enhanced imaging software has the potential for improving the safety, efficiency, and efficacy of M-TEER implantation for both routine and anatomically complex cases irrespective of operator experience.",
+      "key_numbers": [],
+      "section": "mitral"
+    },
+    {
+      "title": "TAVR and TEVAR for Patients With Concomitant Aortic Valve and Descending Thoracoabdominal Aortic Disease: To Stage or Not to Stage?",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41945525/",
+      "pmid": "41945525",
+      "authors": "Ahmed A, Sultan I, S\u00e1 MP",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Transcatheter Tricuspid Valve Replacement Using Conscious Sedation and Intracardiac Echocardiography.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41945524/",
+      "pmid": "41945524",
+      "authors": "Rajagopal DR, Stewart JP, Thourani VH, Yadav PK",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TAKE-HOME MESSAGE: In select patients, TTVR with Evoque using conscious sedation and ICE alone is possible.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Sex-specific utility of pulmonary artery metrics in predicting pulmonary hypertension and survival after TAVI: insights from advanced CT imaging.",
+      "journal": "Insights into imaging",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41944975/",
+      "pmid": "41944975",
+      "authors": "Boxhammer E, Hammerer M, Sch\u00f6rghofer N, Clodi N, Prinz E et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "OBJECTIVE: Pulmonary hypertension (PH) significantly affects outcomes after transcatheter aortic valve implantation (TAVI), with sex-specific differences indicating the need for tailored strategies.",
+      "key_numbers": [
+        "p\u2009=\u20090.006"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Comments on \"Hospital procedural costs of surgical aortic valve replacement versus transcatheter aortic valve replacement in low-risk isolated aortic stenosis: a single-center analysis in Japan\".",
+      "journal": "General thoracic and cardiovascular surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41944961/",
+      "pmid": "41944961",
+      "authors": "Siam IM, Drubo PA, Islam MM, Zeb MJ",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Hybrid mitral repair and coronary artery bypass with Penditure left atrial appendage closure.",
+      "journal": "Multimedia manual of cardiothoracic surgery : MMCTS",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41944548/",
+      "pmid": "41944548",
+      "authors": "Uchimuro TU, Yamauchi JY, Kawamura TK, Wada KW, Fukutomi MF et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "The patient was successfully treated using a two-stage hybrid strategy consisting of initial transcatheter mitral valve edge-to-edge repair followed by coronary artery bypass grafting with Penditure-based left atrial appendage closure.",
+      "key_numbers": [],
+      "section": "mitral"
+    },
+    {
+      "title": "Impact of Extravalvular Remodeling on Wearable Smartwatch-Recorded Physical Activity in Patients Undergoing Transcatheter Aortic Valve Implantation for Severe Symptomatic Aortic Stenosis.",
+      "journal": "Journal of the American Heart Association",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41944153/",
+      "pmid": "41944153",
+      "authors": "Androshchuk V, Long E, Chehab O, Wilcox J, McDonaugh B et al.",
+      "study_design": "Cohort study",
+      "sample_size": null,
+      "key_finding": "Regression models determined significant predictors of total daily step count and moderate to vigorous physical activity (MVPA).",
+      "key_numbers": [
+        "50.6%",
+        "49.4%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "P<0.001",
+        "P<0.05",
+        "P=0.002",
+        "P=0.027",
+        "P=0.006",
+        "P=0.009",
+        "P=0.043",
+        "or 7"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Cardiac Imaging in Clinical Trials of Intervention in Aortic Valve Stenosis.",
+      "journal": "Circulation. Cardiovascular imaging",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41944020/",
+      "pmid": "41944020",
+      "authors": "Mengesha B, Giuliani C, Tzimas G, Zanuttini A, Leipsic J et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Standardized methods and definitions should be applied to adjudicate these imaging end points, and ideally, these trial end points should be analyzed by independent imaging core labs.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Molecular Identification and Characterization of mobatvirus (Hantaviridae) in Lao PDR",
+      "journal": "Biorxiv",
+      "url": "https://doi.org/10.64898/2026.04.06.713848",
+      "pmid": "",
+      "authors": "Vanhnollat, C.; Dimitrova, K.; Vachouaxiong, L.; Audet, J.; Somlor, S.; Medina, S. J.; Bounmany, P.;...",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Hantavirids, specifically the members within the genus Orthohantavirus, represent a significant global public health threat, with bat-associated lineages challenging traditional reservoir paradigms.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "TMC Medical Minutes - TAVR - KXII",
+      "journal": "KXII",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5EZjFvanh3dGcybnhVLTNmaGdmTDJkemtXS2xRQnFYdWt0TzF1MkItT1lMdklrcGwzYy13WXhSa0RaZDZtMW5kbVhGdDg3cjBjdnFqR3EybVc5NFlIcS1qNEtyUFZlb255d2loTklzRzI?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TMC Medical Minutes - TAVR&nbsp;&nbsp;KXII",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Macro investor Tavi Costa joins Altamira board as company advances Brazil gold district - Stock Titan",
+      "journal": "Stock Titan",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNZHA4ckVIc1JmQmJFMS1lLWlLZU5ud015eHUweWhMNjk5Sm90ZTZlbVZTTW1sUEh6NzA4amlidURrSkVIZHlNMDhPb3B2SVlNdFY4bmhpUGJCYkJ2cUtPMy00cDFyWjdXUmJwNFZ3NlJTRXc2MVRuNkpXMlU1cTNUbWx0czdOdk44WXNJRmZQWVJDWnRNV2hiM1BvcGdSc29hMlhaRG9sSnN2OW5xZEp0ZXFPdEVKZ2dMbkxDeThVRk5mQQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Macro investor Tavi Costa joins Altamira board as company advances Brazil gold district&nbsp;&nbsp;Stock Titan",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Altamira Gold Strengthens Board of Directors with the Appointment of Renowned Macro Investor Tavi Costa - TradingView",
+      "journal": "TradingView",
+      "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxOblNIR2I1UWxRZE1HR0VoMkNudkJTOS1KaTZuVnVkdVEzUUxMOWRDcHpPLURsaWNKQlhyUE52WXVTQWFDZG8xODNEMXByR0NLX2pWN3RZVng2RDM1bmpJb1VBRjlRTnQ2WVBMenhycVFkd1RwZDZRaXZJd04tTW8xNFNEUGdqb2NIeDN5S1EzQWtvdmpmUlNqNzIybEh6UUk5c3VlNDB3SFJ1MzY0S2c0VnhRd0ppV0VYbzFuZU9icjk2Zms1Sk5vQW00c2drRk0zcFB4T2RIRTctX0FzTWp3RWg0OHVTMzZKRFBlTnFfTlo4Z1BwNmFmZDFn?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Altamira Gold Strengthens Board of Directors with the Appointment of Renowned Macro Investor Tavi Costa&nbsp;&nbsp;TradingView",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Macro and mining expert Tavi Costa joins Altamira Gold - MSN",
+      "journal": "MSN",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxPSmxmOHA1cklQa2RtVW4wYzROTkYtZjVTSUlkZUZ3V3dBZTE5dmZBZVYwYTVwcGF5eUtFWXd6QnppOHhiNXpyWU9xTDk4VHBjeWFreEdqRFB4T2wyMXhSWHh0Z3RKUnpkVmg3c2tySFJlUjZJdkZIcmxDWnhiQy05VGtKS2w5Q0xSWmc4M1Q0azN1cWU1dDhrN2o1S3JlVkhXeUgtSjluTWlhRU1zS2s5MzIxeXA3S2NWMEljSm4xOEs5OWtpRHlvMHdR?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Macro and mining expert Tavi Costa joins Altamira Gold&nbsp;&nbsp;MSN",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Macro and mining expert Tavi Costa joins Altamira Gold | 2026-04-07 | Investing News - Stockhouse",
+      "journal": "Stockhouse",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQOG9lbFZyY3l2OGVETXlUTWZpRkZscUktX0FHU09ZYk5JQWFjNmVGdDAxQ1A4c3FXTkdSNlFYLVl4OUs4eHYwQWZUNHY0UXNXSHJiZFBvWURlSlYwOFFYSnYxd3JrQU9nVDZTTmZiLUVtdEZ1bmNNVGNFbmRUWXI2Y2F5ZUR3R2t3MWtKNVRBOVU5T1hXOUw1bWNzNWVBNlpndDFpMm0zQXdJUU1HOWdBUUMzUUViaGs?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Macro and mining expert Tavi Costa joins Altamira Gold | 2026-04-07 | Investing News&nbsp;&nbsp;Stockhouse",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Hints of a Mortality Benefit With TTVR at 2 Years TRISCEND II - tctmd.com",
+      "journal": "tctmd.com",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPR1lPbUdyUE5TM3Z2dlZaMTJnZC1UZ1JfRTJOUUdST3JCdUd3ZHdJeXJzSzlGdXBlM2xXX0Rhc1RjaXlXdlRPWVZHTXJSd2JRUXdVdUl1dkJKLUcwckNMeXhMMDhPUDNkbzlkWmRZb2FNYnJEbko4U09haWNkbzU5ZA?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Hints of a Mortality Benefit With TTVR at 2 Years TRISCEND II&nbsp;&nbsp;tctmd.com",
+      "key_numbers": [],
+      "section": "tricuspid"
+    }
+  ]
+}
