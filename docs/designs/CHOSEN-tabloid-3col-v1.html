@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire — Issue 47 · April 28, 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Fraunces:ital,opsz,SOFT,wght@0,9..144,0..100,400;0,9..144,0..100,500;0,9..144,0..100,600;0,9..144,0..100,700;1,9..144,0..100,400;1,9..144,0..100,500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  /* NY Post tabloid */
+  --post-red: #d41920;         /* NY Post red — masthead, primary */
+  --post-red-deep: #a01018;
+  --yellow: #ffd000;           /* NY Post yellow — accent */
+  --yellow-deep: #e8b800;
+  --paper: #ffffff;
+  --paper-warm: #fafaf6;
+  --newsprint: #f4f0e8;
+  --cream: #f4ede0;            /* warm cream for cover seal contrast */
+
+  /* Blue Figures — kept as secondary brand color for the cover seal */
+  --navy: #18324e;
+  --steel: #4a6580;
+
+  /* Red shades */
+  --red: #d41920;              /* same as post-red */
+  --red-deep: #a01018;
+
+  /* Ink */
+  --ink: #0a0e16;
+  --ink-mid: #2a3548;
+  --ink-light: #5a6580;
+  --gray: #8a8e98;
+  --rule: #1a1a1a;
+  --rule-thin: #d8d8d4;
+
+  /* Live monitor */
+  --vitals-bg: #0c1a14;
+  --vitals-text: #a0d8b8;
+  --vitals-dim: #608878;
+  --spo2-green: #30b060;
+  --spo2-red: #d06060;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper-warm);
+  color: var(--ink);
+  font-family: 'Fraunces', Georgia, serif;
+  font-variation-settings: 'SOFT' 30, 'opsz' 14;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ══════════════════════════════════════════
+   MASTHEAD — NY POST RED, tabloid scale
+   ══════════════════════════════════════════ */
+.masthead {
+  background: var(--post-red);
+  color: #ffffff;
+  padding: 22px 0 20px;
+  border-bottom: 5px solid var(--ink);
+  position: relative;
+}
+
+.masthead::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--yellow);
+}
+
+.masthead-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+}
+
+.mast-left {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.mast-seal {
+  flex-shrink: 0;
+  width: 92px;
+  height: 92px;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  background: var(--steel);
+  display: block;
+}
+
+.mast-seal img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.mast-wordmark-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mast-wordmark {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 900;
+  font-size: 70px;
+  line-height: 0.82;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.mast-wordmark .wire {
+  display: block;
+  font-size: 24px;
+  letter-spacing: 0.36em;
+  font-weight: 700;
+  margin-top: 2px;
+  color: var(--yellow);
+}
+
+.mast-tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 60, 'opsz' 14;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+  padding-bottom: 10px;
+  max-width: 240px;
+  line-height: 1.35;
+}
+
+.mast-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.mast-meta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-align: right;
+  line-height: 1.7;
+}
+
+.mast-meta .meta-line {
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+}
+
+.mast-nav {
+  display: flex;
+  gap: 18px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mast-nav a {
+  color: #ffffff;
+  text-decoration: none;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+
+.mast-nav a:hover { opacity: 1; }
+
+.mast-nav .subscribe-cta {
+  background: var(--yellow);
+  color: var(--ink);
+  padding: 7px 16px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  opacity: 1;
+}
+
+.mast-nav .subscribe-cta:hover {
+  background: var(--yellow-deep);
+}
+
+/* ══════════════════════════════════════════
+   KICKER STRIP — black bar, editorial tease
+   ══════════════════════════════════════════ */
+.kicker-strip {
+  background: var(--ink);
+  color: var(--yellow);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--ink);
+}
+
+.kicker-strip-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kicker-strip .kicker-text {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.kicker-strip .kicker-text::before,
+.kicker-strip .kicker-text::after {
+  content: '★';
+  display: inline-block;
+  color: var(--yellow);
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.kicker-strip .kicker-text strong {
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.kicker-strip .strip-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--vitals-text);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.kicker-strip .strip-meta .dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--spo2-green);
+  border-radius: 50%;
+  animation: spo2-pulse 2s ease-in-out infinite;
+}
+
+@keyframes spo2-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ══════════════════════════════════════════
+   SECTION NAV — restrained
+   ══════════════════════════════════════════ */
+.section-nav {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-thin);
+  padding: 14px 0;
+}
+
+.section-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow-x: auto;
+}
+
+.section-nav a {
+  color: var(--ink-mid);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+  position: relative;
+  padding-bottom: 2px;
+}
+
+.section-nav a:hover { color: var(--navy); }
+
+.section-nav a.active {
+  color: var(--navy);
+  border-bottom: 2px solid var(--red);
+}
+
+/* ══════════════════════════════════════════
+   HERO GRID — three columns, tabloid hierarchy
+   ══════════════════════════════════════════ */
+.hero {
+  padding: 36px 0 24px;
+  background: var(--paper);
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 2.4fr 1.6fr 1fr;
+  gap: 0;
+}
+
+/* ── LEFT: Lead story, dominates ── */
+.lead {
+  border-right: 1px solid var(--rule-thin);
+  padding-right: 32px;
+}
+
+.lead-section-tag {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--post-red);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lead-section-tag::before {
+  content: 'EXCLUSIVE';
+  background: var(--post-red);
+  color: #ffffff;
+  padding: 4px 10px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+}
+
+.lead-section-tag::after {
+  content: '';
+  flex: 1;
+  height: 3px;
+  background: var(--ink);
+}
+
+.lead-headline {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 900;
+  font-size: 92px;
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 22px;
+  letter-spacing: -0.02em;
+}
+
+.lead-headline .red {
+  color: var(--post-red);
+}
+
+.lead-deck {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 30, 'opsz' 18, 'wght' 400;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-mid);
+  margin-bottom: 16px;
+}
+
+.lead-deck strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.lead-meta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  color: var(--ink-light);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-thin);
+}
+
+.lead-meta strong {
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* ── MIDDLE: Secondary stories ── */
+.middle-col {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--rule-thin);
+  padding: 0 28px;
+}
+
+.story {
+  padding-bottom: 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--rule-thin);
+}
+
+.story:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.story-tag {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.story-tag.fda {
+  color: var(--red);
+}
+
+.story-headline {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.0;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -0.005em;
+}
+
+.story-deck {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 30, 'opsz' 14;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-mid);
+  margin-bottom: 10px;
+}
+
+.story-meta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── RIGHT: Live + Listen + Trials teaser ── */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 24px;
+}
+
+.live-panel {
+  background: var(--vitals-bg);
+  color: var(--vitals-text);
+  padding: 16px 18px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  border-top: 3px solid var(--spo2-green);
+}
+
+.live-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1a2a20;
+}
+
+.live-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.spo2-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--spo2-green);
+  border-radius: 50%;
+  animation: spo2-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(48, 176, 96, 0.6);
+}
+
+.live-time {
+  color: var(--vitals-dim);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+
+.live-issue {
+  font-size: 9px;
+  color: var(--vitals-dim);
+  letter-spacing: 0.14em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.ticker-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 11px;
+  border-bottom: 1px dotted #1a2a20;
+}
+
+.ticker-row:last-of-type { border-bottom: none; }
+
+.ticker-sym {
+  color: var(--vitals-text);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.ticker-price { color: var(--vitals-dim); }
+
+.ticker-change {
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  padding-left: 6px;
+}
+
+.ticker-change.up { color: var(--spo2-green); }
+.ticker-change.dn { color: var(--spo2-red); }
+
+/* Listen card */
+.listen-card {
+  background: var(--cream);
+  padding: 18px 16px 16px;
+  border-left: 4px solid var(--red);
+}
+
+.listen-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.listen-label::before {
+  content: '';
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 9px solid var(--red);
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+.listen-title {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+
+.listen-meta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  color: var(--ink-mid);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Trials teaser */
+.trials-teaser {
+  background: var(--paper);
+  border: 1px solid var(--rule-thin);
+  padding: 16px;
+}
+
+.trials-teaser-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--navy);
+}
+
+.trial-mini {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: var(--ink);
+  padding: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dotted var(--rule-thin);
+}
+
+.trial-mini:last-child { border-bottom: none; }
+
+.trial-mini .name {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.trial-mini .nct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ink-light);
+}
+
+/* ══════════════════════════════════════════
+   EDITORIAL CALLOUT — full-width red bar
+   ══════════════════════════════════════════ */
+.editorial-section {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 56px 0;
+  border-top: 4px solid var(--red);
+  border-bottom: 4px solid var(--red);
+  position: relative;
+}
+
+.editorial-callout {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 36px;
+  text-align: center;
+}
+
+.editorial-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 18px;
+  display: inline-block;
+  position: relative;
+  padding: 0 18px;
+}
+
+.editorial-label::before,
+.editorial-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 2px;
+  background: var(--red);
+}
+
+.editorial-label::before { right: 100%; }
+.editorial-label::after { left: 100%; }
+
+.editorial-body {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 36, 'wght' 500;
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.45;
+  color: var(--cream);
+  margin-bottom: 20px;
+}
+
+.editorial-body .pull {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.editorial-attribution {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.editorial-attribution::before {
+  content: '— ';
+  color: var(--red);
+}
+
+/* ══════════════════════════════════════════
+   TRIALS ROW
+   ══════════════════════════════════════════ */
+.trials-section {
+  padding: 48px 0;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-thin);
+}
+
+.section-heading {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 900;
+  font-size: 36px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.section-subheading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: var(--ink-light);
+  margin-bottom: 28px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: 14px;
+}
+
+.trials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.trial-card {
+  border: 1px solid var(--ink);
+  padding: 20px 22px 22px;
+  position: relative;
+  background: var(--paper);
+}
+
+.trial-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: var(--navy);
+}
+
+.trial-name {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  margin-top: 8px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 0.95;
+}
+
+.trial-nct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-light);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-thin);
+}
+
+.trial-desc {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 30, 'opsz' 14;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-mid);
+}
+
+/* ══════════════════════════════════════════
+   SUBSCRIBE BAND — red, loud
+   ══════════════════════════════════════════ */
+.subscribe-section {
+  padding: 56px 0;
+  background: var(--red);
+  color: var(--cream);
+  position: relative;
+}
+
+.subscribe-section::before,
+.subscribe-section::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--ink);
+}
+
+.subscribe-section::before { top: 0; }
+.subscribe-section::after { bottom: 0; }
+
+.subscribe-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 36px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 36px;
+}
+
+.subscribe-text { flex: 1; }
+
+.subscribe-headline {
+  font-family: 'Big Shoulders Display', 'Impact', sans-serif;
+  font-weight: 900;
+  font-size: 38px;
+  line-height: 0.95;
+  margin-bottom: 8px;
+  color: var(--cream);
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+
+.subscribe-subhead {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 14;
+  font-size: 15px;
+  color: rgba(240, 232, 208, 0.85);
+  font-style: italic;
+}
+
+.subscribe-form {
+  display: flex;
+  gap: 0;
+  flex: 0 0 auto;
+}
+
+.subscribe-input {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14px;
+  padding: 14px 18px;
+  border: none;
+  background: var(--cream);
+  color: var(--ink);
+  width: 260px;
+  letter-spacing: 0.01em;
+}
+
+.subscribe-input::placeholder { color: var(--gray); }
+
+.subscribe-btn-primary {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  cursor: pointer;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════ */
+.footer {
+  padding: 48px 0 32px;
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+
+.footer-brand .footer-wordmark {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  line-height: 0.9;
+  margin-bottom: 4px;
+}
+
+.footer-brand .footer-wordmark .wire {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--cream);
+  margin-top: 2px;
+}
+
+.footer-brand p {
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 14;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(240, 232, 208, 0.65);
+  line-height: 1.5;
+  margin-top: 14px;
+  max-width: 280px;
+}
+
+.footer-col-label {
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(196, 30, 58, 0.4);
+}
+
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 8px; }
+.footer-col a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  color: rgba(240, 232, 208, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.footer-col a:hover { color: var(--cream); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(240, 232, 208, 0.18);
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.footer-bottom .colophon {
+  max-width: 540px;
+  font-family: 'Fraunces', serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 14;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(240, 232, 208, 0.55);
+}
+
+.footer-bottom .colophon strong {
+  font-style: normal;
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.footer-bottom .right {
+  text-align: right;
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 232, 208, 0.65);
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — collapse on phones
+   ══════════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .hero-grid {
+    grid-template-columns: 1.6fr 1fr;
+  }
+  .right-col {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 0;
+    padding-top: 24px;
+    margin-top: 24px;
+    border-top: 1px solid var(--rule-thin);
+  }
+  .right-col > * {
+    flex: 1 1 280px;
+  }
+  .lead-headline { font-size: 52px; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .masthead-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+  .mast-left { gap: 16px; flex-wrap: wrap; }
+  .mast-wordmark { font-size: 48px; }
+  .mast-wordmark .wire { font-size: 20px; }
+  .mast-tagline { padding-bottom: 0; }
+  .mast-right {
+    align-items: flex-start;
+    width: 100%;
+  }
+  .mast-meta { text-align: left; }
+  .mast-nav { flex-wrap: wrap; }
+  .kicker-strip-inner {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+  .kicker-strip .strip-meta { order: -1; }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .lead, .middle-col, .right-col {
+    border-right: none;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 32px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--rule-thin);
+  }
+  .right-col {
+    flex-direction: column;
+    padding-top: 0;
+    margin-top: 0;
+    border-top: none;
+  }
+  .right-col > * { flex: 1 1 auto; }
+
+  .lead-headline { font-size: 44px; }
+  .story-headline { font-size: 22px; }
+
+  .editorial-body { font-size: 18px; }
+
+  .trials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .subscribe-inner {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  .subscribe-form {
+    width: 100%;
+  }
+  .subscribe-input {
+    flex: 1;
+    width: auto;
+  }
+  .subscribe-headline { font-size: 30px; }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-bottom .right { text-align: left; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ MASTHEAD ═══ -->
+<header class="masthead">
+  <div class="container">
+    <div class="masthead-inner">
+      <div class="mast-left">
+        <a href="#" class="mast-seal">
+          <img src="the-valve-wire-cover-blue.jpg" alt="The Valve Wire seal" />
+        </a>
+        <div class="mast-wordmark-block">
+          <a href="#" class="mast-wordmark">
+            The Valve
+            <span class="wire">— W I R E —</span>
+          </a>
+        </div>
+        <div class="mast-tagline">
+          A surgeon's reading of structural heart disease
+        </div>
+      </div>
+      <div class="mast-right">
+        <div class="mast-meta">
+          Vol. III · Issue 47 · April 28, 2026
+          <span class="meta-line">Michael Bowdish, MD · Editor</span>
+        </div>
+        <nav class="mast-nav">
+          <a href="#">Search</a>
+          <a href="#">Methodology</a>
+          <a href="#">About</a>
+          <a href="#" class="subscribe-cta">Subscribe</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ KICKER STRIP ═══ -->
+<div class="kicker-strip">
+  <div class="container">
+    <div class="kicker-strip-inner">
+      <div class="strip-meta">
+        <span class="dot"></span>
+        LIVE · 06:00 ET · APR 28 2026
+      </div>
+      <div class="kicker-text">
+        ★ <strong>PARTNER 3 AT FIVE YEARS:</strong> THE DATA EDWARDS DOES NOT WANT YOU TO LEAD WITH ★
+      </div>
+      <div class="strip-meta">
+        EW ▲ MDT ▼ ABT ▲ BSX ▲
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION NAV ═══ -->
+<div class="section-nav">
+  <div class="container">
+    <nav class="section-nav-inner">
+      <a href="#" class="active">Today</a>
+      <a href="#">Aortic</a>
+      <a href="#">Mitral</a>
+      <a href="#">Tricuspid</a>
+      <a href="#">Surgical vs Transcatheter</a>
+      <a href="#">Industry</a>
+      <a href="#">Trials</a>
+      <a href="#">Editorial</a>
+      <a href="#">Archive</a>
+      <a href="#">Podcast</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ═══ HERO GRID ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- LEFT: Lead story — type-as-visual, no image -->
+      <article class="lead">
+        <div class="lead-section-tag">NEJM · Editorial · Issue 47</div>
+        <h1 class="lead-headline">
+          TAVR Wins<br>On Mortality.<br><span class="red">Loses On Durability.</span>
+        </h1>
+        <p class="lead-deck">
+          The PARTNER 3 5-year extended follow-up published in <em>NEJM</em> this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but <strong>the structural valve deterioration signal in the TAVR arm at year 5 is the finding the device community is not talking about.</strong> Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.
+        </p>
+        <div class="lead-meta">
+          <strong>5 min read</strong> · By Michael Bowdish, MD · Cardiothoracic Surgery
+        </div>
+      </article>
+
+      <!-- MIDDLE: Secondary stories -->
+      <div class="middle-col">
+        <article class="story">
+          <span class="story-tag">Mitral · EACTS</span>
+          <h2 class="story-headline">European Surgeons: MitraClip Not Ready For Prime Time</h2>
+          <p class="story-deck">
+            Position paper from a working group including Mehaffey and Chikwe says transcatheter mitral repair outcomes do not yet meet the threshold for routine use in surgical-eligible patients. Calls out durability data and the absence of head-to-head trials against contemporary surgical repair.
+          </p>
+          <div class="story-meta">3 min read</div>
+        </article>
+
+        <article class="story">
+          <span class="story-tag fda">FDA · Class I Recall</span>
+          <h2 class="story-headline">3,400 SAPIEN 3 Ultra Valves Pulled For Catheter Defect</h2>
+          <p class="story-deck">
+            Edwards Lifesciences disclosed the recall in an 8-K this week. The defect affects a small lot shipped January through March 2026. No patient harm reported. Manufacturing issue, not a device performance signal — but the FDA classification is the highest tier.
+          </p>
+          <div class="story-meta">2 min read</div>
+        </article>
+
+        <article class="story">
+          <span class="story-tag">Industry · Earnings</span>
+          <h2 class="story-headline">Edwards Stock Hits 52-Week High On PARTNER 3 Halo</h2>
+          <p class="story-deck">
+            EW closed up 2.1% on the headline. Sell-side raised price targets across the board. The structural valve deterioration footnote in the paper went unmentioned in three of the four analyst notes we read.
+          </p>
+          <div class="story-meta">2 min read</div>
+        </article>
+      </div>
+
+      <!-- RIGHT: Live + Listen + Trials -->
+      <aside class="right-col">
+        <div class="live-panel">
+          <div class="live-header">
+            <div class="live-label">
+              <span class="spo2-dot"></span>
+              Live
+            </div>
+            <div class="live-time">06:00 ET</div>
+          </div>
+          <div class="live-issue">Vol. III · Issue 47 · Apr 28 2026</div>
+
+          <div class="ticker-row">
+            <span class="ticker-sym">EW</span>
+            <span class="ticker-price">$98.40 <span class="ticker-change up">▲ 2.1%</span></span>
+          </div>
+          <div class="ticker-row">
+            <span class="ticker-sym">MDT</span>
+            <span class="ticker-price">$84.20 <span class="ticker-change dn">▼ 0.3%</span></span>
+          </div>
+          <div class="ticker-row">
+            <span class="ticker-sym">ABT</span>
+            <span class="ticker-price">$112.80 <span class="ticker-change up">▲ 0.4%</span></span>
+          </div>
+          <div class="ticker-row">
+            <span class="ticker-sym">BSX</span>
+            <span class="ticker-price">$76.55 <span class="ticker-change up">▲ 0.9%</span></span>
+          </div>
+        </div>
+
+        <div class="listen-card">
+          <div class="listen-label">This Week's Podcast</div>
+          <div class="listen-title">PARTNER 3 At Year 5: What The Editorial Does Not Say</div>
+          <div class="listen-meta">18 min listen · Case discussion</div>
+        </div>
+
+        <div class="trials-teaser">
+          <div class="trials-teaser-label">Trials in Progress</div>
+          <div class="trial-mini">
+            <span class="name">Early TAVR</span>
+            <span class="nct">NCT03042104</span>
+          </div>
+          <div class="trial-mini">
+            <span class="name">Progress</span>
+            <span class="nct">NCT04889872</span>
+          </div>
+          <div class="trial-mini">
+            <span class="name">Triscend II</span>
+            <span class="nct">NCT04482062</span>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EDITORIAL CALLOUT — black + red, full width ═══ -->
+<section class="editorial-section">
+  <div class="editorial-callout">
+    <div class="editorial-label">From the Editor</div>
+    <p class="editorial-body">
+      The PARTNER 3 5-year readout is being celebrated as a TAVR victory. <span class="pull">It is.</span> But the structural valve deterioration signal in the TAVR arm at year 5 is a story the device community is going to spend the next two AATS meetings trying to explain. Read the back-half of the paper before you read the press release.
+    </p>
+    <div class="editorial-attribution">Michael Bowdish, MD · Editor</div>
+  </div>
+</section>
+
+<!-- ═══ TRIALS ROW ═══ -->
+<section class="trials-section">
+  <div class="container">
+    <h3 class="section-heading">Clinical Trials in Progress</h3>
+    <p class="section-subheading">Active enrollment · Expected readouts within 18 months</p>
+    <div class="trials-grid">
+      <div class="trial-card">
+        <div class="trial-name">Early TAVR</div>
+        <div class="trial-nct">NCT03042104</div>
+        <p class="trial-desc">Asymptomatic severe AS in patients with preserved LV function. Tests TAVR vs clinical surveillance. Watershed trial for the asymptomatic indication.</p>
+      </div>
+      <div class="trial-card">
+        <div class="trial-name">Progress</div>
+        <div class="trial-nct">NCT04889872</div>
+        <p class="trial-desc">Moderate AS with heart failure. The expansion-of-indication trial that everyone in the structural heart space is watching for the device strategy implications.</p>
+      </div>
+      <div class="trial-card">
+        <div class="trial-name">Triscend II</div>
+        <div class="trial-nct">NCT04482062</div>
+        <p class="trial-desc">EVOQUE tricuspid valve replacement vs optimal medical therapy. The trial that will define whether transcatheter tricuspid replacement gets a real indication.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SUBSCRIBE BAND ═══ -->
+<section class="subscribe-section">
+  <div class="subscribe-inner">
+    <div class="subscribe-text">
+      <h3 class="subscribe-headline">A Surgeon's Reading.<br>Delivered Daily.</h3>
+      <p class="subscribe-subhead">Free for the AATS week launch. No industry funding. No tracking pixels.</p>
+    </div>
+    <form class="subscribe-form" action="#" method="post">
+      <input type="email" class="subscribe-input" placeholder="your.name@institution.edu">
+      <button type="submit" class="subscribe-btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-wordmark">
+          The Valve
+          <span class="wire">— W I R E —</span>
+        </div>
+        <p>A surgeon's reading of structural heart disease, written from inside the AATS room and intended for everyone the field touches.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Sections</div>
+        <ul>
+          <li><a href="#">Aortic</a></li>
+          <li><a href="#">Mitral</a></li>
+          <li><a href="#">Tricuspid</a></li>
+          <li><a href="#">Surgical vs Transcatheter</a></li>
+          <li><a href="#">Industry</a></li>
+          <li><a href="#">Trials</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">About</div>
+        <ul>
+          <li><a href="#">Editorial Stance</a></li>
+          <li><a href="#">Methodology</a></li>
+          <li><a href="#">Editor</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Archive</div>
+        <ul>
+          <li><a href="#">By Date</a></li>
+          <li><a href="#">By Topic</a></li>
+          <li><a href="#">By Journal</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-label">Listen</div>
+        <ul>
+          <li><a href="#">Podcast</a></li>
+          <li><a href="#">RSS Feed</a></li>
+          <li><a href="#">Apple Podcasts</a></li>
+          <li><a href="#">Spotify</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="colophon">
+        <strong>Founded April 2026 · Edited from Los Angeles.</strong> Independent. No industry funding since issue one. Set in Big Shoulders Display, Fraunces, and Space Grotesk. Anatomical illustration by the editor's own brand designer.
+      </div>
+      <div class="right">
+        © 2026 The Valve Wire<br>
+        Vol. III · Issue 47
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
