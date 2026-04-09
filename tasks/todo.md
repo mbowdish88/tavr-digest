@@ -1,5 +1,9 @@
 # AATS Week Launch Plan — The Valve Wire
 
+> **2026-04-08 EOD update:** End-of-day handoff is at `tasks/2026-04-08-handoff.md`. Read that first if you're picking up the project after a break. It captures the four workstreams (website build, business plan, PDF extractor, agentic progression) and the priority list for tomorrow morning.
+
+
+
 **Generated:** 2026-04-05 by `/plan-ceo-review` (gstack)
 **Launch target:** Week of April 29, 2026 (AATS 2026), 24 days from generation date
 **Mode:** Selective Expansion
@@ -87,6 +91,61 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
   - **Trusted colleagues** at Cedars-Sinai and beyond who would amplify
 - [ ] Draft the announcement copy (reuse generate_proposal.py output if applicable). Tone: "publication for the structural heart ecosystem, written from a surgeon's perspective." NOT "publication for surgeons."
 - [ ] Decide channel: personal email vs newsletter blast vs LinkedIn post vs all three. Likely all three with different copy for each audience segment.
+
+---
+
+## NEW (added 2026-04-08 EOD) — Tier 2 / Tier 3 launch path items
+
+### Business plan (Tier 2 — week 1)
+- **Status:** Not started. Named tonight. The artifact that doesn't exist yet.
+- **Why it matters:** the project has gotten big enough that "side project with editorial voice" is no longer a sufficient mental model. Need a written document that lays out HOW The Valve Wire becomes a real business with money flowing through it. Without it, every commercialization decision is a guess.
+- **Effort:** 2-3 hours focused for v1. Co-author with Claude Opus directly (no skill needed).
+- **Output:** `tasks/business-plan-v1.md`
+- **The 10 sections:** Executive summary · Publication & moats · Market & audience · Revenue model · Unit economics · Go-to-market · Financial projections · Team & org · Risks & mitigations · Next 90 days
+- **Open questions a business plan must answer:** Free vs paid at launch? Which audience segment is the first paid user? Sponsorship strategy? CME accreditation timing? Platform play (medweb-template) priority? Year-1 revenue target?
+- **Priority:** Tomorrow morning Apr 9, second block after pen-name decision.
+
+### Website build — Next.js port of CHOSEN-tabloid-3col-v1.html (Tier 1 — weeks 1-3)
+- **Status:** Blueprint committed. Port not started.
+- **Branch strategy:** New `redesign-tabloid-3col` from main. Vercel auto-deploys preview URLs.
+- **Within the branch:** big-bang rewrite, file-by-file with Opus directly, no background agents, translation not interpretation.
+- **Component dependency order:** globals → chrome → hero → sections → wiring → pipeline change → methodology page → other routes → signup form → /qa → /design-review → merge → /canary
+- **Effort:** 14-20 hours focused, spread over 5-7 days
+- **Open architectural questions:** branch name (recommend redesign-tabloid-3col), list provider (Buttondown), pipeline change in summarizer.py for tabloid_headline + tabloid_deck fields, multi-route extension order
+- **Blocked by:** pen-name decision (CEO discussion), then partially by business plan v1 for SubscribeBar form fields
+
+### PDF extractor for Cedars-firewalled papers (Tier 4 — post-launch)
+- **Status:** Architecture sketched 2026-04-08. Not started. **DO NOT BUILD BEFORE LAUNCH.**
+- **Goal:** Daily/weekly automated download of high-impact structural-heart papers from behind the Cedars-Sinai institutional firewall. Drop into `knowledge/papers/inbox/` for the existing indexer to process.
+- **Architecture (full sketch in `tasks/2026-04-08-handoff.md`):**
+  1. Journal TOC monitor — RSS / DOI feeds for NEJM, JAMA, JACC, Lancet, EHJ, JTCVS, ATS, EJCTS
+  2. Relevance scorer — Claude prompt for Valve-Wire-relevance
+  3. Fetch queue — `data/fetch_queue.json` of target DOIs
+  4. PDF fetcher — opens DOIs via Cedars EZproxy with stored cookies (refreshed weekly via gstack `/setup-browser-cookies`)
+  5. Drop to inbox — existing `knowledge/indexer.py` processes them
+  6. Auto-injection into daily Claude prompts via existing `papers_index.json`
+- **Files to build:** `sources/journal_toc.py`, `sources/relevance_scorer.py`, `tools/pdf_fetcher.py`, `tools/cedars_auth.py`, `data/fetch_queue.json`
+- **Effort:** ~1-2 days focused engineering
+- **Where it runs:** NOT GitHub Actions (cookies expire and shouldn't be in CI secrets). Local cron on Mac, Eggar (Mac Mini), or Beckett (OpenClaw machine). Or triggered manually via Telegram command when at a Cedars machine.
+- **CRITICAL:** Defer until after AATS launch. If something goes wrong and Cedars IT flags your account, you lose institutional access right before the launch. Too much risk for the timing.
+
+### Agentic progression — multi-agent infrastructure for tavr-digest (Tier 4 — post-launch)
+- **Status:** Strategic shift named 2026-04-08. Infrastructure exists, just unused for tavr-digest.
+- **The framing:** Solo + interactive Claude Code sessions doesn't scale. Need parallel work happening behind the scenes so the user stops being the bottleneck.
+- **Infrastructure already in place:** GitHub Actions cron (running ✅), OpenClaw on Beckett (set up ✅), project kanban at localhost:3000 (running ✅), Telegram bot on Railway (running ✅), gstack `/schedule` and `/loop` skills (available, never used), Claude Agent SDK (available, never used)
+- **Background-eligible vs interactive-only framework:**
+  - Background-eligible: scheduled fetches, indexing, relevance scoring, drafting, monitoring, reporting
+  - Interactive-only: strategic decisions, editorial taste, anything with the editor's name on it before review
+  - The art is keeping the line clear
+- **The 5 candidate background agents (priority order):**
+  1. PDF fetcher behind Cedars firewall (workstream above)
+  2. AATS 2026 program scraper (time-sensitive, AATS is Apr 29)
+  3. Paper relevance scorer (runs after PDF indexing)
+  4. Outreach list enricher (find institution, role, recent pubs, contacts)
+  5. Daily site canary (gstack `/canary` skill on `/loop` schedule)
+- **Long-term architectural project:** Wire OpenClaw on Beckett to tavr-digest tasks. Give Beckett natural-language tasks, it spawns Claude Code sessions via ACP, does the work, commits results. User wakes up to find work done.
+- **Effort:** Each agent is 1-2 days. Whole infrastructure is a multi-week project.
+- **Tier 4 (post-launch):** None of this gets the publication launched on April 29.
 
 ---
 
