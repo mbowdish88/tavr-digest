@@ -1,0 +1,242 @@
+{
+  "date": "2026-04-09",
+  "articles": [
+    {
+      "title": "Development and cross-site validation of machine-learning models for diagnosis and prognosis of stable angina with and without obstructive coronary artery disease: a study protocol.",
+      "journal": "BMJ open",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41951258/",
+      "pmid": "41951258",
+      "authors": "Deng J, Patel SK, Fung M, Heybati K, Layard B et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "This protocol describes shared methods for two machine-learning (ML) studies: (1) differentiating ANOCA from stable angina with obstructive CAD and (2) predicting long-term mortality among patients with ANOCA and obstructive CAD.",
+      "key_numbers": [
+        "0%",
+        "50%",
+        "50%"
+      ],
+      "section": "general"
+    },
+    {
+      "title": "Early safety and efficacy of intra-annular versus supra-annular self-expanding transcatheter heart valves.",
+      "journal": "Clinical research in cardiology : official journal of the German Cardiac Society",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41949623/",
+      "pmid": "41949623",
+      "authors": "Mattig I, Romero Dorta E, K\u00f6sters L, Fietz AK, Schulze D et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "The FIRE TAVI study compared procedural in-hospital and mid-term outcomes of the intra-annular Navitor THV and the supra-annular Evolut PRO THV.",
+      "key_numbers": [
+        "95%",
+        "95%",
+        "95%",
+        "0.8%",
+        "3.5%",
+        "95%",
+        "p\u2009=\u20090.032",
+        "95% CI 0.50-1.89",
+        "95% CI 0.67-1.90",
+        "95% CI 0.66-1.63",
+        "OR 0.97",
+        "OR 1.13",
+        "or 7.0",
+        "HR 1.04"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Safety and Feasibility of Left Bundle Branch Area Pacing Following Transcatheter Tricuspid Valve Replacement.",
+      "journal": "JACC. Case reports",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41949505/",
+      "pmid": "41949505",
+      "authors": "Kamareddine M, Olleik F, Hanley C, Goldman S, Gray WA et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "Our series reinforces its safety and adds systematic echocardiographic follow-up.",
+      "key_numbers": [
+        "24.7%"
+      ],
+      "section": "tricuspid"
+    },
+    {
+      "title": "Acquired von Willebrand Syndrome and Hemolysis in High-Shear States: Time for Cardio-Hematology Collaboration.",
+      "journal": "JACC. Asia",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41949248/",
+      "pmid": "41949248",
+      "authors": "Passaniti G, Zhan H, Zheng H",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Polymeric Transcatheter Heart Valves: Are We Entering the Next Era of TAVR Durability?",
+      "journal": "JACC. Asia",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41949240/",
+      "pmid": "41949240",
+      "authors": "Shirai S, Hayashi M, Ishizu K",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "BMPR2 affects valve development via ECM-receptor interaction in zebrafish.",
+      "journal": "Frontiers in cell and developmental biology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41948079/",
+      "pmid": "41948079",
+      "authors": "Shi Y, Huang Y, Xia Y, Li Y, Wang Y et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "In this study, we demonstrate that bmpr2a and bmpr2b cooperatively regulate cardiac contractile function and valve development in zebrafish, providing insights into BMPR2-mediated cardiovascular morphogenesis in humans.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Annular rupture in TAVI: considerations on the importance of on-site cardiothoracic surgery.",
+      "journal": "Journal of cardiothoracic surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41947216/",
+      "pmid": "41947216",
+      "authors": "Bains C, Zamvar V, Bing R",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Lifetime Valve Management and the Economic Forces Behind TAVR Expansion in Younger Patients",
+      "journal": "Annals of Thoracic Surgery",
+      "url": "https://www.annalsthoracicsurgery.org/article/S0003-4975(26)00315-2/fulltext?rss=yes",
+      "pmid": "",
+      "authors": "Bipul Mainali, Nicolas Pope",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Anomalous Left Circumflex Artery in Valve Interventions: Surgical and Transcatheter Challenges",
+      "journal": "Annals of Thoracic Surgery",
+      "url": "https://www.annalsthoracicsurgery.org/article/S0003-4975(26)00311-5/fulltext?rss=yes",
+      "pmid": "",
+      "authors": "Koji Furukawa, Hirohito Ishii, Shuhei Sakaguchi, Kousuke Mori, Ayaka Iwasaki, Risa Meiri",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "As transcatheter aortic valve replacement (TAVR) expands to lower-risk populations, understanding mechanisms of injury in both surgical and transcatheter settings is crucial.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "MiRus begins enrollment in transcatheter aortic valve trial - MassDevice",
+      "journal": "MassDevice",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9wTGVlel93UXFlM29GRnY3WHQ5R3Zjb3FWQTlhd0VFWVNtcFYyc3lZTVgtTmFON2lhY2tIZTh1Q21EYzZuTENfY1JCcDJBTnpRN2NlZ3ZIa1QxSzJZZzVrX3V3Ujlfb1Q0Z2RCYjVB?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "MiRus begins enrollment in transcatheter aortic valve trial&nbsp;&nbsp;MassDevice",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "TMC Medical Minutes - TAVR - KXII",
+      "journal": "KXII",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE8xbGMzZllpU0g5TFplWWdNOFdvWkdHaUg4RF80b2xJQWZPRmNSaFNzWGdaTXJOVnluYUJOZE1OdDF5N1Vod1RIUGVJVUpsSFBjNnE1dG5YNEVYaUJfNWhnOFVmWlRXMTVr0gF8QVVfeXFMUDd3NjNNYnlwbC1pdmEyWFBrb1dfZHdGc2pfZlYyb3o0Z2JtcWJoWXFxZW5JV014TndvSVU4d2VHekR4Mm1nckhiZ2kwbDc2aDZQS3FiaV95VHFQOWRsZXlmeFpfSDBveUJqcGJrbDE0NUFQemk3TUphMFZ0eg?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TMC Medical Minutes - TAVR&nbsp;&nbsp;KXII",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Altamira Gold Strengthens Board of Directors with the Appointment of Renowned Macro Investor Tavi Costa - TMX Newsfile",
+      "journal": "TMX Newsfile",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQbkVPVDhydV9OUnlzaWlCS09SWUJLUTR5TzYyVE1JTHc0Nk4wVi00SExNRTlKU0g1ZlAzTzJ6T2h1S3hNa09YNlpGdW5xQmZEc0NnTlY5TU5lVDlkWEEtN0N1TWoxendweVh1S3NSUnczODl2WVdVQ0tHSUpGMVZSWkxRdWNhSHN3UnNzU1U5cDZvUTlXRzgxVXBmajRaemQ0MnFfalNzMmJUWjJ4RkpMQTBvMl9na01KY2VrS19DOU42WGZVZk1Qd0hsbWFEcEI1bjhNQXhVX2lMVlFxVXI4Rg?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Altamira Gold Strengthens Board of Directors with the Appointment of Renowned Macro Investor Tavi Costa&nbsp;&nbsp;TMX Newsfile",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "joe's THE TAVI VEGAN SUEDE SKIRT DARK CHOCOLATE Top Sale | Clothing - bahmut1571.com.ua",
+      "journal": "bahmut1571.com.ua",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE5SMXVGWE9CTWN4d3doNTdWT1ZTOFJQdHFqNUNrVVV2cGl2SkVPbk1zbUVpY2lRM3lKR0RyVjFUQ3dONTNmLUR2cGZKZ3RaaEtMbDdiYzIxRGg?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "joe's THE TAVI VEGAN SUEDE SKIRT DARK CHOCOLATE Top Sale | Clothing&nbsp;&nbsp;bahmut1571.com.ua",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "TRiCares gains FDA IDE to initiate tricuspid regurgitation treatment pivotal trial - MSN",
+      "journal": "MSN",
+      "url": "https://news.google.com/rss/articles/CBMi4wJBVV95cUxNZVlhOVJENHJNbjlyNk1NQUUxd09yWW9MVG41N1NPd0s4WEtDenB1WExhUHR3b0xsR010a0tfZ0VIcTdJVFd6bHFRYjgxZEJzelYyWGFzMnRMX3VvVWw2anVvZ285VXRnVGdLb0tmeGROcTdXTWVYdS1JN21PalVSVEFuWTVLUjRlLXhjY2hFYVRDakdSOWZQS1dzUlJIZTgwLU1mb1BEaDZ0NlZ1S18wNVF3U19MVzFPQm52aHdCWlRjVzEwYUVHZmRMdk9iUUluZWpZZ3BqdElMNTFEYU1JQWY3aTVXSE9ac0IxaHFzWTNGdzFXZ1RXcnFMQVBab3dWMzJpOXQ3ZHd4OEtuZzJ2dEViNy1QZ1JFQ2lIbDdqVlFXUnZiZktSbnNtVWNOLXZLaGl4R1RmZnRJSnAwY0RrdE1Mc0hIYUNadjR3eHRmcFFvMVhyX2xFMzViNUtyVEpHRmVF?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "TRiCares gains FDA IDE to initiate tricuspid regurgitation treatment pivotal trial&nbsp;&nbsp;MSN",
+      "key_numbers": [],
+      "section": "tricuspid"
+    },
+    {
+      "title": "Transcatheter Heart Valves Special Report - MassDevice",
+      "journal": "MassDevice",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNc0hlS1V5cmdVaV82TEZOR1JZa19BVDVGWFVOT2ptMmozTUxncnRJT2xCTHA3LXBRU1BYZThJWlcwQzdFUFdZU2doWmk3SlZwZ2tYRmVMU3VEWkNCeHpBSGxqWFRLQU1mMGxodEozVUpzRzQ2b1RLaFJWdGw4TllyanlvRzNDMm12?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Transcatheter Heart Valves Special Report&nbsp;&nbsp;MassDevice",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "MiRus Begins Patient Enrollment in the STAR Randomized Trial of the Siegel\u2122 Transcatheter Aortic Valve - Morningstar",
+      "journal": "Morningstar",
+      "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxNY2hPWmdILUNPVldRaFFKM1NjZ19RY0I3dTBTUGw5aHhoRWRVWUVSV3g5VU1sTFlmWGNxdVhLVU1OWWRQX21DSmNCQlV3MnlpZ3g1WTZOMjFPLUpXMFlBSGVtLTdoWjZDTTVpOTFsVTY2VzRFZnlxd3hHVkhaOEdiekpVbWMxRENHMy1jU09Tc1VQRWh2UDVWTk5fZ1IxcGhZOWRkRG4wUFFyTGN1Z2VPOWZ6Y1lJU3hGcE9ZTFVGV3FwVlJfY2R5WS1oM0JlZUhZVlprY0VHT2FUbVdzNEZ4Q245akN1VU1BR3d2U3R1VWhzX3VI?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "MiRus Begins Patient Enrollment in the STAR Randomized Trial of the Siegel\u2122 Transcatheter Aortic Valve&nbsp;&nbsp;Morningstar",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "MiRus Begins Patient Enrollment in STAR Trial for Siegel Transcatheter Aortic Valve - National Today",
+      "journal": "National Today",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOZDk5UTJwaWJrcHRGWnF6Y3k4MVhIQ3NoeDNGSGZ4NTRkLWRZLTlra2twQXdoY1B0MXgtdjBDVy1xSHhHQlBGOHpiSUZ3S3ZULTdvVnNScjNKZ3duc3NGOUR5SHY0MEdiUzNzTHREWHhVRzd5aEd0QWQzVUJaay0tclZzdVh6TWNiQ2NSLUx6TGlvcjRWLVdZM2FidWNMWEVxVG04T3pDWUpuS25BSU1VZGhrUmk2WGVCeWIxZDdzdktCVk5BU0VqSFBFMUQ5Smh3Q2dnTk41dzE?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "MiRus Begins Patient Enrollment in STAR Trial for Siegel Transcatheter Aortic Valve&nbsp;&nbsp;National Today",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "See All Slides - TCTMD.com",
+      "journal": "TCTMD.com",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOWlNNWVJJUm94UFBFZWwyX001ajBtSV9RbjRVaU9WbUJsNVUtMXd3bVFfNWNidmxyd3VSb280LU93QVhIX3hhY2ZhR1Z4MWdyWXRHX3o2cHNEcFVOd1FxUVoyQWNnWkhHeE5hNlZJa0pJSU1YMWloeHRiOGUzUldQaA?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "See All Slides&nbsp;&nbsp;TCTMD.com",
+      "key_numbers": [],
+      "section": "general"
+    }
+  ]
+}
