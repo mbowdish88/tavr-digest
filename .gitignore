@@ -16,3 +16,4 @@ data/*
 *.flac
 music/
 art work/
+.gstack/
