@@ -1,8 +1,57 @@
-# Design Decision — The Valve Wire (PENDING — two finalists)
+# Design Decision — The Valve Wire (✅ CHOSEN: NY Post tabloid in 3 columns)
 
-**Status:** PENDING. Two finalists on the table. User sleeping on it. Pick first thing in the morning, full energy, before any other decisions.
-**Decided:** 2026-04-05 evening, deferred to 2026-04-06 morning
-**Launch target:** Week of AATS, April 29, 2026 (24 days from decision)
+**Status:** ✅ COMMITTED 2026-04-08
+**Blueprint:** `docs/designs/CHOSEN-tabloid-3col-v1.html`
+**Launch target:** Week of AATS, April 29, 2026 (21 days from decision as of commit)
+
+## What we landed on (after 6 iterations across 4 days)
+
+**NY Post tabloid energy in a three-column responsive grid**, with the Blue Figures cover image as a small publication seal in the masthead.
+
+- **Red NY Post masthead** (#d41920) — two-tone wordmark: white "THE VALVE" + yellow "— W I R E —"
+- **Blue Figures cover as a 92px square seal** beside the wordmark — brand identity present, not dominant
+- **Black kicker strip** with yellow text and ★ stars (matches original v1 tabloid)
+- **3-col hero grid:**
+  - LEFT (50%): Lead story with **NO image** — type-as-visual at 92pt Big Shoulders Display. The headline IS the visual. "TAVR WINS / ON MORTALITY. / **LOSES ON DURABILITY.**" with the third line in red.
+  - MIDDLE (30%): Three secondary tabloid stories with bold condensed headlines, red FDA flag
+  - RIGHT (20%): Live SpO2 monitor + Listen card + Trials teaser
+- **Editorial callout** as a full-width black band with red borders, italic Fraunces, "FROM THE EDITOR"
+- **Trials in Progress** with three navy-topped cards
+- **Red subscribe band** with yellow CTA
+- **Black footer** with red section labels
+- **Responsive `@media` queries** collapse to single column at <768px
+
+**Typography:** Big Shoulders Display (wordmark, headlines), Fraunces variable (body, italic), Space Grotesk (nav, meta), JetBrains Mono (live monitor)
+
+**Why it works:** Voice and visual finally pull in the same direction. Tabloid energy matches the opinionated editorial voice. The cover image is brand identity, not a hero. Type-as-visual at 92pt is the radical move — no other medical newsletter does it. Multi-route problem solved by the 3-col grid (scales to archive, weekly, sections). Doesn't look AI-generated because it's loud, opinionated, and uses real brand assets.
+
+## Open question (deferred to CEO discussion)
+
+**Pen name vs real-name byline.** User flagged 2026-04-08 that the live valvewire.com uses a pen name, not "Michael Bowdish, MD." The mockup hardcodes "Michael Bowdish, MD · Editor" as a placeholder. Single CSS variable / template substitution swap if the decision goes the other way. This is a load-bearing strategic question for the editorial moat — the named-critic editorial stance loses force when the editor isn't named — and should be resolved before AATS launch.
+
+## Rejected directions (preserved for comparison)
+
+- `CANDIDATE-economist-modern-v1.html` — too similar to live site genre
+- `CANDIDATE-bluefigures-v1.html` — still too "tasteful publication"
+- `CANDIDATE-nejm-enhanced-v3.html` — academic frame dampens editorial voice + NEJM trade dress concerns
+- `CANDIDATE-tabloid-v1.html` — original NY Post single-column tabloid; the 3-col version supersedes it but stays as a reference
+
+## Next moves
+
+1. ✅ Commit this decision and the chosen blueprint
+2. Resolve the pen-name question (CEO discussion)
+3. Run `/checkpoint` to capture current state for session continuity
+4. Start the Next.js port on a fresh `redesign-tabloid-3col` branch from main, file-by-file with Opus directly
+5. List provider for SubscribeBar.tsx (recommend Buttondown)
+6. Pipeline change in `processing/summarizer.py` to produce `tabloid_headline` and `tabloid_deck` fields
+7. Multi-route extension whiteboarding (~30 min before any code)
+8. Methodology page, signup form, quality rubric, AATS coverage plan, launch outreach list (per `tasks/todo.md`)
+
+---
+
+## (HISTORICAL — superseded) The two finalists from 2026-04-06
+
+The following section was the working state on 2026-04-06 morning when there were two finalists. Preserved for context. Both candidates were ultimately rejected in favor of the NY Post 3-col direction built on 2026-04-08.
 
 ---
 

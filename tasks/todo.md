@@ -149,13 +149,19 @@ After the port lands, return to this document and execute Priorities 2-6.
 
 ---
 
-## Step 0 — Distinctive design exploration ✅ COMPLETE (2026-04-05)
+## Step 0 — Distinctive design exploration ✅ COMPLETE (committed 2026-04-08)
 
-The exploration ran across 3 iterations in claude.ai (15 HTML mockups across 5 visual directions × 3 iterations). All 15 are preserved in `docs/designs/explorations/v[1-3]-[1-5]-*.html`. Full decision documented in `tasks/2026-04-05-design-decision.md`.
+After 6 iterations across 4 days (15 HTML mockups in claude.ai + 4 hand-built mockups in Claude Code), the chosen direction is **NY Post tabloid energy in a three-column responsive grid** with the Blue Figures cover image as a publication seal in the masthead.
 
-**Decision: tabloid direction (NY Post front page energy).** Blueprint: `docs/designs/CHOSEN-tabloid-v1.html`. The publication's editorial voice is opinionated and willing to call BS on hyped device technology, and the visual finally matches that voice. The 52pt Oswald headline "TAVR WINS ON MORTALITY. LOSES ON DURABILITY." (with key phrases in red) IS the editorial stance made loud.
+**Blueprint:** `docs/designs/CHOSEN-tabloid-3col-v1.html`
 
-**Open fallback:** an enhanced NEJM direction (NEJM v2 base + vitals monitor strip from OR minimalism + H&E pathology palette accents) is queued as Plan B. Prompt at `tasks/distinctive-design-prompt-nejm-enhanced.md`. Run it tomorrow morning before committing to tabloid if you want both options on the table when fully rested. If the NEJM-enhanced direction is meaningfully stronger AND clears the multi-audience filter, swap it in as the chosen direction and run the porting procedure against it instead.
+**Key elements:** Red NY Post masthead, Blue Figures cover seal (92px), black kicker strip with yellow stars, 3-col hero (lead = 92pt type-as-visual headline NO IMAGE / middle = 3 secondary stories / right = live monitor + listen + trials teaser), full-width black editorial callout with red borders, trials grid, red subscribe band with yellow CTA, black footer, responsive collapse at <768px.
+
+**Typography:** Big Shoulders Display (wordmark, headlines), Fraunces variable (body, italic), Space Grotesk (nav, meta), JetBrains Mono (live monitor)
+
+**Full decision doc:** `tasks/2026-04-05-design-decision.md`
+
+**Open question (deferred to CEO discussion):** Pen-name vs real-name byline. The mockup hardcodes "Michael Bowdish, MD · Editor" but the live site uses a pen name. Strategic decision required before AATS launch — single CSS variable swap once decided.
 
 ---
 
