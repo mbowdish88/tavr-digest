@@ -91,19 +91,21 @@ def _save_episodes(episodes: list[dict]):
 
 
 def _get_duration_str(mp3_path: Path) -> str:
-    """Get duration string in HH:MM:SS format."""
-    try:
-        from mutagen.mp3 import MP3
-        audio = MP3(str(mp3_path))
-        total_secs = int(audio.info.length)
-        hours = total_secs // 3600
-        minutes = (total_secs % 3600) // 60
-        seconds = total_secs % 60
-        if hours > 0:
-            return f"{hours}:{minutes:02d}:{seconds:02d}"
-        return f"{minutes}:{seconds:02d}"
-    except Exception:
-        return "00:00"
+    """Get duration string in HH:MM:SS format. Raises on failure — we
+    refuse to ship an episode with a fake "00:00" duration."""
+    from mutagen.mp3 import MP3
+    audio = MP3(str(mp3_path))
+    total_secs = int(audio.info.length)
+    if total_secs <= 0:
+        raise ValueError(
+            f"mutagen returned non-positive duration ({total_secs}) for {mp3_path}"
+        )
+    hours = total_secs // 3600
+    minutes = (total_secs % 3600) // 60
+    seconds = total_secs % 60
+    if hours > 0:
+        return f"{hours}:{minutes:02d}:{seconds:02d}"
+    return f"{minutes}:{seconds:02d}"
 
 
 def upload_to_github_releases(mp3_path: Path, episode_date: str, title: str) -> str:
@@ -123,7 +125,7 @@ def upload_to_github_releases(mp3_path: Path, episode_date: str, title: str) -> 
     logger.info(f"Creating GitHub release {tag}...")
 
     try:
-        result = subprocess.run(
+        create_result = subprocess.run(
             [
                 "gh", "release", "create", tag,
                 str(mp3_path),
@@ -136,11 +138,27 @@ def upload_to_github_releases(mp3_path: Path, episode_date: str, title: str) -> 
             timeout=120,
         )
 
-        if result.returncode != 0:
-            logger.error(f"GitHub release failed: {result.stderr}")
-            return ""
+        if create_result.returncode != 0:
+            stderr_lower = (create_result.stderr or "").lower()
+            if "already exists" in stderr_lower:
+                logger.warning(f"Release {tag} already exists; uploading asset with --clobber")
+                upload_result = subprocess.run(
+                    [
+                        "gh", "release", "upload", tag, str(mp3_path),
+                        "--clobber",
+                        "--repo", config.GITHUB_REPO,
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                )
+                if upload_result.returncode != 0:
+                    logger.error(f"Asset re-upload to existing release failed: {upload_result.stderr}")
+                    return ""
+            else:
+                logger.error(f"GitHub release failed: {create_result.stderr}")
+                return ""
 
-        # Construct the download URL
         download_url = (
             f"https://github.com/{config.GITHUB_REPO}/releases/download/{tag}/{filename}"
         )
