@@ -5,11 +5,20 @@ on:
     workflows: ["Weekly Valve Wire Summary"]
     types: [completed]
   workflow_dispatch:
+  schedule:
+    # Saturday 10:00 UTC fallback in case workflow_run did not fire
+    # (e.g., weekly-digest failed). Skip-if-already-published guards
+    # against duplicate runs when workflow_run did fire.
+    - cron: '0 10 * * 6'
+
+concurrency:
+  group: weekly-podcast
+  cancel-in-progress: false
 
 jobs:
   generate-podcast:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 360
     permissions:
       contents: write
@@ -17,18 +26,35 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Skip if today's episode is already published
+        id: check_existing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="podcast-$(date -u +%Y-%m-%d)"
+          if gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; skipping podcast generation."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Set up Python
+        if: steps.check_existing.outputs.skip != 'true'
         uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
       - name: Install system dependencies
+        if: steps.check_existing.outputs.skip != 'true'
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
       - name: Install Python dependencies
+        if: steps.check_existing.outputs.skip != 'true'
         run: pip install -r requirements.txt
 
       - name: Restore podcast segments cache
+        if: steps.check_existing.outputs.skip != 'true'
         uses: actions/cache@v5
         with:
           path: data/podcast/segments
@@ -37,6 +63,7 @@ jobs:
             podcast-segments-
 
       - name: Generate podcast
+        if: steps.check_existing.outputs.skip != 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -72,12 +99,72 @@ jobs:
       # Upload is handled by publisher.py — no duplicate shell upload needed (R5)
 
       - name: Update RSS feed and landing page
+        if: steps.check_existing.outputs.skip != 'true'
         run: |
+          set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git stash --include-untracked || true
-          git pull --rebase
-          git stash pop || true
+          if ! git pull --rebase; then
+            echo "::error::git pull --rebase failed; aborting before commit"
+            git rebase --abort 2>/dev/null || true
+            exit 1
+          fi
+          if git stash list | grep -q .; then
+            if ! git stash pop; then
+              echo "::error::git stash pop produced conflicts; aborting"
+              exit 1
+            fi
+          fi
           git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json site/public/data/latest.json || true
-          git commit -m "Publish podcast episode $(date +%Y-%m-%d)" || true
-          git push
+          if git diff --cached --quiet; then
+            echo "Nothing staged to commit."
+          else
+            git commit -m "Publish podcast episode $(date +%Y-%m-%d)"
+          fi
+          PUSH_OK=0
+          for i in 1 2 3; do
+            if git pull --rebase && git push; then
+              PUSH_OK=1
+              break
+            fi
+            echo "Push attempt $i failed; sleeping $((i * 5))s before retry"
+            sleep $((i * 5))
+          done
+          if [ "$PUSH_OK" != "1" ]; then
+            echo "::error::All git push attempts failed"
+            exit 1
+          fi
+
+      - name: Verify episode is live on website
+        if: steps.check_existing.outputs.skip != 'true'
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set -e
+          EPISODE_DATE=$(date -u +%Y-%m-%d)
+          # Give Vercel a moment to start building
+          sleep 60
+          # Poll up to 6 times (3 minutes) for the episode to appear
+          LIVE_DATE=""
+          for i in 1 2 3 4 5 6; do
+            LIVE_DATE=$(curl -sL --max-time 15 "https://thevalvewire.com/data/podcast_episodes.json?nc=$(date +%s)" \
+              | python3 -c "import json,sys; d=json.load(sys.stdin); print(d[0].get('episode_date','') if isinstance(d,list) and d else '')" 2>/dev/null || echo "")
+            if [ "$LIVE_DATE" = "$EPISODE_DATE" ]; then
+              break
+            fi
+            echo "Attempt $i: live shows '$LIVE_DATE', expected '$EPISODE_DATE'"
+            sleep 30
+          done
+          if [ "$LIVE_DATE" = "$EPISODE_DATE" ]; then
+            MSG="✅ Podcast $EPISODE_DATE is live on thevalvewire.com"
+            EXIT=0
+          else
+            MSG="⚠️ Podcast $EPISODE_DATE published but site shows '$LIVE_DATE' after 4 minutes. Vercel may still be building or filtered the build."
+            EXIT=1
+          fi
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="$MSG" || true
+          exit $EXIT
