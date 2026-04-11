@@ -18,19 +18,35 @@ import config
 logger = logging.getLogger(__name__)
 
 
+def _site_episodes_path() -> Path:
+    return config.BASE_DIR / "site" / "public" / "data" / "podcast_episodes.json"
+
+
 def _load_episodes() -> list[dict]:
-    """Load episode history from JSON file."""
-    if config.PODCAST_EPISODES_DB.exists():
-        return json.loads(config.PODCAST_EPISODES_DB.read_text(encoding="utf-8"))
+    """Load episode history from JSON file.
+
+    Prefers data/podcast_episodes.json but falls back to site/public/data/
+    so that CI runs (where data/ may not be committed) still see history.
+    """
+    for path in (config.PODCAST_EPISODES_DB, _site_episodes_path()):
+        if path.exists():
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, list):
+                    return data
+            except Exception as e:
+                logger.warning(f"Failed to read episodes from {path}: {e}")
     return []
 
 
 def _save_episodes(episodes: list[dict]):
-    """Save episode history to JSON file."""
-    config.PODCAST_EPISODES_DB.write_text(
-        json.dumps(episodes, indent=2, default=str),
-        encoding="utf-8",
-    )
+    """Save episode history to both data/ and site/public/data/."""
+    payload = json.dumps(episodes, indent=2, default=str)
+    config.PODCAST_EPISODES_DB.parent.mkdir(parents=True, exist_ok=True)
+    config.PODCAST_EPISODES_DB.write_text(payload, encoding="utf-8")
+    site_path = _site_episodes_path()
+    site_path.parent.mkdir(parents=True, exist_ok=True)
+    site_path.write_text(payload, encoding="utf-8")
 
 
 def _get_duration_str(mp3_path: Path) -> str:
@@ -157,7 +173,21 @@ def publish_podcast(
 
     # Build episode metadata
     episodes = _load_episodes()
-    episode_number = len(episodes) + 1
+
+    # Check if this episode already exists (re-run scenario)
+    existing_index = next(
+        (i for i, e in enumerate(episodes) if e.get("episode_date") == episode_date),
+        None,
+    )
+
+    if existing_index is not None:
+        existing = episodes[existing_index]
+        episode_number = existing.get("number", existing_index + 1)
+        guid = existing.get("guid") or str(uuid.uuid4())
+    else:
+        existing_numbers = [e.get("number", 0) for e in episodes if isinstance(e.get("number"), int)]
+        episode_number = (max(existing_numbers) if existing_numbers else 0) + 1
+        guid = str(uuid.uuid4())
 
     episode = {
         "number": episode_number,
@@ -168,25 +198,20 @@ def publish_podcast(
         "file_size": file_size,
         "duration": duration,
         "pub_date_rfc2822": formatdate(localtime=True),
-        "guid": str(uuid.uuid4()),
+        "guid": guid,
         "episode_date": episode_date,
         "show_notes_html": show_notes_html,
     }
 
-    episodes.insert(0, episode)  # Newest first
+    if existing_index is not None:
+        episodes[existing_index] = episode
+    else:
+        episodes.insert(0, episode)  # Newest first
+
     _save_episodes(episodes)
 
     # Regenerate RSS feed
     generate_rss_feed(episodes)
-
-    # Write episode data to site/public/data/ for Vercel deployment
-    site_data_dir = config.BASE_DIR / "site" / "public" / "data"
-    site_data_dir.mkdir(parents=True, exist_ok=True)
-    site_episodes_path = site_data_dir / "podcast_episodes.json"
-    site_episodes_path.write_text(
-        json.dumps(episodes, indent=2, default=str), encoding="utf-8"
-    )
-    logger.info(f"Wrote podcast episodes to site: {site_episodes_path}")
 
     logger.info(f"Published episode #{episode_number}: {title} ({duration})")
     return episode
