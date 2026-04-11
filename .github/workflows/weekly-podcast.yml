@@ -78,6 +78,6 @@ jobs:
           git stash --include-untracked || true
           git pull --rebase
           git stash pop || true
-          git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json || true
+          git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json site/public/data/latest.json || true
           git commit -m "Publish podcast episode $(date +%Y-%m-%d)" || true
           git push
