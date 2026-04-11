@@ -22,6 +22,44 @@ def _site_episodes_path() -> Path:
     return config.BASE_DIR / "site" / "public" / "data" / "podcast_episodes.json"
 
 
+def _site_latest_json_path() -> Path:
+    return config.BASE_DIR / "site" / "public" / "data" / "latest.json"
+
+
+def _update_latest_json_podcast_block(episodes: list[dict]):
+    """Propagate the episode list into latest.json so the website reflects
+    new episodes immediately, without waiting for the next daily-digest run
+    to regenerate latest.json. The daily pipeline short-circuits when no
+    new articles are found, which leaves latest.json stale on quiet days.
+
+    Format must match delivery.website._get_all_podcast_episodes output.
+    """
+    latest_path = _site_latest_json_path()
+    if not latest_path.exists():
+        return
+    try:
+        data = json.loads(latest_path.read_text(encoding="utf-8"))
+    except Exception as e:
+        logger.warning(f"Could not read {latest_path} to update podcast block: {e}")
+        return
+    formatted = [
+        {
+            "title": ep.get("title", "The Valve Wire Weekly"),
+            "date": ep.get("episode_date", ep.get("date", "")),
+            "duration": ep.get("duration", ""),
+            "mp3_url": ep.get("mp3_url", ""),
+            "show_notes": ep.get("description", ep.get("show_notes", "")),
+            "show_notes_html": ep.get("show_notes_html", ""),
+        }
+        for ep in episodes
+    ]
+    data.setdefault("podcast", {})
+    data["podcast"]["latest_episode"] = formatted[0] if formatted else {}
+    data["podcast"]["all_episodes"] = formatted
+    latest_path.write_text(json.dumps(data, indent=2, default=str), encoding="utf-8")
+    logger.info(f"latest.json podcast block updated ({len(formatted)} episodes)")
+
+
 def _load_episodes() -> list[dict]:
     """Load episode history from JSON file.
 
@@ -40,13 +78,16 @@ def _load_episodes() -> list[dict]:
 
 
 def _save_episodes(episodes: list[dict]):
-    """Save episode history to both data/ and site/public/data/."""
+    """Save episode history to both data/ and site/public/data/, and
+    propagate the new list into latest.json so the website updates without
+    waiting for the next daily-digest run."""
     payload = json.dumps(episodes, indent=2, default=str)
     config.PODCAST_EPISODES_DB.parent.mkdir(parents=True, exist_ok=True)
     config.PODCAST_EPISODES_DB.write_text(payload, encoding="utf-8")
     site_path = _site_episodes_path()
     site_path.parent.mkdir(parents=True, exist_ok=True)
     site_path.write_text(payload, encoding="utf-8")
+    _update_latest_json_podcast_block(episodes)
 
 
 def _get_duration_str(mp3_path: Path) -> str:
