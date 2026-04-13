@@ -1,0 +1,158 @@
+{
+  "date": "2026-04-13",
+  "articles": [
+    {
+      "title": "The Impact of Vascular Access Complications in Patients Undergoing Transcatheter Aortic Valve Replacement.",
+      "journal": "Catheterization and cardiovascular interventions : official journal of the Society for Cardiac Angiography & Interventions",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41968274/",
+      "pmid": "41968274",
+      "authors": "Mesar T, Jackson A, Chachati G, Jacquemyn X, Ahmad D et al.",
+      "study_design": "Retrospective study",
+      "sample_size": null,
+      "key_finding": "BACKGROUND: Vascular complications remain a significant concern in transfemoral transcatheter aortic valve replacement (TAVR).",
+      "key_numbers": [
+        "84.0%",
+        "2.9%",
+        "13.1%",
+        "36.4%",
+        "27.3%",
+        "16.2%",
+        "7.8%",
+        "0.2%",
+        "6.6%",
+        "10.4%",
+        "2.7%",
+        "10.2%",
+        "95%",
+        "19.6%",
+        "12.2%",
+        "51.1%",
+        "50.9%",
+        "43.1%",
+        "p\u2009<\u20090.001",
+        "p\u2009<\u20090.001",
+        "p\u2009<\u20090.001",
+        "p\u2009=\u20090.214",
+        "95% CI 1.98-8.18",
+        "OR 4.02"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Contribution of Non-Sustained Ventricular Tachycardia to the Primary Prevention of Sudden Cardiac Death\u3000- Validation of Current Japanese Circulation Society / Japanese Heart Rhythm Society Guideline Recommendations in the Nippon Storm Study.",
+      "journal": "Circulation journal : official journal of the Japanese Circulation Society",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41967966/",
+      "pmid": "41967966",
+      "authors": "Yasuoka R, Maruyama M, Noda T, Nakazawa G, Nitta T et al.",
+      "study_design": "",
+      "sample_size": 429,
+      "key_finding": "Endpoints included appropriate ICD therapy, electrical storm, ventricular fibrillation (VF), shock therapy, and mortality.",
+      "key_numbers": [
+        "95%",
+        "P=0.035",
+        "HR 1.82",
+        "n=429",
+        "n=357"
+      ],
+      "section": "general"
+    },
+    {
+      "title": "THOC6 deficiency leads to Cardiomyopathy by Reducing Myocardial Contractile Proteins in Cardiomyocytes.",
+      "journal": "Experimental cell research",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41967792/",
+      "pmid": "41967792",
+      "authors": "Yuan W, Jiang Z, Li F, Chen H, Zhang X et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "METHODS AND RESULTS: This study we firstly utilized CRISPR/Cas9 to knock out THOC6 in H9C2 cardiomyocytes, revealing a reduction in cell proliferation and an increase in apoptosis.",
+      "key_numbers": [
+        "80%"
+      ],
+      "section": "general"
+    },
+    {
+      "title": "The ascending aorta under stress: Preventing and managing type a dissection after TAVI.",
+      "journal": "International journal of cardiology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41967773/",
+      "pmid": "41967773",
+      "authors": "Zheng HJ, Cheng W",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Surgical implantation of an aortic over-expanded transcatheter heart valve: a rescue strategy for calcified and aneurysmatic annulus.",
+      "journal": "European heart journal",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41967045/",
+      "pmid": "41967045",
+      "authors": "Belluschi I, Bruschi G, Russo CF",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Developing Transcatheter Skills as a Cardiac Surgery Resident: An Editorial Comment and Perspective. \"Building the Hybrid Mindset without Losing the Craft\".",
+      "journal": "European journal of cardio-thoracic surgery : official journal of the European Association for Cardio-thoracic Surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41966843/",
+      "pmid": "41966843",
+      "authors": "Zancanaro E, Danesi TH",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "general"
+    },
+    {
+      "title": "Anomalous Left Circumflex Artery in Valve Interventions: Surgical and Transcatheter Challenges.",
+      "journal": "The Annals of thoracic surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41966296/",
+      "pmid": "41966296",
+      "authors": "Furukawa K, Ishii H, Sakaguchi S, Mori K, Iwasaki A et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "Long-term clinical and imaging surveillance is warranted to prevent both acute and delayed left circumflex artery compromise.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "Lifetime Valve Management and the Economic Forces Behind TAVR Expansion in Younger Patients.",
+      "journal": "The Annals of thoracic surgery",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/41966295/",
+      "pmid": "41966295",
+      "authors": "Mainali B, Pope N",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "NCA - Transcatheter Aortic Valve Replacement (TAVR) (CAG-00430R2) - Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "journal": "Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "url": "https://news.google.com/rss/articles/CBMitwJBVV95cUxQUFNKVkU1V1BULS1JYXVwY09USFhobldJSTBHTkpoS2Z0VlY3a0FJeFB0WTVyLVUtQlJxQjFRWWdBZzE1bHU0Sld2alkyZXhraXdKX3FxZlJMZjE3NG9NX2hROFRHSkpZbUptcEg2U2FHdXZFazJJNEdaMFloSlhnc1g1SmhEQTEyTi1vQncwYjF0dHBjc1BJRUVyeE54ei1aTXprWDJwdDdHQUR3bWVwd0U5SFlscS1fOVQwSTNZcGxjN01MOEFxMXY2QWFneUJWX09FN1F3LVNrX2N0cUxTeGc2NXBId3U1QzZhUmM0NW9KekpnaWF5Uk9JNERxT0M3Q241NXR1WVdRVHdVSmxkWUlBdXEwSG5rU3JidU05VHBITU9XYlJZV1huR0xqTC1CaHMtRzhuRQ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "NCA - Transcatheter Aortic Valve Replacement (TAVR) (CAG-00430R2)&nbsp;&nbsp;Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "key_numbers": [],
+      "section": "aortic"
+    },
+    {
+      "title": "NCA - Transcatheter Tricuspid Valve Replacement (TTVR) (CAG-00467N) - Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "journal": "Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "url": "https://news.google.com/rss/articles/CBMipwJBVV95cUxQMDBCUllLUzZnNkc4SkkwMl9hcVNwWFc4Sm9mOFFjdTVPSmRwRGRiRkJQOTFTamlNMjd4NzRha2Y2R2lDNTN4RnhuWHlVS0FhbzdXQUJDT0pwSllBTlVpcjlsSHAtcVdhYjVjN09RT19rdDZYczZBQml2SjJYRjR2VFNtMThNTnZiazZIYXFfTGQ5QnEzNk5YMW9VRlVKOTN3MnZSOFVIZTRHWjlyT0pPM0tiQVM0YjJIeVdndmJIdE1Dcl90SF9iVGNtY2NTc3RjcHB5dlpQNWc4OTZRbVl1Ym4wTk5oZDhrQU4wbmxkSEJrVXVZTHQ4ZG96WUYxNFh4T1dFa1dfdUZJUG1Ga09nWTFWQ181TG84U0NDdzAwZGFIOWpsSlRZ?oc=5&hl=en-US&gl=US&ceid=US:en",
+      "pmid": "",
+      "authors": "",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "NCA - Transcatheter Tricuspid Valve Replacement (TTVR) (CAG-00467N)&nbsp;&nbsp;Centers for Medicare & Medicaid Services | CMS (.gov)",
+      "key_numbers": [],
+      "section": "tricuspid"
+    }
+  ]
+}
