@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import Masthead from "@/components/Masthead";
+import KickerBar from "@/components/KickerBar";
 import Footer from "@/components/Footer";
 
 const bigShoulders = Big_Shoulders({
@@ -76,6 +77,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen flex flex-col">
         <Masthead />
+        <KickerBar />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
