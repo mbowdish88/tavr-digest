@@ -1,5 +1,19 @@
 [
   {
+    "filename": "JAMA_2026_Makkar_TTVR_RealWorld_Registry.pdf",
+    "original_filename": "jama_makkar_2026_oi_260018_1775160536.59187.pdf",
+    "title": "Real-World Outcomes of Transcatheter Tricuspid Valve Replacement Analysis From the STS/ACC TVT Registry",
+    "authors": "Makkar RR et al.",
+    "journal": "JAMA",
+    "year": 2026,
+    "study_design": "Registry",
+    "sample_size": 1034,
+    "valve_type": "tricuspid",
+    "key_finding": "Among 1034 attempted TTVR procedures, valve implantation was successful in 98.4% with mild or less TR achieved in 97.7% at 30 days, and 30-day mortality was 3.1% with significant improvements in functional status.",
+    "clinical_implications": "Real-world TTVR outcomes confirm safety and effectiveness consistent with the TRISCEND II trial, with acceptable mortality rates and significant health status improvements in patients with severe tricuspid regurgitation.",
+    "trial_name": null
+  },
+  {
     "filename": "JACC_2026_Serruys_LANDMARK_1Year_Myval.pdf",
     "original_filename": "JACC_2026_Serruys_LANDMARK_1Year.pdf",
     "title": "1-Year Outcomes of Novel Balloon-Expandable vs Contemporary Transcatheter Heart Valves in Severe Aortic Stenosis: The LANDMARK Trial",
@@ -1607,6 +1621,20 @@
     "key_finding": "At intermediate-term follow-up, patients undergoing elective aortic root replacement with Freestyle bioprosthesis had survival comparable to the general population, while those with endocarditis and type A dissection had excess mortality. Freedom from valve reintervention was 95.0% at 5 years.",
     "clinical_implications": "Outcomes after Freestyle bioprosthesis aortic root replacement are primarily determined by patient and disease characteristics rather than prosthesis factors, supporting its use in diverse, complex aortic root pathology.",
     "trial_name": null
+  },
+  {
+    "filename": "Circulation_2022_Banovic_AVATAR_AsymptomaticAS.pdf",
+    "original_filename": "banovic-et-al-2021-aortic-valve-replacement-versus-conservative-treatment-in-asymptomatic-severe-aortic-stenosis-the (1).pdf",
+    "title": "Aortic Valve Replacement Versus Conservative Treatment in Asymptomatic Severe Aortic Stenosis: The AVATAR Trial",
+    "authors": "Banovic M et al.",
+    "journal": "Circulation",
+    "year": 2022,
+    "study_design": "Randomized controlled trial",
+    "sample_size": 157,
+    "valve_type": "aortic",
+    "key_finding": "In asymptomatic patients with severe aortic stenosis, early SAVR significantly reduced the primary composite endpoint of all-cause death, acute MI, stroke, or unplanned HF hospitalization compared with conservative treatment (HR 0.46, 95% CI 0.23-0.90, P=0.02).",
+    "clinical_implications": "This trial provides preliminary support for early SAVR once aortic stenosis becomes severe, regardless of symptoms, potentially changing current guideline recommendations for watchful waiting.",
+    "trial_name": "AVATAR"
   },
   {
     "filename": "JACC_2021_Faroux_STEMI_After_TAVR.pdf",

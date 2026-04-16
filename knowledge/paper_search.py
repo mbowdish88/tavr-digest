@@ -20,10 +20,10 @@ From a HOME IP, sources 1-5 are the most productive. Sources 3-5 specifically
 filter for institutional repository URLs (universities, preprint servers) and
 skip publisher domains (NEJM, JAMA, JACC, Lancet, etc.) that block automated
 downloads. Expect ~20-25% success rate from home (~2,500 of 10,500 papers).
-The remaining ~75% require Cedars VPN or on-campus access.
+The remaining ~75% require institutional VPN or on-campus access.
 
 Papers that can't be downloaded from any source go to
-needs_institutional_access.txt for manual download at Cedars.
+needs_institutional_access.txt for manual download via institutional access.
 
 After downloading, copy the PDFs back to:
   ~/projects/tavr-digest/knowledge/papers/inbox/
