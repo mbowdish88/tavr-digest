@@ -312,6 +312,39 @@ body {
 .kicker-strip .strip-meta .ticker-up { color: var(--spo2-green); }
 .kicker-strip .strip-meta .ticker-dn { color: var(--spo2-red); }
 
+/* ══════════════════════════════════════════
+   SECTION NAV — restrained
+   ══════════════════════════════════════════ */
+.section-nav {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-thin);
+  padding: 14px 0;
+}
+.section-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  overflow-x: auto;
+}
+.section-nav a {
+  color: var(--ink-mid);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+  position: relative;
+  padding-bottom: 2px;
+}
+.section-nav a:hover { color: var(--navy); }
+.section-nav a.active {
+  color: var(--navy);
+  border-bottom: 2px solid var(--red);
+}
+
 /* Masthead mobile */
 @media (max-width: 768px) {
   .masthead-inner {
