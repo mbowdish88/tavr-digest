@@ -84,11 +84,11 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
   - **Clinical (cardiology):** Interventional cardiology program directors, structural heart program leads, ACC structural heart council members
   - **Clinical (general cardiology / fellows):** Cardiothoracic AND interventional cardiology fellowship program directors
   - **Cited critical voices** (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) — may already include you; ensure they get personal outreach
-  - **Health system / administrative:** Service line directors at the top 25-50 valve programs by volume (Cedars-Sinai, Mayo, Cleveland Clinic, Mass General, Mount Sinai, etc.)
+  - **Health system / administrative:** Service line directors at the top 25-50 valve programs by volume (the editor's institution, Mayo, Cleveland Clinic, Mass General, Mount Sinai, etc.)
   - **Industry:** Select contacts at Edwards, Medtronic, Abbott, Boston Scientific (relationship-building, not selling). Important: include even though you may sometimes be critical of their devices — the publication is for them too.
   - **Financial:** Sell-side analysts covering med devices at the top 5-8 firms (Morgan Stanley, Evercore ISI, Wells Fargo, Bernstein, Piper Sandler, BTIG, Jefferies, etc.)
   - **Regulatory:** Selected FDA CDRH and CMS contacts where appropriate (judgment call — relationship-dependent)
-  - **Trusted colleagues** at Cedars-Sinai and beyond who would amplify
+  - **Trusted colleagues** at the editor's institution and beyond who would amplify
 - [ ] Draft the announcement copy (reuse generate_proposal.py output if applicable). Tone: "publication for the structural heart ecosystem, written from a surgeon's perspective." NOT "publication for surgeons."
 - [ ] Decide channel: personal email vs newsletter blast vs LinkedIn post vs all three. Likely all three with different copy for each audience segment.
 
@@ -114,20 +114,20 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
 - **Open architectural questions:** branch name (recommend redesign-tabloid-3col), list provider (Buttondown), pipeline change in summarizer.py for tabloid_headline + tabloid_deck fields, multi-route extension order
 - **Blocked by:** pen-name decision (CEO discussion), then partially by business plan v1 for SubscribeBar form fields
 
-### PDF extractor for Cedars-firewalled papers (Tier 4 — post-launch)
+### PDF extractor for institution-firewalled papers (Tier 4 — post-launch)
 - **Status:** Architecture sketched 2026-04-08. Not started. **DO NOT BUILD BEFORE LAUNCH.**
-- **Goal:** Daily/weekly automated download of high-impact structural-heart papers from behind the Cedars-Sinai institutional firewall. Drop into `knowledge/papers/inbox/` for the existing indexer to process.
+- **Goal:** Daily/weekly automated download of high-impact structural-heart papers from behind the institutional firewall. Drop into `knowledge/papers/inbox/` for the existing indexer to process.
 - **Architecture (full sketch in `tasks/2026-04-08-handoff.md`):**
   1. Journal TOC monitor — RSS / DOI feeds for NEJM, JAMA, JACC, Lancet, EHJ, JTCVS, ATS, EJCTS
   2. Relevance scorer — Claude prompt for Valve-Wire-relevance
   3. Fetch queue — `data/fetch_queue.json` of target DOIs
-  4. PDF fetcher — opens DOIs via Cedars EZproxy with stored cookies (refreshed weekly via gstack `/setup-browser-cookies`)
+  4. PDF fetcher — opens DOIs via institutional EZproxy with stored cookies (refreshed weekly via gstack `/setup-browser-cookies`)
   5. Drop to inbox — existing `knowledge/indexer.py` processes them
   6. Auto-injection into daily Claude prompts via existing `papers_index.json`
-- **Files to build:** `sources/journal_toc.py`, `sources/relevance_scorer.py`, `tools/pdf_fetcher.py`, `tools/cedars_auth.py`, `data/fetch_queue.json`
+- **Files to build:** `sources/journal_toc.py`, `sources/relevance_scorer.py`, `tools/pdf_fetcher.py`, `tools/institution_auth.py`, `data/fetch_queue.json`
 - **Effort:** ~1-2 days focused engineering
-- **Where it runs:** NOT GitHub Actions (cookies expire and shouldn't be in CI secrets). Local cron on Mac, Eggar (Mac Mini), or Beckett (OpenClaw machine). Or triggered manually via Telegram command when at a Cedars machine.
-- **CRITICAL:** Defer until after AATS launch. If something goes wrong and Cedars IT flags your account, you lose institutional access right before the launch. Too much risk for the timing.
+- **Where it runs:** NOT GitHub Actions (cookies expire and shouldn't be in CI secrets). Local cron on Mac, Eggar (Mac Mini), or Beckett (OpenClaw machine). Or triggered manually via Telegram command when at an institution-network machine.
+- **CRITICAL:** Defer until after AATS launch. If something goes wrong and institutional IT flags your account, you lose institutional access right before the launch. Too much risk for the timing.
 
 ### Agentic progression — multi-agent infrastructure for tavr-digest (Tier 4 — post-launch)
 - **Status:** Strategic shift named 2026-04-08. Infrastructure exists, just unused for tavr-digest.
@@ -138,7 +138,7 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
   - Interactive-only: strategic decisions, editorial taste, anything with the editor's name on it before review
   - The art is keeping the line clear
 - **The 5 candidate background agents (priority order):**
-  1. PDF fetcher behind Cedars firewall (workstream above)
+  1. PDF fetcher behind institutional firewall (workstream above)
   2. AATS 2026 program scraper (time-sensitive, AATS is Apr 29)
   3. Paper relevance scorer (runs after PDF indexing)
   4. Outreach list enricher (find institution, role, recent pubs, contacts)

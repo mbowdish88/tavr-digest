@@ -23,7 +23,7 @@ The strategic bet is that AATS week is the single best week of the year for this
 
 **Green:**
 
-- Daily pipeline shipping clean issues to `michael.bowdish@csmc.edu` and `data/weekly/` on a 6 AM CT GitHub Actions cron. Last 6 days all published (04-05 → 04-10).
+- Daily pipeline shipping clean issues to the editor's inbox and `data/weekly/` on a 6 AM CT GitHub Actions cron. Last 6 days all published (04-05 → 04-10).
 - Website live at **thevalvewire.com** on Vercel (Next.js, monorepo at `site/`). Unadvertised. Serves as soft-launch floor.
 - 52 indexed landmark papers + ACC/AHA 2020 + ESC 2025 guidelines injected into every Claude prompt. Knowledge moat is real.
 - Weekly podcast pipeline runs Saturday morning via `workflow_run` off `weekly-digest`. Published to GitHub Releases + RSS.
@@ -111,7 +111,7 @@ The strategic bet is that AATS week is the single best week of the year for this
 6. Go-to-market & launch plan (AATS week + first 90 days)
 7. Financial projections (Y1, Y2, Y3)
 8. Team & org (when does an editorial assistant make sense?)
-9. Risks & mitigations (pen-name credibility, AI reliability, Cedars access, competitive entry, launch failure recovery)
+9. Risks & mitigations (pen-name credibility, AI reliability, institutional access, competitive entry, launch failure recovery)
 10. Next 90 days (ordered execution)
 
 **Critical decisions this doc must answer:**
@@ -123,11 +123,11 @@ The strategic bet is that AATS week is the single best week of the year for this
 - Platform play (`medweb-template`) — deferred, or active?
 - Year-1 revenue / runway target?
 
-## 3. PDF Extractor for Cedars Firewall (Tier 4 · **post-launch**)
+## 3. PDF Extractor for Institutional Firewall (Tier 4 · **post-launch**)
 
 **Status:** Architecture sketched 2026-04-08. Not started. **Do not build before launch.**
 
-**Why deferred:** the workflow involves cookie-based authentication through Cedars-Sinai EZproxy. If anything triggers Cedars IT to flag the account, you lose institutional access right before launch. The blast radius is too large for the timing. Post-launch only.
+**Why deferred:** the workflow involves cookie-based authentication through institutional EZproxy. If anything triggers institutional IT to flag the account, you lose institutional access right before launch. The blast radius is too large for the timing. Post-launch only.
 
 **Architecture (sketch for reference):**
 
@@ -140,7 +140,7 @@ Journal TOC monitor (NEJM/JAMA/JACC/Lancet/EHJ/JTCVS/ATS/EJCTS)
     → Existing indexer.py processes + injects into papers_index.json
 ```
 
-**Files to build (when we get there):** `sources/journal_toc.py` · `sources/relevance_scorer.py` · `tools/pdf_fetcher.py` · `tools/cedars_auth.py` · `data/fetch_queue.json` (~1–2 days engineering).
+**Files to build (when we get there):** `sources/journal_toc.py` · `sources/relevance_scorer.py` · `tools/pdf_fetcher.py` · `tools/institution_auth.py` · `data/fetch_queue.json` (~1–2 days engineering).
 
 ## 4. Agentic Progression (Tier 4 · **post-launch** · with one pre-launch carve-out)
 
@@ -242,7 +242,7 @@ The full audience spans **7 segments**, not just surgeons. The surgeon's editori
 
 # What's Deferred (do not do before launch)
 
-- **PDF extractor** (Cedars firewall) — cookie workflow too fragile pre-launch; lose institutional access at the wrong moment and the whole thing stalls.
+- **PDF extractor** (institutional firewall) — cookie workflow too fragile pre-launch; lose institutional access at the wrong moment and the whole thing stalls.
 - **Multi-agent infrastructure / OpenClaw wiring** — infrastructure project, not launch work.
 - **Cherry-pick #2 (podcast ROI instrumentation)** — no listeners yet to instrument.
 - **Cherry-pick #3 (dormant code retirement: beehiiv.py, substack.py)** — trivial hygiene, no launch impact; gated on list-provider decision.
