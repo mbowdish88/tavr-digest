@@ -1,12 +1,38 @@
 @import "tailwindcss";
 
-@theme {
-  --color-wine: #1B2A4A;
-  --color-burgundy: #2C5282;
-  --color-rose: #3182CE;
-  --color-cream: #EDF2F7;
-  --color-beige: #A0AEC0;
-  --color-warm-white: #F7FAFC;
+:root {
+  /* NY Post tabloid palette — from CHOSEN-tabloid-3col-v1.html */
+  --post-red: #d41920;
+  --post-red-deep: #a01018;
+  --yellow: #ffd000;
+  --yellow-deep: #e8b800;
+  --paper: #ffffff;
+  --paper-warm: #fafaf6;
+  --newsprint: #f4f0e8;
+  --cream: #f4ede0;
+
+  /* Blue Figures — secondary brand color for the cover seal */
+  --navy: #18324e;
+  --steel: #4a6580;
+
+  /* Red shades */
+  --red: #d41920;
+  --red-deep: #a01018;
+
+  /* Ink */
+  --ink: #0a0e16;
+  --ink-mid: #2a3548;
+  --ink-light: #5a6580;
+  --gray: #8a8e98;
+  --rule: #1a1a1a;
+  --rule-thin: #d8d8d4;
+
+  /* Live monitor */
+  --vitals-bg: #0c1a14;
+  --vitals-text: #a0d8b8;
+  --vitals-dim: #608878;
+  --spo2-green: #30b060;
+  --spo2-red: #d06060;
 }
 
 html {
@@ -14,42 +40,59 @@ html {
 }
 
 body {
-  font-family: Georgia, "Times New Roman", serif;
-  color: #2c2c2c;
-  background-color: var(--color-warm-white);
+  background: var(--paper-warm);
+  color: var(--ink);
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-variation-settings: 'SOFT' 30, 'opsz' 14;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, .nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
 }
 
-.nav-font {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+/* Font family utility classes — mapped to next/font CSS variables */
+.font-display {
+  font-family: var(--font-big-shoulders), 'Impact', sans-serif;
+}
+.font-body {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+.font-nav {
+  font-family: var(--font-space-grotesk), sans-serif;
+}
+.font-mono {
+  font-family: var(--font-jetbrains-mono), monospace;
 }
 
-/* Weekly newsletter HTML rendering */
+/* Weekly newsletter HTML rendering (preserved from old design) */
 .weekly-content h2 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
-  color: var(--color-wine);
+  color: var(--navy);
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--color-cream);
+  border-bottom: 2px solid var(--newsprint);
 }
 .weekly-content h3 {
-  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, sans-serif;
+  font-family: var(--font-space-grotesk), sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
-  color: var(--color-burgundy);
+  color: var(--steel);
   margin-top: 1.5rem;
   margin-bottom: 0.4rem;
 }
 .weekly-content p {
   line-height: 1.75;
   margin-bottom: 1rem;
-  color: #2c2c2c;
+  color: var(--ink);
 }
 .weekly-content ul, .weekly-content ol {
   padding-left: 1.5rem;
@@ -60,25 +103,31 @@ h1, h2, h3, h4, h5, h6, .nav-font {
   margin-bottom: 0.3rem;
 }
 .weekly-content a {
-  color: var(--color-rose);
+  color: var(--post-red);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .weekly-content a:hover {
-  color: var(--color-burgundy);
+  color: var(--post-red-deep);
 }
 .weekly-content hr {
   border: none;
-  border-top: 1px solid var(--color-cream);
+  border-top: 1px solid var(--newsprint);
   margin: 2.5rem 0;
 }
 .weekly-content blockquote {
-  border-left: 3px solid var(--color-rose);
+  border-left: 3px solid var(--post-red);
   padding-left: 1rem;
-  color: #555;
+  color: var(--ink-mid);
   font-style: italic;
   margin: 1.5rem 0;
 }
 .weekly-content strong {
-  color: var(--color-wine);
+  color: var(--ink);
+}
+
+/* SpO2 pulse animation — used by kicker strip and live monitor */
+@keyframes spo2-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
 }
