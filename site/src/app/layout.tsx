@@ -9,7 +9,7 @@ import "./globals.css";
 import Masthead from "@/components/Masthead";
 import KickerBar from "@/components/KickerBar";
 import SectionNav from "@/components/SectionNav";
-import Footer from "@/components/Footer";
+import FooterRedesign from "@/components/FooterRedesign";
 
 const bigShoulders = Big_Shoulders({
   subsets: ["latin"],
@@ -81,7 +81,7 @@ export default function RootLayout({
         <KickerBar />
         <SectionNav />
         <main className="flex-1">{children}</main>
-        <Footer />
+        <FooterRedesign />
       </body>
     </html>
   );

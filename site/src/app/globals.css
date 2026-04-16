@@ -345,6 +345,102 @@ body {
   border-bottom: 2px solid var(--red);
 }
 
+/* ══════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════ */
+.footer-redesign {
+  padding: 48px 0 32px;
+  background: var(--ink);
+  color: var(--cream);
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 36px;
+}
+.footer-brand .footer-wordmark {
+  font-family: var(--font-big-shoulders), sans-serif;
+  font-weight: 900;
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--cream);
+  line-height: 0.9;
+  margin-bottom: 4px;
+}
+.footer-brand .footer-wordmark .wire {
+  display: block;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--cream);
+  margin-top: 2px;
+}
+.footer-brand p {
+  font-family: var(--font-fraunces), serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 14;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(240, 232, 208, 0.65);
+  line-height: 1.5;
+  margin-top: 14px;
+  max-width: 280px;
+}
+.footer-col-label {
+  font-family: var(--font-big-shoulders), sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(196, 30, 58, 0.4);
+}
+.footer-col ul { list-style: none; padding: 0; }
+.footer-col li { margin-bottom: 8px; }
+.footer-col a {
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 12px;
+  color: rgba(240, 232, 208, 0.7);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.footer-col a:hover { color: var(--cream); }
+.footer-bottom {
+  border-top: 1px solid rgba(240, 232, 208, 0.18);
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+.footer-bottom .colophon {
+  max-width: 540px;
+  font-family: var(--font-fraunces), serif;
+  font-variation-settings: 'SOFT' 50, 'opsz' 14;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(240, 232, 208, 0.55);
+}
+.footer-bottom .colophon strong {
+  font-style: normal;
+  color: var(--cream);
+  font-weight: 600;
+}
+.footer-bottom .right {
+  text-align: right;
+  font-family: var(--font-big-shoulders), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(240, 232, 208, 0.65);
+  font-weight: 700;
+  line-height: 1.6;
+}
+
 /* Masthead mobile */
 @media (max-width: 768px) {
   .masthead-inner {
@@ -368,4 +464,16 @@ body {
     text-align: center;
   }
   .kicker-strip .strip-meta { order: -1; }
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-bottom .right { text-align: left; }
 }
