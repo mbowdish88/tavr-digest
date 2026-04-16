@@ -526,6 +526,19 @@ def push_to_website(data: dict) -> bool:
 
     # Include digest_html — the website renders the full daily narrative
     website_data = dict(data)
+    # Sanitize NaN/Infinity → None before JSON serialization.
+    # Python's json.dumps outputs literal NaN for float NaN, which is invalid JSON
+    # and causes Node.js JSON.parse to throw, blanking the entire website.
+    import math
+    def _sanitize(obj):
+        if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+            return None
+        if isinstance(obj, dict):
+            return {k: _sanitize(v) for k, v in obj.items()}
+        if isinstance(obj, list):
+            return [_sanitize(v) for v in obj]
+        return obj
+    website_data = _sanitize(website_data)
     json_content = json.dumps(website_data, indent=2, default=str)
 
     try:
