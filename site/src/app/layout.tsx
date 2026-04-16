@@ -6,7 +6,7 @@ import {
   JetBrains_Mono,
 } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Masthead from "@/components/Masthead";
 import Footer from "@/components/Footer";
 
 const bigShoulders = Big_Shoulders({
@@ -75,7 +75,7 @@ export default function RootLayout({
       className={`${bigShoulders.variable} ${fraunces.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-screen flex flex-col">
-        <Header />
+        <Masthead />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
