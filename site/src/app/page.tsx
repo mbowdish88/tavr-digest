@@ -200,17 +200,17 @@ export default function HomePage() {
                       <div key={ticker} className="bg-gray-50 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-1">
                           <span className="nav-font text-sm font-bold text-[var(--color-wine)]">{ticker}</span>
-                          <span className="nav-font text-lg font-semibold">${stock.price.toFixed(2)}</span>
+                          <span className="nav-font text-lg font-semibold">${(stock.price ?? 0).toFixed(2)}</span>
                         </div>
                         <p className="text-xs text-gray-400 mb-3">{stock.company}</p>
 
                         {/* Daily + 6M performance */}
                         <div className="flex justify-between nav-font text-xs mb-3">
                           <span className={stock.change_pct >= 0 ? "text-green-600" : "text-red-600"}>
-                            Daily: {stock.change_pct >= 0 ? "+" : ""}{stock.change_pct.toFixed(2)}%
+                            Daily: {(stock.change_pct ?? 0) >= 0 ? "+" : ""}{(stock.change_pct ?? 0).toFixed(2)}%
                           </span>
-                          <span className={stock.change_6m_pct >= 0 ? "text-green-600" : "text-red-600"}>
-                            6M: {stock.change_6m_pct >= 0 ? "+" : ""}{stock.change_6m_pct.toFixed(1)}%
+                          <span className={(stock.change_6m_pct ?? 0) >= 0 ? "text-green-600" : "text-red-600"}>
+                            6M: {(stock.change_6m_pct ?? 0) >= 0 ? "+" : ""}{(stock.change_6m_pct ?? 0).toFixed(1)}%
                           </span>
                         </div>
 
@@ -218,9 +218,9 @@ export default function HomePage() {
                         {stock.high_6m && stock.low_6m && stock.high_6m > stock.low_6m && (
                           <div className="mb-3">
                             <div className="flex justify-between nav-font text-[10px] text-gray-400 mb-1">
-                              <span>${stock.low_6m.toFixed(0)}</span>
+                              <span>${(stock.low_6m ?? 0).toFixed(0)}</span>
                               <span className="text-gray-500">6M Range</span>
-                              <span>${stock.high_6m.toFixed(0)}</span>
+                              <span>${(stock.high_6m ?? 0).toFixed(0)}</span>
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full relative">
                               <div
@@ -245,13 +245,13 @@ export default function HomePage() {
                           {stock.pe_ratio && (
                             <>
                               <span className="text-gray-400">P/E</span>
-                              <span className="text-right text-gray-600 font-medium">{stock.pe_ratio.toFixed(1)}</span>
+                              <span className="text-right text-gray-600 font-medium">{(stock.pe_ratio ?? 0).toFixed(1)}</span>
                             </>
                           )}
                           {stock.target_price && (
                             <>
                               <span className="text-gray-400">Target</span>
-                              <span className="text-right text-gray-600 font-medium">${stock.target_price.toFixed(0)}</span>
+                              <span className="text-right text-gray-600 font-medium">${(stock.target_price ?? 0).toFixed(0)}</span>
                             </>
                           )}
                           {stock.recommendation && (

@@ -40,14 +40,14 @@ export default function StockChart({
           <p className="text-[10px] text-gray-400">{company}</p>
         </div>
         <div className="text-right">
-          <span className="nav-font text-base font-semibold">${price.toFixed(2)}</span>
+          <span className="nav-font text-base font-semibold">${(price ?? 0).toFixed(2)}</span>
           <p
             className={`nav-font text-[10px] font-semibold ${
-              change_pct >= 0 ? "text-green-600" : "text-red-600"
+              (change_pct ?? 0) >= 0 ? "text-green-600" : "text-red-600"
             }`}
           >
-            {change_pct >= 0 ? "+" : ""}
-            {change_pct.toFixed(2)}% today
+            {(change_pct ?? 0) >= 0 ? "+" : ""}
+            {(change_pct ?? 0).toFixed(2)}% today
           </p>
         </div>
       </div>
@@ -82,8 +82,8 @@ export default function StockChart({
       )}
 
       <div className="flex justify-between nav-font text-[10px] mt-1 text-gray-400">
-        <span className={change_6m_pct >= 0 ? "text-green-600" : "text-red-600"}>
-          6M: {change_6m_pct >= 0 ? "+" : ""}{change_6m_pct.toFixed(1)}%
+        <span className={(change_6m_pct ?? 0) >= 0 ? "text-green-600" : "text-red-600"}>
+          6M: {(change_6m_pct ?? 0) >= 0 ? "+" : ""}{(change_6m_pct ?? 0).toFixed(1)}%
         </span>
         {hasHistory && <span>6-month chart</span>}
       </div>

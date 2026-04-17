@@ -13,23 +13,23 @@ export default function StockTicker({ stocks }: StockTickerProps) {
         {Object.entries(stocks).map(([ticker, data]) => (
           <div key={ticker} className="flex items-center gap-2 whitespace-nowrap">
             <span className="font-bold text-[#1B2A4A]">{ticker}</span>
-            <span className="text-[#4A5568]">${data.price.toFixed(2)}</span>
+            <span className="text-[#4A5568]">${(data.price ?? 0).toFixed(2)}</span>
             <span
               className={`font-semibold ${
-                data.change_pct >= 0 ? "text-green-600" : "text-red-600"
+                (data.change_pct ?? 0) >= 0 ? "text-green-600" : "text-red-600"
               }`}
             >
-              {data.change_pct >= 0 ? "+" : ""}
-              {data.change_pct.toFixed(2)}%
+              {(data.change_pct ?? 0) >= 0 ? "+" : ""}
+              {(data.change_pct ?? 0).toFixed(2)}%
             </span>
             <span className="text-[#A0AEC0]">|</span>
             <span
               className={`text-[10px] ${
-                data.change_6m_pct >= 0 ? "text-green-600/70" : "text-red-600/70"
+                (data.change_6m_pct ?? 0) >= 0 ? "text-green-600/70" : "text-red-600/70"
               }`}
             >
-              6M: {data.change_6m_pct >= 0 ? "+" : ""}
-              {data.change_6m_pct.toFixed(1)}%
+              6M: {(data.change_6m_pct ?? 0) >= 0 ? "+" : ""}
+              {(data.change_6m_pct ?? 0).toFixed(1)}%
             </span>
           </div>
         ))}
