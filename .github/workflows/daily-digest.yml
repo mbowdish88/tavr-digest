@@ -2,8 +2,11 @@ name: Daily Valve Wire Digest
 
 on:
   schedule:
-    # 5:00 AM Eastern (EDT UTC-4 = 09:00 UTC, EST UTC-5 = 10:00 UTC)
-    - cron: '0 9 * * *'
+    # Mon-Fri only at 09:00 UTC (~5 AM Eastern EDT, ~4 AM EST).
+    # Skip Sat/Sun: weekly digest covers Saturday and Sunday is sparse.
+    # main.py is_publish_day() also short-circuits on weekends + US holidays
+    # as a defensive runtime guard for manual workflow_dispatch triggers.
+    - cron: '0 9 * * 1-5'
   workflow_dispatch: # allows manual trigger from GitHub UI
 
 jobs:
