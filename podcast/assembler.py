@@ -345,7 +345,7 @@ def assemble_podcast(
         if audio_file.tags is None:
             audio_file.add_tags()
         audio_file.tags.add(TIT2(encoding=3, text=[title or f"The Valve Wire Weekly - {episode_date}"]))
-        audio_file.tags.add(TPE1(encoding=3, text=["E. Nolan Beckett, MD & Claire Marchand, MBA"]))
+        audio_file.tags.add(TPE1(encoding=3, text=["E. Nolan Beckett, MD"]))
         audio_file.tags.add(TALB(encoding=3, text=["The Valve Wire Weekly"]))
         audio_file.tags.add(TDRC(encoding=3, text=[episode_date[:4]]))
         audio_file.tags.add(TCON(encoding=3, text=["Science & Medicine"]))

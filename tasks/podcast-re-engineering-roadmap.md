@@ -6,6 +6,47 @@
 
 ---
 
+## Senior critique (Opus 4.7, 2026-04-25 session)
+
+Honest assessment of where the current pipeline falls short, ranked by leverage.
+
+### 1. The TTS choice is the floor on perceived quality
+OpenAI TTS-1-HD ("fable", "nova") will always have telltale AI cadence, breathy artifacts, and occasional mispronunciations regardless of how clean the audio chain is. That's the actual ceiling. Real options: ElevenLabs (~$5/episode, dramatically more natural), Cartesia Sonic (fast, very good), Auphonic post-processing (~$0.50, fixes pydub's amateur output), or hiring a Fiverr/Voices.com VO actor for weekly recording (~$50-200, fully human, fully anonymous, best quality).
+
+### 2. The pydub assembly chain is amateur-hour
+The assembler had been clipping silently for 4+ weeks (April 4 episode = +1.16 dB peak). No LUFS measurement, no true-peak limiter, stacked compressors at default-tuned parameters. This is what professional podcast post-production tools (Auphonic, Adobe Podcast) do correctly out of the box for $0.50. Rolling our own audio engineering and it shows.
+
+### 3. Script generation cost is upside-down
+Paying ~$1.40 per script on Opus. Sonnet 4.6 would be ~$0.15 and probably 90% as good for this task. Bonus: cheaper script means a multi-pass workflow (outline → per-section → critique → final) becomes affordable. Single-shot 78-segment scripts are fragile; the WSJ-burial bug today was partly a "the model picked one ranking and you can't iterate cheaply" problem.
+
+### 4. The two-host fiction added complexity for unclear payoff
+78 segments × stitched TTS = 78 potential boundary artifacts, ~$0.75 in TTS, complex assembly logic, plus the "speaking back and forth is goofy" perception flagged by the editor. Single-host monologue is simpler, cheaper, and reads as more authoritative for medical content. **Decision: switch to single-host (executed 2026-04-25).**
+
+### 5. No human-in-the-loop until publish
+The pipeline auto-runs Saturday and ships. The Friday editor brief proposal is the highest-leverage process change. Even better long-term: editor approves the script every week (we built that gate today; should be permanent).
+
+### 6. Architectural duplication between weekly + scriptwriter
+Both have their own prompts, their own editorial stance text, both go back to raw daily digests. We had to add the mainstream-press hierarchy to BOTH this evening. They can disagree on framing. Should be: weekly is the canonical editorial output, podcast is a TRANSFORM of weekly (read the weekly, structure as monologue), not a parallel synthesis from the same raw data.
+
+### 7. Source pipeline misses critical context
+WSJ paywall blocked the pipeline from full text — caught only because the editor was a source for the article. The pipeline is currently blind to anything paywalled in major outlets. EZproxy integration ("Tier 4 post-launch" per CLAUDE.md) is the unlock. Until then, the Friday editor-brief gate compensates by letting the editor inject what was missed.
+
+### 8. No quality measurement loop
+No transcript diff against script (whisper hallucinates differently than the source script — a divergence metric would catch TTS errors). No A/B testing. No listener feedback. Every change today was based on "user listens, says scratchy, we guess." Not sustainable.
+
+### Take if starting fresh with a 5x budget
+- Sonnet for script, save the dollars
+- ElevenLabs for voice (no editor voice — pen name discipline)
+- Auphonic post-process the MP3
+- Friday editor brief mandatory
+- Weekly is canonical, podcast is a transform
+- Single-host monologue (already decided)
+- Budget ~$6-7/episode, dramatically better quality
+
+The current pipeline is impressively complete for a side project, but it optimizes for "no human time" when the actual constraint is editorial quality and audio polish. ~30-45 min/week of editor time would be transformative — and the editor is currently spending way more than that fighting AI artifacts.
+
+---
+
 ## What's wrong with the current pipeline (ranked)
 
 | # | Problem | Evidence | Severity |
@@ -96,10 +137,13 @@
 - Total cost: ~$0.50, dramatically more reliable than single-shot
 - Risk: medium — more orchestration code
 
-**3C. Mixed-mode hosting.** Editor records intro + outro + key transitions in own voice; TTS handles analysis sections.
-- Most authentic option; ~10 min/week of recording
-- Tooling: simple recording UI that auto-generates a "to record" list each week
-- Risk: low (additive); high impact
+**3C. Voice strategy options (NO editor voice — pen name discipline forbids).**
+Per CLAUDE.md hardwired privacy rule: editor never appears in any audio output.
+Real options:
+- ElevenLabs **library voice** (Adam, Bella, etc.) — anonymous, consistent, $5/ep
+- ElevenLabs **instant voice clone of a different person with consent** — bespoke character voice, $5/ep
+- **Hire a Fiverr or Voices.com VO actor** for weekly recording — $50-200/episode, fully human, fully anonymous, best quality. Two voices = $100-200/week.
+- Stay on **OpenAI TTS-1-HD** — cheapest, current ceiling.
 
 ### Phase 4 — Beyond. Architecture.
 

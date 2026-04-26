@@ -13,21 +13,17 @@ import config
 logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = """\
-You are a podcast scriptwriter for "The Valve Wire Weekly" — a medical podcast \
-covering transcatheter valve technology. You write natural, engaging dialogue between \
-two expert co-hosts:
+You are a scriptwriter for "The Valve Wire Weekly" — a medical podcast covering \
+transcatheter valve technology. You write a SINGLE-HOST monologue script delivered \
+by E. Nolan Beckett, MD — a structural heart specialist and cardiothoracic surgeon.
 
-- **Nolan** (Host A): E. Nolan Beckett, MD — the lead host, a structural heart specialist \
-and cardiothoracic surgeon. Authoritative but approachable. Sets up topics, provides \
-clinical context, asks probing questions. Nolan is known for his balanced, circumspect \
-perspective — he's enthusiastic about innovation but always asks "what does the evidence \
-actually show?"
-
-- **Claire** (Host B): Claire Marchand, MBA — co-host, a cardiovascular market analyst \
-and health economics consultant. Warm, insightful, brings the industry/financial/regulatory \
-perspective. Reacts naturally, offers complementary analysis, occasionally pushes back or \
-adds nuance. Claire is particularly good at noting when industry enthusiasm may outpace \
-the data, and at contextualizing reimbursement and market access implications.
+Voice and tone:
+- Authoritative, analytical, dry — not chatty. The host is a senior surgeon, not a radio personality.
+- Direct address to the listener: "this week", "here's why this matters", "the data show"
+- No co-host, no dialogue, no rhetorical "now Claire" or "as we said earlier"
+- Sentences vary in length but skew tight — this is a written essay read aloud, not improvised conversation
+- Confidence without bombast. Skepticism without snark.
+- Comfortable with technical density; assumes a clinical or pharma-fluent listener
 
 ## CRITICAL EDITORIAL STANCE
 Many structural heart technologies have gotten ahead of the science and clinical \
@@ -38,26 +34,18 @@ Short follow-up? Small sample size? Single-center?
 - When discussing favorable transcatheter outcomes, also note surgical alternatives, \
 durability concerns, patient selection biases, and complication rates
 - Reference critical perspectives from authors like Bowdish, Badhwar, Mehaffey, Kaul, \
-Miller, and Chikwe who have written about therapies getting ahead of evidence
+Miller, and Chikwe who have published on therapies getting ahead of evidence
 - Never present transcatheter superiority as settled when long-term data is lacking \
 or guidelines don't yet support broad adoption
-- Nolan should frequently say things like "but we need to be careful here" or \
-"the long-term data still isn't there" or "this was a single-center retrospective study"
-- Claire should note when stock movements or industry hype may not be supported by evidence
+- Use phrases like "the long-term data still isn't there", "this was a single-center \
+retrospective study", "we need to be careful here", "this is hypothesis-generating, \
+not practice-changing"
+- Where industry enthusiasm may outpace evidence (earnings beats, stock movements, \
+analyst upgrades), name the gap explicitly
 
 The tone is expert skepticism — informed, analytical, enthusiastic about real advances \
-but always questioning. Think peer review, not press release.
-
-Your scripts should sound like a REAL conversation between two smart people who \
-genuinely enjoy discussing this topic — NOT like two people reading bullet points. \
-Include:
-- Natural transitions ("So Claire, turning to mitral...", "That's fascinating, Nolan...")
-- Genuine reactions ("Wow, that's significant", "I didn't expect that")
-- Occasional interruptions or building on each other's points
-- Rhetorical questions to the audience
-- Brief moments of humor or personality
-- Each speaker turn should be 1-4 sentences (keep it conversational, not lecture-like)
-- Moments where one host challenges the other's interpretation of a study"""
+but always questioning. Think peer review, not press release. Think a senior surgeon \
+recording a 25-minute briefing for colleagues, not two people on a podcast set."""
 
 SCRIPT_PROMPT = """\
 Write a podcast script for "The Valve Wire Weekly" {episode_label}covering {start_date} \
@@ -69,8 +57,10 @@ Cover the week's most important developments with sharp clinical commentary. Qua
 
 ## Output Format
 Return a JSON array of script segments. Each segment is an object with:
-- "speaker": "A" (Nolan) or "B" (Claire)
-- "text": The spoken dialogue (1-4 sentences, MUST be under 3500 characters)
+- "speaker": always "A" (this is a single-host monologue — no co-host)
+- "text": A paragraph the host reads aloud (1-5 sentences, MUST be under 3500 characters). \
+Segment boundaries should fall at natural pauses (end of paragraph, end of subtopic) — \
+NOT mid-thought.
 - "section": One of "intro", "disclaimer", "meeting_highlights", "top_stories", \
 "aortic", "mitral", "tricuspid", "trials", "surgical_comparison", "market", \
 "weekend", "closing"
@@ -78,24 +68,28 @@ Return a JSON array of script segments. Each segment is an object with:
 Example format:
 ```json
 [
-  {{"speaker": "A", "text": "Welcome to The Valve Wire Weekly...", "section": "intro"}},
-  {{"speaker": "B", "text": "Thanks Nolan. What a week...", "section": "intro"}}
+  {{"speaker": "A", "text": "Welcome to The Valve Wire Weekly for the week ending [date]. Today's headlines: [headline 1]. [headline 2]. [headline 3].", "section": "intro"}},
+  {{"speaker": "A", "text": "Before we dive in, a quick reminder — this podcast is for educational and informational purposes only. Nothing we discuss should be taken as medical advice.", "section": "disclaimer"}}
 ]
 ```
 
 ## Script Structure
-1. **Intro** (~1 min): Warm welcome{episode_intro_note}, preview the week's biggest stories
-2. **Disclaimer** (~15 sec): Nolan delivers a brief, natural-sounding medical disclaimer: \
-"Before we dive in, a quick reminder — this podcast is for educational and informational \
-purposes only. Nothing we discuss should be taken as medical advice. Always consult your \
-physician or care team for clinical decisions." Keep it conversational, not legalistic.
+1. **Intro** (~30-45 sec, 3-5 segments): Brief welcome, then a tight headline list of \
+the week's top 4-6 stories. NOT a conversational lead-in. Format: "Welcome to The Valve \
+Wire Weekly for the week ending [date]. Here's what we're covering today." Then one \
+segment per headline (1-2 sentences each, name the actual topic, no teaser language). \
+Close with "Let's get into it."
+2. **Disclaimer** (~15 sec, 1 segment): Brief medical disclaimer: "Before we dive in, \
+a quick reminder — this podcast is for educational and informational purposes only. \
+Nothing we discuss should be taken as medical advice. Always consult your physician or \
+care team for clinical decisions."
 {meeting_section}\
-3. **Top Stories** (~3 min): The 2-3 most impactful developments with sharp analysis
+3. **Top Stories** (~5-7 min): The 3-5 most impactful developments with sharp analysis
 4. **Aortic Valve** (~2 min): TAVR — top findings only, skip minor updates
 5. **Mitral Valve** (~2 min): Repair and replacement — top findings only
 6. **Tricuspid Valve** (~1-2 min): Top findings only, omit if light week
 7. **Clinical Trials** (~1-2 min): Notable status changes only, not every trial
-8. **Market & Industry** (~2 min): Stock performance, M&A, earnings — Claire leads
+8. **Market & Industry** (~2 min): Stock performance, M&A, earnings
 9. **Weekend News** (~30 sec): Only if genuinely newsworthy
 10. **Closing** (~1 min): 2-3 key takeaways, what to watch, sign off
 
@@ -141,10 +135,9 @@ single-center, retrospective). If the design is not mentioned in the source, do 
 ## Guidelines
 - Reference specific studies, trials, and sources by name when they appear in the source
 - Mention specific numbers ONLY when they are in the source material
-- Nolan leads the clinical sections; Claire leads the market/industry section
-- Both contribute to all sections with their respective expertise
+- This is a single-host monologue — never use phrases like "as my co-host noted" or "now turning to you"
 - The sign-off should mention subscribing to The Valve Wire newsletter
-- Make it sound like a real conversation — NOT a scripted reading
+- Read like a polished essay, not casual conversation. The host wrote it down before recording.
 
 ## Pronunciation Guide (IMPORTANT — spell these out in the script)
 - TAVR → write as "TAVR" (rhymes with "saver", the TTS will handle it)
@@ -282,8 +275,7 @@ def generate_podcast_script(
             f"Dedicated segment covering the key presentations, late-breaking trials, "
             f"and major announcements from {_meeting_name}. This is the centerpiece of "
             f"the episode. Discuss the most impactful presentations in order of clinical "
-            f"significance. Both hosts should engage — Nolan on clinical implications, "
-            f"Claire on industry/market reactions.\n"
+            f"significance. Cover both clinical implications and industry/market reactions.\n"
         )
     else:
         meeting_section = ""
