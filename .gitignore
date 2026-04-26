@@ -17,3 +17,13 @@ data/*
 music/
 art work/
 .gstack/
+
+# Local-only review docs (Opus 4.7 reviews from 2026-04-26 session)
+tasks/2026-04-26-opus-*.md
+tasks/2026-04-26-cso-*.md
+tasks/2026-04-26-tonight-*.md
+tasks/2026-04-26-overall-*.md
+tasks/2026-04-26-external-*.md
+tasks/2026-04-25-podcast-first-10min-*.md
+tasks/_*.py
+tasks/featured_*.md

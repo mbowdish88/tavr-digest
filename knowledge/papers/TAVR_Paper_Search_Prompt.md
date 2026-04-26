@@ -43,7 +43,7 @@ the specified journals from 2005 to the present.
 
 ### Authors — Surgical / Critical Voices
 
-17. Michael E. Bowdish, M.D. (Bowdish ME)
+17. [author redacted per pen name]
 18. Vinay Badhwar, M.D. (Badhwar V)
 19. J. Hunter Mehaffey, M.D. (Mehaffey JH)
 20. Sanjay Kaul, M.D. (Kaul S)

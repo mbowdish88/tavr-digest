@@ -95,7 +95,7 @@ AUTHORS_INTERVENTIONAL = [
 ]
 
 AUTHORS_SURGICAL = [
-    "Bowdish ME", "Badhwar V", "Mehaffey JH", "Kaul S", "Miller DC",
+    "Badhwar V", "Mehaffey JH", "Kaul S", "Miller DC",
     "Chikwe J", "Bavaria JE", "Borger MA", "Mesana T", "Moon MR",
     "Suri RM",
 ]

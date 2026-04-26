@@ -8,7 +8,7 @@
 
 ## THE PROMPT (copy from here to the end)
 
-I'm building a publication called The Valve Wire. It is a daily and weekly digest of structural heart disease news (TAVR/TAVI, MitraClip, TMVR, TriClip, TTVR, surgical and transcatheter approaches) written by a cardiothoracic surgeon. The editorial stance is critical and skeptical: many transcatheter device technologies have gotten ahead of the science and clinical guidelines, and the publication is willing to say so. Named critical voices include Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe.
+I'm building a publication called The Valve Wire. It is a daily and weekly digest of structural heart disease news (TAVR/TAVI, MitraClip, TMVR, TriClip, TTVR, surgical and transcatheter approaches) written by a cardiothoracic surgeon. The editorial stance is critical and skeptical: many transcatheter device technologies have gotten ahead of the science and clinical guidelines, and the publication is willing to say so. Named critical voices include Badhwar, Mehaffey, Kaul, Miller, Chikwe.
 
 I am launching this publication at AATS 2026 (American Association for Thoracic Surgery), the week of April 29. The audience is cardiothoracic surgeons, cardiologists, fellows, and structural heart program directors. They are skeptical, expert, time-poor, and they read primary literature. They will reject anything that looks like generic AI-generated medical content.
 
@@ -28,7 +28,7 @@ I will judge these by opening all 5 in browser tabs and comparing them side by s
 Visual references: a printed New England Journal of Medicine from 1985, JAMA print issues from the same period, the Annals of Thoracic Surgery in print, a Lancet print issue. Ivory or off-white background, traditional academic serif typography (Sabon, Adobe Caslon Pro, Minion Pro, NOT Playfair Display which is decorative). Generous margins. Black ink only or black + one accent color used sparingly. Section headers in small caps. No nav chrome at all — the publication should read like a printed journal that has been carefully digitized, not like a website with a top nav bar. The reader should think "this looks authoritative because it looks like real medicine."
 
 **Direction 2: Surgeon's working dossier.**
-Visual references: a cardiothoracic surgeon's case notes for grand rounds, an operating room debrief document, the kind of dense structured working file a surgeon would actually keep. Should feel personal and expert, not editorial. Marginalia. Hand-annotated feel allowed. Maybe a typewriter or monospace font for some elements. Inline EKG strip or echo waveform images as visual section dividers (you can use ASCII art or unicode block characters or simple SVG line drawings to suggest these — be creative). The conceit: "you are reading what's in Mike Bowdish's professional notebook." Intimate, dense, expert.
+Visual references: a cardiothoracic surgeon's case notes for grand rounds, an operating room debrief document, the kind of dense structured working file a surgeon would actually keep. Should feel personal and expert, not editorial. Marginalia. Hand-annotated feel allowed. Maybe a typewriter or monospace font for some elements. Inline EKG strip or echo waveform images as visual section dividers (you can use ASCII art or unicode block characters or simple SVG line drawings to suggest these — be creative). The conceit: "you are reading what's in Mike [critic]'s professional notebook." Intimate, dense, expert.
 
 **Direction 3: Anatomical illustration first.**
 Visual references: Frank Netter's anatomical plates of the heart, Henry Gray's anatomy, modern cardiothoracic surgery atlases. Each section of structural heart (aortic, mitral, tricuspid) should be anchored by an anatomical illustration that you create using SVG line art (suggest the illustrations with simple anatomical line drawings — aortic valve cross-section, mitral valve apparatus, tricuspid annulus). The articles are in service of the anatomy, not the other way around. The illustrations are the visual hierarchy, not the typography. Color palette: warm anatomical (rose/burgundy for tissue, cream for paper, charcoal for ink).
@@ -45,7 +45,7 @@ Visual references: a printed teaching hospital newsletter from 1992, a departmen
 - Publication name: The Valve Wire
 - Tagline / sub-title: A surgeon's reading of structural heart disease
 - Volume / issue: VOL. III · ISSUE 47 · APRIL 28, 2026
-- Editor: Michael Bowdish, MD
+- Editor: E. Nolan Beckett, MD
 
 **Lead executive summary (use verbatim):**
 > The PARTNER 3 5-year extended follow-up published in NEJM this week shows a sustained mortality advantage for TAVR over SAVR in low-risk patients, but the structural valve deterioration signal in the TAVR arm at year 5 is the finding that the device community is not talking about. Dr. Vinod Thourani's editorial calls for caution on extending the TAVR low-risk indication to patients under 65 until we see year 10 data. Edwards stock closed up 2.1% on the headline; the back-half of the paper is more sobering than the press release.

@@ -27,7 +27,7 @@
 
 ## Open question (deferred to CEO discussion)
 
-**Pen name vs real-name byline.** User flagged 2026-04-08 that the live valvewire.com uses a pen name, not "Michael Bowdish, MD." The mockup hardcodes "Michael Bowdish, MD · Editor" as a placeholder. Single CSS variable / template substitution swap if the decision goes the other way. This is a load-bearing strategic question for the editorial moat — the named-critic editorial stance loses force when the editor isn't named — and should be resolved before AATS launch.
+**Pen name vs real-name byline.** User flagged 2026-04-08 that the live valvewire.com uses a pen name, not "E. Nolan Beckett, MD." The mockup hardcodes "E. Nolan Beckett, MD · Editor" as a placeholder. Single CSS variable / template substitution swap if the decision goes the other way. This is a load-bearing strategic question for the editorial moat — the named-critic editorial stance loses force when the editor isn't named — and should be resolved before AATS launch.
 
 ## Rejected directions (preserved for comparison)
 
@@ -86,7 +86,7 @@ The following section was the working state on 2026-04-06 morning when there wer
 
    Would all three of them read it without hesitation? Both designs need to pass this test. If one of them clearly fails for any of the three readers, eliminate it.
 
-3. **Trust your gut, not your taste.** Don't pick the one that looks "best." Pick the one that **feels like Mike Bowdish's publication**. Which one would you put your name on without hesitation? Which one would you screenshot and send to a colleague at AATS?
+3. **Trust your gut, not your taste.** Don't pick the one that looks "best." Pick the one that **feels like Mike [critic]'s publication**. Which one would you put your name on without hesitation? Which one would you screenshot and send to a colleague at AATS?
 
    If your gut says the same answer both times, that's the answer. Commit and move to the port.
 

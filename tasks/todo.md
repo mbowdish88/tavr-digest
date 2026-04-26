@@ -14,7 +14,7 @@
 
 ## Strategic frame
 
-The Valve Wire is launching publicly during AATS 2026 week, the single best week of the year for this specific publication. AATS is the room where the named critical voices in CLAUDE.md (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) congregate in person. The publication's "balanced and circumspect, transcatheter has gotten ahead of the science" stance is the AATS room's institutional perspective.
+The Valve Wire is launching publicly during AATS 2026 week, the single best week of the year for this specific publication. AATS is the room where the named critical voices in CLAUDE.md (Badhwar, Mehaffey, Kaul, Miller, Chikwe) congregate in person. The publication's "balanced and circumspect, transcatheter has gotten ahead of the science" stance is the AATS room's institutional perspective.
 
 **Positioning:** The Valve Wire is the official surgeon-perspective structural heart publication, launching at AATS.
 
@@ -83,7 +83,7 @@ The redesign is already converged. Palette: terracotta `#c4553a` on navy `#0a162
   - **Clinical (AATS room):** AATS 2026 attendees / program committee (highest leverage for the launch hook)
   - **Clinical (cardiology):** Interventional cardiology program directors, structural heart program leads, ACC structural heart council members
   - **Clinical (general cardiology / fellows):** Cardiothoracic AND interventional cardiology fellowship program directors
-  - **Cited critical voices** (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) — may already include you; ensure they get personal outreach
+  - **Cited critical voices** (Badhwar, Mehaffey, Kaul, Miller, Chikwe) — may already include you; ensure they get personal outreach
   - **Health system / administrative:** Service line directors at the top 25-50 valve programs by volume (the editor's institution, Mayo, Cleveland Clinic, Mass General, Mount Sinai, etc.)
   - **Industry:** Select contacts at Edwards, Medtronic, Abbott, Boston Scientific (relationship-building, not selling). Important: include even though you may sometimes be critical of their devices — the publication is for them too.
   - **Financial:** Sell-side analysts covering med devices at the top 5-8 firms (Morgan Stanley, Evercore ISI, Wells Fargo, Bernstein, Piper Sandler, BTIG, Jefferies, etc.)
@@ -220,7 +220,7 @@ After 6 iterations across 4 days (15 HTML mockups in claude.ai + 4 hand-built mo
 
 **Full decision doc:** `tasks/2026-04-05-design-decision.md`
 
-**Open question (deferred to CEO discussion):** Pen-name vs real-name byline. The mockup hardcodes "Michael Bowdish, MD · Editor" but the live site uses a pen name. Strategic decision required before AATS launch — single CSS variable swap once decided.
+**Open question (deferred to CEO discussion):** Pen-name vs real-name byline. The mockup hardcodes "E. Nolan Beckett, MD · Editor" but the live site uses a pen name. Strategic decision required before AATS launch — single CSS variable swap once decided.
 
 ---
 

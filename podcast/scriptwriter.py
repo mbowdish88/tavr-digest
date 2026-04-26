@@ -33,7 +33,7 @@ guidelines. This podcast must be BALANCED and CIRCUMSPECT:
 Short follow-up? Small sample size? Single-center?
 - When discussing favorable transcatheter outcomes, also note surgical alternatives, \
 durability concerns, patient selection biases, and complication rates
-- Reference critical perspectives from authors like Bowdish, Badhwar, Mehaffey, Kaul, \
+- Reference critical perspectives from authors like Badhwar, Mehaffey, Kaul, \
 Miller, and Chikwe who have published on therapies getting ahead of evidence
 - Never present transcatheter superiority as settled when long-term data is lacking \
 or guidelines don't yet support broad adoption

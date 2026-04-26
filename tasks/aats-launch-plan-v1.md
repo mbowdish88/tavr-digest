@@ -1,7 +1,7 @@
 ---
 title: "The Valve Wire — AATS 2026 Launch Plan"
 subtitle: "For review · Consolidated from tasks/todo.md + 2026-04-08-handoff.md"
-author: "Michael Bowdish, MD"
+author: "E. Nolan Beckett, MD"
 date: "2026-04-11"
 geometry: margin=1in
 fontsize: 11pt
@@ -15,7 +15,7 @@ urlcolor: "[RGB]{163,32,35}"
 
 **The Valve Wire** launches publicly during **AATS 2026 week (April 29 – May 3, 2026)** — **18 days out**. The publication has been running a live daily pipeline since March and is technically autonomous on the editorial side, but four things must land before the launch is a real launch: a **website redesign port**, a **written business plan**, a **pen-name decision**, and a **quality rubric**. None of these are optional. Everything else in this document — the 5 cherry-picks, the outreach list, the AATS-week coverage plan — depends on those four being resolved first.
 
-The strategic bet is that AATS week is the single best week of the year for this publication, because the named critical voices (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) congregate in person and the publication's balanced, circumspect editorial stance *is* the AATS room's institutional perspective. Launching any other week leaves that leverage on the table.
+The strategic bet is that AATS week is the single best week of the year for this publication, because the named critical voices (Badhwar, Mehaffey, Kaul, Miller, Chikwe) congregate in person and the publication's balanced, circumspect editorial stance *is* the AATS room's institutional perspective. Launching any other week leaves that leverage on the table.
 
 ---
 
@@ -40,7 +40,7 @@ The strategic bet is that AATS week is the single best week of the year for this
 
 **Red (decision-blocked, not work-blocked):**
 
-- **Pen-name byline unresolved.** Blocks masthead, editorial callout, footer, outreach copy. The CHOSEN blueprint hardcodes "Michael Bowdish, MD · Editor" as a placeholder.
+- **Pen-name byline unresolved.** Blocks masthead, editorial callout, footer, outreach copy. The CHOSEN blueprint hardcodes "E. Nolan Beckett, MD · Editor" as a placeholder.
 - **Business plan does not exist.** Blocks SubscribeBar form fields, monetization framing, outreach positioning, year-1 target.
 - **Quality rubric does not exist.** The launch trigger is "AATS date + N consecutive issues meeting a written quality bar" — the bar is not written.
 
@@ -225,7 +225,7 @@ The full audience spans **7 segments**, not just surgeons. The surgeon's editori
 | Segment | Priority | Approach |
 |---|---|---|
 | **AATS 2026 attendees / program committee** | 1 (highest leverage for launch hook) | Personal email to named contacts. AATS-week-specific framing. |
-| **Cited critical voices** (Bowdish, Badhwar, Mehaffey, Kaul, Miller, Chikwe) | 2 | Personal email. They are named in the editorial frame — they must see the publication before anyone else. |
+| **Cited critical voices** (Badhwar, Mehaffey, Kaul, Miller, Chikwe) | 2 | Personal email. They are named in the editorial frame — they must see the publication before anyone else. |
 | **Interventional cardiology** (structural heart program leads, ACC council members) | 3 | Segmented email announcing the cross-specialty scope. |
 | **Health system admins** (service line directors at top 25–50 valve programs) | 4 | Segmented email with business/volume framing. |
 | **Industry** (Edwards, Medtronic, Abbott, Boston Scientific contacts) | 5 | Relationship email. Publication is for them too, even when critical. |
