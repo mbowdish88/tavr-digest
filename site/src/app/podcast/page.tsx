@@ -74,7 +74,7 @@ export default function PodcastPage() {
 
               {episode.mp3_url && (
                 <audio controls className="w-full" preload="none">
-                  <source src={episode.mp3_url} type="audio/mpeg" />
+                  <source src={`/api/podcast/${episode.date}`} type="audio/mpeg" />
                 </audio>
               )}
             </div>

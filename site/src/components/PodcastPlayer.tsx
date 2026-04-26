@@ -25,7 +25,7 @@ export default function PodcastPlayer({ episode }: PodcastPlayerProps) {
       </div>
 
       <audio controls className="w-full mt-4 h-8" preload="none">
-        <source src={episode.mp3_url} type="audio/mpeg" />
+        <source src={`/api/podcast/${episode.date}`} type="audio/mpeg" />
       </audio>
 
       <p className="text-xs text-[#4A5568] mt-3 leading-relaxed line-clamp-2">
