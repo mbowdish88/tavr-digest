@@ -102,7 +102,7 @@ def _build_cold_open(segments: list[dict], lead_in_path: Path = None) -> AudioSe
     best = max(candidates, key=lambda s: len(s.get("text", "")))
 
     try:
-        clip_audio = AudioSegment.from_mp3(str(best["audio_path"]))
+        clip_audio = AudioSegment.from_file(str(best["audio_path"]))
     except Exception:
         return AudioSegment.silent(duration=100)
 
@@ -208,7 +208,7 @@ def assemble_podcast(
             continue
 
         try:
-            audio = AudioSegment.from_mp3(str(seg["audio_path"]))
+            audio = AudioSegment.from_file(str(seg["audio_path"]))
         except Exception as e:
             logger.warning(f"Failed to load segment {i}: {e}")
             continue

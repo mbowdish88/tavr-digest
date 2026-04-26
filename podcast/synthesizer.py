@@ -39,7 +39,13 @@ def synthesize_segments(script: list[dict], episode_date: str) -> list[dict]:
 
     for i, segment in enumerate(script):
         voice = voice_map.get(segment["speaker"], config.PODCAST_HOST_A_VOICE)
-        filepath = segments_dir / f"{i:03d}_{segment['speaker']}_{segment.get('section', 'unknown')}.mp3"
+        # Save as WAV (lossless intermediate). Earlier versions wrote MP3 here
+        # and then ran an aggressive per-segment compressor before encoding to
+        # MP3 a second time — voice content went through two MP3 generations
+        # plus stacked compression, producing the audible "voice off and on"
+        # artifacts. WAV intermediate + single compression at assembly time +
+        # single final MP3 encode is the clean chain.
+        filepath = segments_dir / f"{i:03d}_{segment['speaker']}_{segment.get('section', 'unknown')}.wav"
 
         # Skip if already synthesized (resume support)
         if filepath.exists() and filepath.stat().st_size > 0:
@@ -58,17 +64,11 @@ def synthesize_segments(script: list[dict], episode_date: str) -> list[dict]:
                     model=config.OPENAI_TTS_MODEL,
                     voice=voice,
                     input=segment["text"],
-                    response_format="mp3",
+                    response_format="wav",
                     speed=1.0,
                     timeout=120.0,
                 )
                 response.stream_to_file(str(filepath))
-
-                # Post-process for broadcast quality
-                from podcast.audio_processing import process_voice_segment
-                raw_audio = AudioSegment.from_mp3(str(filepath))
-                processed = process_voice_segment(raw_audio)
-                processed.export(str(filepath), format="mp3", bitrate="192k")
 
                 results.append({**segment, "audio_path": filepath})
                 success = True

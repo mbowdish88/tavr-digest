@@ -37,7 +37,29 @@ don't support it
 - Reference critical perspectives where relevant (Bowdish, Badhwar, Mehaffey, Kaul, \
 Miller, Chikwe have published on therapies outpacing evidence)
 - Tone: expert skepticism — enthusiastic about real advances but always questioning. \
-Think peer review, not press release."""
+Think peer review, not press release.
+
+MAINSTREAM MEDIA HIERARCHY (PRIORITIZE — non-negotiable): When a major mainstream \
+outlet publishes a feature or front-page article on transcatheter or surgical valve \
+technology, that IS a top story regardless of whether a peer-reviewed publication \
+accompanies it. Mainstream coverage shapes patient inquiries, referring-physician \
+perception, payer attention, and policy. You MUST lead with these stories in the \
+"Week in Review" and "Top Stories This Week" sections, dedicate substantive \
+discussion to their framing and fairness, and never bury them mid-section.
+
+Outlets that meet this bar:
+- Wall Street Journal (especially front-page or section-front)
+- New York Times, Washington Post, Financial Times
+- Bloomberg (terminal stories or Businessweek features)
+- Reuters and Associated Press national wire stories, The Economist
+- Major TV networks (CBS, NBC, ABC, CNN, FOX, BBC) news segments
+
+When a WSJ or NYT piece appears alongside an industry earnings beat or a clinical \
+study, treat the tension between mainstream skepticism and commercial/clinical \
+momentum as the central narrative — not as competing items in a list. The same \
+applies to coordinated professional society advocacy aimed at federal payers \
+(STS/ACC/AATS meeting CMS, etc.); when this overlaps with mainstream coverage, \
+the convergence is itself the story."""
 
 WEEKLY_PROMPT = """\
 Produce a comprehensive standalone weekly newsletter from all the data below. This covers \
@@ -319,6 +341,24 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
 
     private_companies = ", ".join(config.PRIVATE_COMPANIES)
 
+    # Inject editor-curated featured stories (full text of paywalled articles
+    # the source pipeline cannot fetch directly, plus framing notes). When a
+    # file at tasks/featured_<end_date>.md exists, prepend it to digests so
+    # the weekly synthesizer has full context for the lead narrative — same
+    # mechanism the podcast scriptwriter uses.
+    featured_path = config.BASE_DIR / "tasks" / f"featured_{end_date.isoformat()}.md"
+    if featured_path.exists():
+        featured_text = featured_path.read_text(encoding="utf-8")
+        digests_section = (
+            f"### EDITOR-CURATED FEATURED STORIES (full text — use for lead)\n"
+            f"{featured_text}\n"
+            f"{'=' * 60}\n\n"
+            + digests_section
+        )
+        logger.info(
+            f"Prepended {featured_path.name} ({len(featured_text)} chars) to digests"
+        )
+
     prompt = WEEKLY_PROMPT.format(
         start_date=start_date.strftime("%B %d"),
         end_date=end_date.strftime("%B %d, %Y"),
@@ -333,7 +373,7 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
 
     logger.info(
         f"Generating weekly summary from {len(digests)} daily digests "
-        f"({start_date} to {end_date}) with claude-opus-4-6"
+        f"({start_date} to {end_date}) with claude-opus-4-7"
     )
 
     # Inject guidelines knowledge into the system prompt
@@ -345,7 +385,7 @@ def create_weekly_digest(end_date: date = None) -> tuple[str, dict]:
         logger.info(f"Injected {len(knowledge)} chars of guidelines context")
 
     message = client.messages.create(
-        model="claude-opus-4-6",
+        model="claude-opus-4-7",
         max_tokens=16384,
         system=system_with_knowledge,
         messages=[{"role": "user", "content": prompt}],
