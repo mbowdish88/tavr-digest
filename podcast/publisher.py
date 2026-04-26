@@ -183,8 +183,10 @@ def generate_rss_feed(episodes: list[dict]):
         build_date=formatdate(localtime=True),
     )
 
-    # Save to docs/podcast/ for GitHub Pages
-    rss_dir = config.BASE_DIR / "docs" / "podcast"
+    # Vercel serves site/public/ as the web root; the RSS must live there
+    # so https://thevalvewire.com/podcast/feed.xml resolves. Writing to docs/
+    # only reached the (disabled) GitHub Pages mirror.
+    rss_dir = config.BASE_DIR / "site" / "public" / "podcast"
     rss_dir.mkdir(parents=True, exist_ok=True)
     rss_path = rss_dir / "feed.xml"
     rss_path.write_text(rss_xml, encoding="utf-8")
