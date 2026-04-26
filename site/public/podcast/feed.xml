@@ -9,7 +9,7 @@
     <link>https://thevalvewire.com</link>
     <description>A weekly podcast covering the latest in transcatheter valve technology — TAVR, mitral repair and replacement, tricuspid therapies, clinical trials, and industry analysis. Balanced, evidence-based analysis with expert skepticism. Hosted by E. Nolan Beckett.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Apr 2026 06:16:01 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 25 Apr 2026 21:47:23 -0700</lastBuildDate>
     <itunes:author>E. Nolan Beckett</itunes:author>
     <itunes:summary>Weekly analysis of transcatheter valve technology developments for cardiac surgeons, interventional cardiologists, trainees, patients, and industry stakeholders. We present balanced, circumspect analysis — always questioning whether therapies have gotten ahead of the evidence.</itunes:summary>
     <itunes:owner>
@@ -33,20 +33,19 @@
       <description>Weekly podcast covering transcatheter valve technology developments for the week ending 2026-04-25.</description>
       
       <content:encoded><![CDATA[<h3>The Valve Wire Weekly - 2026-04-25</h3>
-<p><strong>Duration:</strong> 26:21 | <strong>Hosts:</strong> E. Nolan Beckett, MD &amp; Claire Marchand, MBA</p>
+<p><strong>Duration:</strong> 28:18 | <strong>Hosts:</strong> E. Nolan Beckett, MD &amp; Claire Marchand, MBA</p>
 <h4>Timestamps</h4><ul>
 <li>[00:52] Introduction</li>
-<li>[02:04] Disclaimer</li>
-<li>[02:22] Top Stories</li>
-<li>[08:06] Aortic Valve (TAVR/TAVI)</li>
-<li>[13:28] Mitral Valve (Repair & Replacement)</li>
-<li>[15:48] Tricuspid Valve (Repair & Replacement)</li>
-<li>[17:56] Clinical Trials Update</li>
-<li>[19:34] Market & Industry</li>
-<li>[23:11] Weekend News</li>
-<li>[24:06] Closing Thoughts</li>
+<li>[02:13] Disclaimer</li>
+<li>[02:30] Top Stories</li>
+<li>[12:05] Aortic Valve (TAVR/TAVI)</li>
+<li>[15:55] Mitral Valve (Repair & Replacement)</li>
+<li>[18:10] Tricuspid Valve (Repair & Replacement)</li>
+<li>[20:06] Clinical Trials Update</li>
+<li>[21:41] Market & Industry</li>
+<li>[25:41] Closing Thoughts</li>
 </ul>
-<h4>Summary</h4><p>Welcome back to The Valve Wire Weekly. I&#x27;m Nolan Beckett, and joining me as always is Claire Marchand. This is episode five, and Claire, what a week. We lost a giant — Eugene Braunwald passed away at ninety-six — and the field he helped build is moving at a pace that I think would have both thrilled and, knowing him, appropriately concerned him. Absolutely, Nolan. And what a week to illustrate that tension. Edwards Lifesciences delivered a blowout quarter — revenue of one point six five billion, guidance raised — and the stock surged. But the clinical literature this week is almost a point-counterpoint to that commercial enthusiasm. That&#x27;s exactly right. We&#x27;ve got a meta-analysis of over thirteen thousand patients showing TEER should not replace surgery for primary mitral regurgitation. We&#x27;ve got the TVARC-2 consensus document in Jack laying the groundwork for rigorous tricuspid trials. A CENTER2 analysis quantifying the mortality burden of atrial fibrillation after TAVR. And the Evolut Low Risk five-year isolated cohort data — encouraging in some ways, but that pacemaker rate is still eye-popping. Lots to cover, let&#x27;s get into it.</p>
+<h4>Summary</h4><p>Welcome back to The Valve Wire Weekly. I&#x27;m Nolan Beckett, and joining me as always is Claire Marchand. This is Episode 4, and Claire, I don&#x27;t think I&#x27;m being hyperbolic when I say this was the most consequential week for structural heart disease so far in 2026. Not hyperbolic at all, Nolan. You had a front-page Wall Street Journal investigation into TAVR durability, Edwards Lifesciences posting a blockbuster earnings beat on literally the same day, and the presidents of three major cardiac societies sitting down with the CMS Administrator. That kind of convergence doesn&#x27;t happen by accident. Exactly. We&#x27;re also going to cover a major meta-analysis that firmly reaffirms surgery as king for primary mitral regurgitation, a landmark consensus document standardizing future tricuspid valve trials published in Jack, the Evolut Low Risk five-year isolated cohort data, and we lost Eugene Braunwald this week — the father of modern cardiology — at age 96. We&#x27;ll talk about his legacy briefly as well.</p>
 <h4>Articles &amp; Sources</h4><ul>
 <li><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxPQ2VFcFUtaUxOR1ZMMW5ELUR3ZmlKZzBWNlprdWNOTy1saDNZMTJRZERxTVM5VUE1LTFUbFMza0J1VU5ab0tLMzBkYlY4RFNSd3RaQ3NhTkgtUUtBcURXMXlfTDltenB4X2dyWnN0U0E0UzZFSmlUc1JnYVBtWjRKaDkxT1BxTnJTNE43OTNsdGFaYk1ielVxX3pMNFN0anlCeDZyLWg3OGh1NTQ?oc=5">Edwards Lifesciences reported Q1 2026 results</a></li>
 <li><a href="https://pubmed.ncbi.nlm.nih.gov/42008639/">Kurmasha et al.</a></li>
@@ -142,9 +141,9 @@
 </ul>
 <p>Subscribe: <a href="https://thevalvewire.com">The Valve Wire Newsletter</a></p>]]></content:encoded>
       
-      <enclosure url="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-25/2026-04-25_valve_wire_weekly.mp3" length="47194329" type="audio/mpeg"/>
-      <pubDate>Sat, 25 Apr 2026 06:16:01 +0000</pubDate>
-      <itunes:duration>26:21</itunes:duration>
+      <enclosure url="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-25/2026-04-25_valve_wire_weekly.mp3" length="50016491" type="audio/mpeg"/>
+      <pubDate>Sat, 25 Apr 2026 21:47:23 -0700</pubDate>
+      <itunes:duration>28:18</itunes:duration>
       <itunes:episode>5</itunes:episode>
       <itunes:episodeType>full</itunes:episodeType>
       <guid isPermaLink="false">d46e764d-f111-44cb-91d5-f9e1326f4a39</guid>
