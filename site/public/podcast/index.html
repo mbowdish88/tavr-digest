@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Valve Wire Weekly Podcast</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: Georgia, 'Times New Roman', serif;
+    background: #f2f0eb;
+    color: #2c2c2c;
+    line-height: 1.7;
+}
+.hero {
+    background: linear-gradient(135deg, #0a1a30 0%, #0f2440 50%, #1a3a5c 100%);
+    color: white;
+    padding: 60px 20px 50px;
+    text-align: center;
+}
+.hero h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+.hero .subtitle {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    color: #c9a55a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.hero .tagline {
+    font-size: 1rem;
+    color: #8fa8c8;
+    max-width: 600px;
+    margin: 0 auto 20px;
+}
+.hero .host {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    color: #8fa8c8;
+}
+.gold-line {
+    height: 3px;
+    background: linear-gradient(90deg, #c9a55a, #e8c975, #c9a55a);
+}
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.section {
+    padding: 36px 0;
+}
+.section h2 {
+    font-size: 1.3rem;
+    color: #0f2440;
+    border-bottom: 2px solid #c9a55a;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+}
+/* Latest Episode */
+.latest-episode {
+    background: white;
+    border: 1px solid #e8e5df;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.latest-episode h3 {
+    color: #0f2440;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.latest-episode .meta {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.8rem;
+    color: #8a8580;
+    margin-bottom: 12px;
+}
+.latest-episode audio {
+    width: 100%;
+    margin: 12px 0;
+}
+.latest-episode .description {
+    font-size: 0.9rem;
+    color: #4a4540;
+}
+/* Episode List */
+.episode-item {
+    border-bottom: 1px solid #e8e5df;
+    padding: 16px 0;
+}
+.episode-item:last-child { border-bottom: none; }
+.episode-item h3 {
+    font-size: 0.95rem;
+    color: #0f2440;
+    margin-bottom: 2px;
+}
+.episode-item .meta {
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.75rem;
+    color: #8a8580;
+    margin-bottom: 6px;
+}
+.episode-item audio {
+    width: 100%;
+    height: 32px;
+}
+/* Subscribe */
+.subscribe-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+.subscribe-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0f2440;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.15s;
+}
+.subscribe-link:hover { background: #1a3a5c; }
+.subscribe-link.gold {
+    background: #c9a55a;
+    color: #0f2440;
+}
+.subscribe-link.gold:hover { background: #e8c975; }
+/* About */
+.about p {
+    font-size: 0.9rem;
+    color: #4a4540;
+    margin-bottom: 12px;
+}
+/* Footer */
+.footer {
+    background: #0f2440;
+    color: #8fa8c8;
+    padding: 24px 20px;
+    text-align: center;
+    font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.8rem;
+}
+.footer a { color: #c9a55a; text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+    .hero h1 { font-size: 1.8rem; }
+    .hero { padding: 40px 16px 36px; }
+    .subscribe-links { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>The Valve Wire</h1>
+    <div class="subtitle">WEEKLY PODCAST</div>
+    <p class="tagline">Balanced, evidence-based analysis of transcatheter valve technology. TAVR, mitral, tricuspid — the science, the trials, the market.</p>
+    <p class="host">Hosted by E. Nolan Beckett</p>
+</div>
+<div class="gold-line"></div>
+
+<div class="container">
+
+    
+    <!-- Latest Episode -->
+    <div class="section">
+        <h2>Latest Episode</h2>
+        <div class="latest-episode">
+            <h3>The Valve Wire Weekly - 2026-04-25</h3>
+            <div class="meta">2026-04-25 &middot; 26:21</div>
+            <audio controls preload="none">
+                <source src="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-25/2026-04-25_valve_wire_weekly.mp3" type="audio/mpeg">
+            </audio>
+            <p class="description">Weekly podcast covering transcatheter valve technology developments for the week ending 2026-04-25.</p>
+        </div>
+    </div>
+
+    
+    <!-- All Episodes -->
+    <div class="section">
+        <h2>All Episodes</h2>
+        
+        <div class="episode-item">
+            <h3>The Valve Wire Weekly - 2026-04-18</h3>
+            <div class="meta">2026-04-18 &middot; 21:12</div>
+            <audio controls preload="none">
+                <source src="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-18/2026-04-18_valve_wire_weekly.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
+        <div class="episode-item">
+            <h3>The Valve Wire Weekly - 2026-04-11</h3>
+            <div class="meta">2026-04-11 &middot; 23:13</div>
+            <audio controls preload="none">
+                <source src="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-11/2026-04-11_valve_wire_weekly.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
+        <div class="episode-item">
+            <h3>The Valve Wire Weekly - 2026-04-04</h3>
+            <div class="meta">2026-04-04 &middot; 23:42</div>
+            <audio controls preload="none">
+                <source src="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-04-04/2026-04-04_valve_wire_weekly.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
+        <div class="episode-item">
+            <h3>The Valve Wire Weekly - 2026-03-25</h3>
+            <div class="meta">2026-03-25 &middot; 21:18</div>
+            <audio controls preload="none">
+                <source src="https://github.com/mbowdish88/tavr-digest/releases/download/podcast-2026-03-25/2026-03-25_valve_wire_weekly.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+        
+    </div>
+    
+    
+
+    <!-- Subscribe -->
+    <div class="section">
+        <h2>Subscribe</h2>
+        <p style="font-size: 0.9rem; color: #4a4540; margin-bottom: 8px;">Listen wherever you get your podcasts, or subscribe to the newsletter.</p>
+        <div class="subscribe-links">
+            <a href="feed.xml" class="subscribe-link">RSS Feed</a>
+            <a href="https://thevalvewire.com" class="subscribe-link gold">Newsletter</a>
+        </div>
+    </div>
+
+    <!-- About -->
+    <div class="section about">
+        <h2>About</h2>
+        <p><strong>The Valve Wire Weekly</strong> is a podcast covering the latest developments in transcatheter valve technology — aortic (TAVR/TAVI), mitral (repair and replacement), and tricuspid therapies.</p>
+        <p>Each week, hosts <strong>Nolan Beckett</strong> and <strong>Claire</strong> discuss the latest research, clinical trial updates, regulatory developments, and industry analysis. We present balanced, circumspect analysis — always asking whether therapies have gotten ahead of the evidence, referencing both favorable findings and their limitations.</p>
+        <p>Our audience includes cardiac surgeons, interventional cardiologists, trainees, patients with valvular heart disease, and industry stakeholders.</p>
+        <p>Contact: <a href="mailto:nolan.beckett@pm.me" style="color: #2b6cb0;">nolan.beckett@pm.me</a></p>
+    </div>
+
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 The Valve Wire &middot; <a href="mailto:nolan.beckett@pm.me">nolan.beckett@pm.me</a></p>
+    <p style="margin-top: 6px;">AI-synthesized content. Expert analysis, not medical advice.</p>
+</div>
+
+</body>
+</html>

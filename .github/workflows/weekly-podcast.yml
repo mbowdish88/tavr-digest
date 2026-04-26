@@ -116,7 +116,7 @@ jobs:
               exit 1
             fi
           fi
-          git add docs/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json site/public/data/latest.json || true
+          git add site/public/podcast/ data/podcast_episodes.json site/public/data/podcast_episodes.json site/public/data/latest.json || true
           if git diff --cached --quiet; then
             echo "Nothing staged to commit."
           else
