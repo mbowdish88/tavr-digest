@@ -290,10 +290,20 @@ def assemble_podcast(
         attack=10.0,
         release=100.0,
     )
-    # Normalize to broadcast target loudness
+    # Normalize to broadcast target loudness, but never push peaks above
+    # -1 dBFS — applying loudness gain alone clips intro/outro music whose
+    # peaks are already close to 0 dBFS, producing intermittent crackle
+    # during the music sections.
     target_dBFS = -16.0
-    change = target_dBFS - podcast.dBFS
+    loudness_change = target_dBFS - podcast.dBFS
+    peak_headroom = -1.0 - podcast.max_dBFS
+    change = min(loudness_change, peak_headroom)
     podcast = podcast.apply_gain(change)
+    logger.info(
+        f"Loudness normalize: target={target_dBFS}dBFS, "
+        f"loudness_change={loudness_change:+.1f}dB, "
+        f"peak_headroom={peak_headroom:+.1f}dB, applied={change:+.1f}dB"
+    )
 
     # === Phase 7: Export ===
     output_filename = f"{episode_date}_valve_wire_weekly.mp3"
