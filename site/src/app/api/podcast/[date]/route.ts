@@ -35,7 +35,12 @@ export async function GET(
   headers.set("Content-Type", "audio/mpeg");
   headers.set("Content-Disposition", `inline; filename="${date}.mp3"`);
   headers.set("Accept-Ranges", "bytes");
-  headers.set("Cache-Control", "public, max-age=3600");
+  // s-maxage=0 prevents Vercel CDN from caching the full response and
+  // serving it back for Range requests as 200 — which breaks iOS Safari,
+  // since Safari only plays audio when the server responds 206 to its
+  // initial Range probe.
+  headers.set("Cache-Control", "public, max-age=3600, s-maxage=0");
+  headers.set("Vary", "Range");
 
   const passthrough = ["content-length", "content-range", "etag", "last-modified"];
   for (const h of passthrough) {
