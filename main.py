@@ -461,6 +461,23 @@ def run_weekly_podcast(weekly_html: str = None):
     if article_metadata:
         logger.info(f"Loaded {len(article_metadata)} article metadata records for podcast")
 
+    # Inject editor-curated featured stories (full text of paywalled articles
+    # the source pipeline cannot fetch directly, plus framing notes). When a
+    # file at tasks/featured_<episode_date>.md exists, prepend it to the
+    # weekly HTML so the scriptwriter has full context for the lead segment.
+    featured_path = config.BASE_DIR / "tasks" / f"featured_{episode_date}.md"
+    if featured_path.exists():
+        featured_text = featured_path.read_text(encoding="utf-8")
+        weekly_html = (
+            f"<h2>FEATURED STORIES — Full Text (editor-curated)</h2>\n"
+            f"<pre>{featured_text}</pre>\n"
+            f"<hr>\n"
+            + weekly_html
+        )
+        logger.info(
+            f"Prepended {featured_path.name} ({len(featured_text)} chars) to weekly_html"
+        )
+
     # 1. Generate script
     logger.info(f"Step 1: Generating podcast script (Episode {episode_number})...")
     script = generate_podcast_script(

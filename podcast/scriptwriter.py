@@ -106,6 +106,28 @@ When selecting which stories to emphasize, prioritize findings from higher-impac
 NEJM > JAMA > JACC > Lancet > EHJ > JACC:CI > surgical journals (ATS, JTCVS, EJCTS)
 An NEJM or JAMA publication should ALWAYS be a top story. Name the journal when citing.
 
+## Mainstream Media Hierarchy (PRIORITIZE — this is non-negotiable)
+When a major mainstream outlet publishes a feature or front-page article on \
+transcatheter or surgical valve technology, that IS a top story regardless of \
+whether a peer-reviewed publication accompanies it. Mainstream coverage shapes \
+patient inquiries, referring-physician perception, payer attention, and policy. \
+You MUST lead with these in the Top Stories section, dedicate substantive \
+discussion to their framing and fairness, and never bury them mid-section.
+
+Outlets that meet this bar:
+- Wall Street Journal (especially front-page or section-front)
+- New York Times
+- Washington Post
+- Financial Times
+- Bloomberg (terminal stories or Businessweek features)
+- Reuters and Associated Press national wire stories
+- The Economist
+- Major TV networks (CBS, NBC, ABC, CNN, FOX, BBC) news segments
+
+When a WSJ or NYT piece appears alongside an industry earnings beat or a \
+clinical study, treat the tension between mainstream skepticism and commercial/ \
+clinical momentum as the central narrative, not as competing items in a list.
+
 ## Accuracy Safeguards (CRITICAL)
 - ONLY cite specific numbers, percentages, and enrollment figures that appear in the \
 weekly content below. If you cannot find a specific number, use qualitative language \
