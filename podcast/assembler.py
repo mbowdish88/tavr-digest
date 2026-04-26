@@ -148,6 +148,29 @@ def assemble_podcast(
     transition_sound = _load_audio_asset("transition.wav") or _load_audio_asset("transition.mp3")
     outro_music = _load_audio_asset("outro.wav") or _load_audio_asset("outro.mp3")
     bg_music = _load_audio_asset("background.wav") or _load_audio_asset("background.mp3")
+
+    # Pre-normalize music elements to sit near voice level. Source music is
+    # mastered hot (-16 dBFS RMS, peaks near 0) while TTS voice averages
+    # ~-27 dBFS RMS — without this step music plays ~10 dB louder than the
+    # voice in the final mix, forcing the listener to crank volume to hear
+    # the voice and then get blasted by intro/outro/transition stings. The
+    # final loudness normalize cannot fix this because peak headroom is
+    # already exhausted by the hot music. Bring music to roughly -21 dBFS
+    # RMS so the final stage has room to lift the whole mix together.
+    MUSIC_TARGET_DBFS = -21.0
+
+    def _to_music_target(seg):
+        if seg is None:
+            return None
+        change = MUSIC_TARGET_DBFS - seg.dBFS
+        return seg.apply_gain(change)
+
+    if intro_music is not None:
+        intro_music = _to_music_target(intro_music)
+    if outro_music is not None:
+        outro_music = _to_music_target(outro_music)
+    if transition_sound is not None:
+        transition_sound = _to_music_target(transition_sound)
     lead_in = config.PODCAST_AUDIO_DIR / "cold_open_leadin.mp3"
 
     if not intro_music:
@@ -200,12 +223,13 @@ def assemble_podcast(
                 "offset_ms": len(podcast),
             })
 
-        # Section transition — crossfade into stinger
+        # Section transition — longer silent break (1.2s). Earlier versions
+        # used a music stinger (transition.wav) here, but the stinger sounded
+        # harsh/scratchy at the section boundaries; a clean pause reads as
+        # an intentional editorial beat instead.
         if prev_section and current_section != prev_section and current_section not in ("", prev_section):
             transition_points.append(len(podcast))
-            if transition_sound:
-                podcast = podcast.append(transition_sound, crossfade=TRANSITION_CROSSFADE)
-            podcast += AudioSegment.silent(duration=200)
+            podcast += AudioSegment.silent(duration=1200)
         elif prev_speaker and current_speaker != prev_speaker:
             podcast += AudioSegment.silent(duration=PAUSE_SPEAKER_SWITCH)
         elif prev_speaker:

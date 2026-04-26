@@ -247,7 +247,7 @@ def generate_podcast_script(
         if episode_number else ""
     )
 
-    logger.info("Generating podcast script with claude-opus-4-6")
+    logger.info("Generating podcast script with claude-opus-4-7")
 
     # Check for active/recent meetings first — affects prompt structure (R6)
     from datetime import date as _date, timedelta as _td
@@ -330,7 +330,7 @@ def generate_podcast_script(
             logger.warning("Retrying script generation after JSON parse failure")
 
         message = client.messages.create(
-            model="claude-opus-4-6",
+            model="claude-opus-4-7",
             max_tokens=16384,
             system=system_with_knowledge,
             messages=[{"role": "user", "content": prompt + extra_instruction}],
