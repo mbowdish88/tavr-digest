@@ -1,0 +1,99 @@
+{
+  "date": "2026-04-27",
+  "articles": [
+    {
+      "title": "Long-Term Outcomes of Transcatheter Aortic Valve Replacement in Low-Flow Low-Gradient Aortic Stenosis: A Reconstructed Time-to-Event and Multivariate Meta-Analysis.",
+      "journal": "Journal of the American Heart Association",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42037444/",
+      "pmid": "42037444",
+      "authors": "Soltani Moghadam A, Kazemian S, Soltani Moghadam S, Nasiri P, Mojahedi A et al.",
+      "study_design": "Meta-analysis",
+      "sample_size": 493,
+      "key_finding": "BACKGROUND: There are uncertainties regarding long-term outcomes of low-flow, low-gradient (LFLG) severe aortic stenosis (AS) following transcatheter aortic valve replacement (TAVR).",
+      "key_numbers": [
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "The effect of chronic total occlusion on outcomes following transcatheter aortic valve implantation: a systematic review and meta-analysis.",
+      "journal": "Future cardiology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42036796/",
+      "pmid": "42036796",
+      "authors": "Dimitriadis K, Pyrpyris N, Beneki E, Meier D, Papanikolaou A et al.",
+      "study_design": "Meta-analysis",
+      "sample_size": null,
+      "key_finding": "AIM: The pre-procedural presence of chronic total occlusions (CTO) in patients undergoing transcatheter aortic valve implantation (TAVI) could be a significant predictor of outcomes.",
+      "key_numbers": [
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95% CI: 0.71-3.50",
+        "95% CI: 1.07-1.51",
+        "95% CI: 0.79-0.98",
+        "95% CI: 0.97-1.44",
+        "95% CI: 0.88-1.28",
+        "95% CI: 0.91-1.33",
+        "95% CI: 0.89-1.14",
+        "RR: 1.58",
+        "RR: 1.27",
+        "RR: 0.88",
+        "RR: 1.18",
+        "RR: 1.06",
+        "RR: 1.10",
+        "RR: 1.01"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Cerebral Embolic Protection Devices for Transcatheter Aortic Valve Replacement: A Meta-Analysis and Trial Sequential Analysis.",
+      "journal": "American heart journal",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42035975/",
+      "pmid": "42035975",
+      "authors": "Elbenawi H, Hassan I, Abdelgalil MS, Hanna M, Almotawally S et al.",
+      "study_design": "Randomized controlled trial",
+      "sample_size": null,
+      "key_finding": "BACKGROUND: Transcatheter aortic valve replacement (TAVR) is associated with a periprocedural stroke risk due to embolic debris.",
+      "key_numbers": [
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "95%",
+        "p>0.05",
+        "95%CI 0.75-1.14",
+        "95%CI 0.55-1.15",
+        "95%CI 0.93-1.07",
+        "95%CI 0.71-1.51",
+        "RR 0.92",
+        "RR 0.80",
+        "RR 1.00",
+        "RR 1.04"
+      ],
+      "section": "aortic"
+    },
+    {
+      "title": "Impact of transcatheter aortic valve replacement on aortic root remodeling: a pre- and post-procedure CTA comparative analysis.",
+      "journal": "BMC cardiovascular disorders",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42034973/",
+      "pmid": "42034973",
+      "authors": "Liu D, Fan H, Guo H, Wei P, Li M et al.",
+      "study_design": "",
+      "sample_size": null,
+      "key_finding": "No abstract available.",
+      "key_numbers": [],
+      "section": "aortic"
+    }
+  ]
+}
